@@ -7,7 +7,7 @@ public class OrangeProductPrice {
 
     private String productId;
 
-    private String class;
+    private String productClass;
 
     private String level;
 
@@ -45,12 +45,12 @@ public class OrangeProductPrice {
         this.productId = productId;
     }
 
-    public String getClass() {
-        return class;
+    public String getProductClass() {
+        return productClass;
     }
 
-    public void setClass(String class) {
-        this.class = class;
+    public void setProductClass(String productClass) {
+        this.productClass = productClass;
     }
 
     public String getLevel() {

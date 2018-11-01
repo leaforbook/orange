@@ -245,73 +245,73 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andClassIsNull() {
-            addCriterion("class is null");
+        public Criteria andProductClassIsNull() {
+            addCriterion("product_class is null");
             return (Criteria) this;
         }
 
-        public Criteria andClassIsNotNull() {
-            addCriterion("class is not null");
+        public Criteria andProductClassIsNotNull() {
+            addCriterion("product_class is not null");
             return (Criteria) this;
         }
 
-        public Criteria andClassEqualTo(String value) {
-            addCriterion("class =", value, "class");
+        public Criteria andProductClassEqualTo(String value) {
+            addCriterion("product_class =", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotEqualTo(String value) {
-            addCriterion("class <>", value, "class");
+        public Criteria andProductClassNotEqualTo(String value) {
+            addCriterion("product_class <>", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassGreaterThan(String value) {
-            addCriterion("class >", value, "class");
+        public Criteria andProductClassGreaterThan(String value) {
+            addCriterion("product_class >", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassGreaterThanOrEqualTo(String value) {
-            addCriterion("class >=", value, "class");
+        public Criteria andProductClassGreaterThanOrEqualTo(String value) {
+            addCriterion("product_class >=", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassLessThan(String value) {
-            addCriterion("class <", value, "class");
+        public Criteria andProductClassLessThan(String value) {
+            addCriterion("product_class <", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassLessThanOrEqualTo(String value) {
-            addCriterion("class <=", value, "class");
+        public Criteria andProductClassLessThanOrEqualTo(String value) {
+            addCriterion("product_class <=", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassLike(String value) {
-            addCriterion("class like", value, "class");
+        public Criteria andProductClassLike(String value) {
+            addCriterion("product_class like", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotLike(String value) {
-            addCriterion("class not like", value, "class");
+        public Criteria andProductClassNotLike(String value) {
+            addCriterion("product_class not like", value, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassIn(List<String> values) {
-            addCriterion("class in", values, "class");
+        public Criteria andProductClassIn(List<String> values) {
+            addCriterion("product_class in", values, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotIn(List<String> values) {
-            addCriterion("class not in", values, "class");
+        public Criteria andProductClassNotIn(List<String> values) {
+            addCriterion("product_class not in", values, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassBetween(String value1, String value2) {
-            addCriterion("class between", value1, value2, "class");
+        public Criteria andProductClassBetween(String value1, String value2) {
+            addCriterion("product_class between", value1, value2, "productClass");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotBetween(String value1, String value2) {
-            addCriterion("class not between", value1, value2, "class");
+        public Criteria andProductClassNotBetween(String value1, String value2) {
+            addCriterion("product_class not between", value1, value2, "productClass");
             return (Criteria) this;
         }
 

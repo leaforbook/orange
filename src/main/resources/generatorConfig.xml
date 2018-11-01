@@ -21,28 +21,17 @@
                         password="101010xyl">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.leaforbook.orange.common.dao.model"
+        <javaModelGenerator targetPackage="com.leaforbook.orange.dao.model"
                             targetProject="src/main/java"/>
 
-        <sqlMapGenerator targetPackage="common.mapper"
+        <sqlMapGenerator targetPackage="orange.mapper"
                          targetProject="src/main/resources/"/>
 
-        <javaClientGenerator targetPackage="com.leaforbook.orange.common.dao.mapper"
+        <javaClientGenerator targetPackage="com.leaforbook.orange.dao.mapper"
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <table tableName="common_province">
-            <generatedKey column="province_id" sqlStatement="Mysql" identity="true"/>
-        </table>
-
-        <table tableName="common_role">
-            <generatedKey column="role_id" sqlStatement="Mysql" identity="true"/>
-        </table>
-
-        <table tableName="common_user">
-            <generatedKey column="user_id" sqlStatement="Mysql" identity="true"/>
-        </table>
-
-        <table tableName="common_user_role">
+        <table tableName="orange_product_price">
+            <generatedKey column="price_id" sqlStatement="Mysql" identity="true"/>
         </table>
 
     </context>
