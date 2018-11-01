@@ -1,7 +1,7 @@
-package com.leaforbook.common.dao.mapper;
+package com.leaforbook.orange.common.dao.mapper;
 
-import com.leaforbook.common.dao.model.CommonProvince;
-import com.leaforbook.common.dao.model.CommonProvinceExample;
+import com.leaforbook.orange.common.dao.model.CommonProvince;
+import com.leaforbook.orange.common.dao.model.CommonProvinceExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

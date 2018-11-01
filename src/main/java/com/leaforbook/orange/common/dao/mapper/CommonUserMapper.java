@@ -1,7 +1,7 @@
-package com.leaforbook.common.dao.mapper;
+package com.leaforbook.orange.common.dao.mapper;
 
-import com.leaforbook.common.dao.model.CommonUser;
-import com.leaforbook.common.dao.model.CommonUserExample;
+import com.leaforbook.orange.common.dao.model.CommonUser;
+import com.leaforbook.orange.common.dao.model.CommonUserExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

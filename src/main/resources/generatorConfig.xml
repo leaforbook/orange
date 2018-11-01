@@ -21,13 +21,13 @@
                         password="101010xyl">
         </jdbcConnection>
 
-        <javaModelGenerator targetPackage="com.leaforbook.common.dao.model"
+        <javaModelGenerator targetPackage="com.leaforbook.orange.common.dao.model"
                             targetProject="src/main/java"/>
 
         <sqlMapGenerator targetPackage="common.mapper"
                          targetProject="src/main/resources/"/>
 
-        <javaClientGenerator targetPackage="com.leaforbook.common.dao.mapper"
+        <javaClientGenerator targetPackage="com.leaforbook.orange.common.dao.mapper"
                              targetProject="src/main/java" type="XMLMAPPER"/>
 
         <table tableName="common_province">

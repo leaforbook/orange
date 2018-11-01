@@ -19,7 +19,7 @@ public class SwaggerConfigure {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.leaforbook.orange.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.leaforbook.orange.controller,com.leaforbook.orange.common.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

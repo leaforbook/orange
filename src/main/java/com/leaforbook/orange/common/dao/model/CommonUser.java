@@ -1,4 +1,4 @@
-package com.leaforbook.common.dao.model;
+package com.leaforbook.orange.common.dao.model;
 
 import java.util.Date;
 
