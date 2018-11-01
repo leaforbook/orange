@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `orange_product_price`;
 CREATE TABLE `orange_product_price` (
   `price_id` varchar(64) NOT NULL,
   `product_id` varchar(64) NOT NULL,
-  `class` varchar(2) NOT NULL,
+  `product_class` varchar(2) NOT NULL,
   `level` varchar(2) NOT NULL,
   `weight` double NOT NULL,
   `in_price` decimal(10,0) NOT NULL,
