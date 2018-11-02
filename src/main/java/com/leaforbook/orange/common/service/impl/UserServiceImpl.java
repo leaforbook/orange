@@ -12,6 +12,8 @@ import com.leaforbook.orange.common.dao.model.CommonUserExample;
 import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.dict.UserStatus;
 import com.leaforbook.orange.common.service.UserService;
+import com.leaforbook.orange.util.BasicBusinessException;
+import com.leaforbook.orange.util.ExceptionEnum;
 import com.leaforbook.orange.util.SnowFlake;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -44,27 +46,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUserInfo(HttpServletRequest request) {
 
-        UserInfo userInfo = new UserInfo();
+        UserInfo userInfo = null;
         String certificate = CertificateUtils.getCertificate(request);
         if(StringUtils.isBlank(certificate)) {
-            userInfo.setCode("1");
-            userInfo.setMsg("用户未登录");
-            return userInfo;
+            throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
 
         try{
             userInfo = (UserInfo)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate);
         } catch (Throwable e) {
-            log.info("获取用户信息异常",e);
-            userInfo.setCode("2");
-            userInfo.setMsg("服务器异常");
-            return userInfo;
+            throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
         }
 
         if(userInfo==null) {
-            userInfo.setCode("3");
-            userInfo.setMsg("登录已失效，请重新登录");
+            throw new BasicBusinessException(ExceptionEnum.LOGIN_EXPIRE);
         }
 
         return userInfo;
@@ -77,7 +73,7 @@ public class UserServiceImpl implements UserService {
         invitationExample.createCriteria().andAvailableCountGreaterThan(new Integer(0)).andInvitationIdEqualTo(form.getInvitationCode());
         List<CommonInvitation> invitationList = commonInvitationMapper.selectByExample(invitationExample);
         if(invitationList==null||invitationList.size()==0) {
-            throw new RuntimeException();
+            throw new BasicBusinessException(ExceptionEnum.INVITATION_INVALID);
         }
         CommonInvitation invitation =invitationList.get(0);
 
@@ -86,12 +82,12 @@ public class UserServiceImpl implements UserService {
         userExample.createCriteria().andUserNameEqualTo(form.getUserName());
         long count = userMapper.countByExample(userExample);
         if(count>0l) {
-            throw new RuntimeException();
+            throw new BasicBusinessException(ExceptionEnum.USERNAME_USED);
         }
 
         //验证两次密码是否一致
         if(form.getPassword()==null||!form.getPassword().equals(form.getRepeatPassword())) {
-            throw new RuntimeException();
+            throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
         }
 
         //注册用户信息，密码加密和初始化角色信息
