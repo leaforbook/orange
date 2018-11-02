@@ -1,8 +1,10 @@
 package com.leaforbook.orange.common.dao.model;
 
+import com.leaforbook.orange.util.BasicModel;
+
 import java.util.Date;
 
-public class CommonUser {
+public class CommonUser extends BasicModel {
     private String userId;
 
     private String userName;
@@ -11,7 +13,7 @@ public class CommonUser {
 
     private String password;
 
-    private String telphone;
+    private String telephone;
 
     private String userStatus;
 
@@ -57,12 +59,12 @@ public class CommonUser {
         this.password = password;
     }
 
-    public String getTelphone() {
-        return telphone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getUserStatus() {

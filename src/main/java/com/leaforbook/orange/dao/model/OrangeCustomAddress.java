@@ -15,7 +15,7 @@ public class OrangeCustomAddress {
 
     private String address;
 
-    private String telphone;
+    private String telephone;
 
     private String mailcode;
 
@@ -79,12 +79,12 @@ public class OrangeCustomAddress {
         this.address = address;
     }
 
-    public String getTelphone() {
-        return telphone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelphone(String telphone) {
-        this.telphone = telphone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
     public String getMailcode() {
