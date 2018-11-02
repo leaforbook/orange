@@ -13,6 +13,7 @@ import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.dict.UserStatus;
 import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.util.BasicBusinessException;
+import com.leaforbook.orange.util.DataStatus;
 import com.leaforbook.orange.util.ExceptionEnum;
 import com.leaforbook.orange.util.SnowFlake;
 import io.micrometer.core.instrument.util.StringUtils;
@@ -103,6 +104,13 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(user,userInfo);
         redisTemplate.opsForHash().put(UserConstants.LOGIN_CERTIFICATE,oneofus,userInfo);
+
+        //把邀请码的可用次数减一
+        invitation.setAvailableCount(invitation.getAvailableCount()-1);
+        if(invitation.getAvailableCount()<=0) {
+            invitation.setDataStatus(DataStatus.UNAVAILABLE.getValue());
+        }
+        commonInvitationMapper.updateByPrimaryKeySelective(invitation);
 
         return oneofus;
     }
