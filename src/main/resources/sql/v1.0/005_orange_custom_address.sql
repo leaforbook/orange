@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2018-11-01 17:08:47
+Date: 2018-11-02 15:49:00
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `orange_custom_address` (
   `province_id` varchar(64) NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `address` varchar(1024) NOT NULL,
-  `telphone` varchar(20) NOT NULL,
+  `telephone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `mailcode` varchar(10) DEFAULT NULL,
   `bak` varchar(1024) DEFAULT NULL,
   `date_create` datetime NOT NULL COMMENT '创建时间',
