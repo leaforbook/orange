@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -57,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
         UserInfo userInfo = new UserInfo();
         try{
-            userInfo = JSON.parseObject((String)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate),UserInfo.class);
+            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate),UserInfo.class);
         } catch (Throwable e) {
             throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
         }
@@ -128,14 +129,6 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String login(LoginForm form) {
-        //验证是否已登录
-        String certificateInRedis = (String)redisTemplate.opsForHash().get(UserConstants.LOGIN_USERNAME,form.getUserName());
-        if(StringUtils.isNotBlank(certificateInRedis)) {
-            Object userInfo = redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificateInRedis);
-            if(userInfo!=null) {
-                throw new BasicBusinessException(ExceptionEnum.LOGIN_AGAIN);
-            }
-        }
 
         //验证用户密码
         CommonUser user = this.authentication(form.getUserName(),form.getPassword());
@@ -155,8 +148,11 @@ public class UserServiceImpl implements UserService {
     private void setLoginState(String certificate,CommonUser user) {
         UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(user,userInfo);
-        redisTemplate.opsForHash().put(UserConstants.LOGIN_CERTIFICATE,certificate, JSON.toJSONString(userInfo));
-        redisTemplate.opsForHash().put(UserConstants.LOGIN_USERNAME,userInfo.getUserName(),certificate);
+
+        redisTemplate.opsForValue().set(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,JSON.toJSONString(userInfo));
+        redisTemplate.opsForValue().set(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),certificate);
+        redisTemplate.expire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,60*60*3, TimeUnit.SECONDS);
+        redisTemplate.expire(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),60*60*3, TimeUnit.SECONDS);
     }
 
     /**
@@ -166,14 +162,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void loginOut(String certificate) {
         //清除登陆态
-        UserInfo userInfo = JSON.parseObject((String)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate),UserInfo.class);
+        UserInfo userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate),UserInfo.class);
         if(userInfo==null) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
         String userName = userInfo.getUserName();
-        redisTemplate.opsForHash().delete(UserConstants.LOGIN_CERTIFICATE,certificate);
-        redisTemplate.opsForHash().delete(UserConstants.LOGIN_USERNAME,userName);
+        redisTemplate.delete(UserConstants.LOGIN_CERTIFICATE+"_"+certificate);
+        redisTemplate.delete(UserConstants.LOGIN_USERNAME+"_"+userName);
     }
 
     /**
@@ -222,6 +218,19 @@ public class UserServiceImpl implements UserService {
      */
     private CommonUser getUser(String userName) {
         CommonUserExample userExample = new CommonUserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName).andUserStatusEqualTo(UserStatus.NORMAL.getValue());
+        List<CommonUser> userList = userMapper.selectByExample(userExample);
+        if(userList==null||userList.size()==0) {
+            throw new BasicBusinessException(ExceptionEnum.USER_NON_EXISTENT);
+        }
+
+        CommonUser user = userList.get(0);
+
+        return user;
+    }
+
+    private CommonUser getUserForAll(String userName) {
+        CommonUserExample userExample = new CommonUserExample();
         userExample.createCriteria().andUserNameEqualTo(userName);
         List<CommonUser> userList = userMapper.selectByExample(userExample);
         if(userList==null||userList.size()==0) {
@@ -241,9 +250,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void resetPassword(ResetPasswordForm form) {
         //验证凭据
-        String proofInRedis = (String)redisTemplate.opsForHash().get(UserConstants.MODIFY_PASSWORD_PROOF,form.getUserName());
+        String proofInRedis = (String)redisTemplate.opsForValue().get(UserConstants.MODIFY_PASSWORD_PROOF+"_"+form.getUserName());
         if(!form.getProof().equals(proofInRedis)) {
-            throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
+            throw new BasicBusinessException(ExceptionEnum.PROOF_WRONG);
         }
 
         //验证两次新密码是否一致
@@ -265,8 +274,10 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String setProof(String userName) {
+        this.getUser(userName);
         String proof = snowFlake.getId();
-        redisTemplate.opsForHash().put(UserConstants.MODIFY_PASSWORD_PROOF,userName,proof);
+        redisTemplate.opsForValue().set(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,proof);
+        redisTemplate.expire(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,60*30, TimeUnit.SECONDS);
         return proof;
     }
 
@@ -283,23 +294,39 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
+    @Override
+    @Transactional
+    public void thawUser(String userName) {
+        CommonUser user = this.getUserForAll(userName);
+        user.setUserStatus(UserStatus.NORMAL.getValue());
+        user.setDateUpdate(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
 
     @Override
     public void generateInvitation(InvitationForm form) {
         List<InvitationCountAndTime> codes = form.getCodes();
-        for(InvitationCountAndTime code: codes) {
-            int count = code.getCount();
-            int time = code.getTime();
 
-            for(int i=0;i<count;i++) {
-                String invitation = snowFlake.getId();
-                CommonInvitation commonInvitation = new CommonInvitation();
-                commonInvitation.setInvitationId(invitation);
-                commonInvitation.setTotalCount(time);
-                commonInvitation.setAvailableCount(time);
-                commonInvitationMapper.insertSelective(commonInvitation);
+        if(codes!=null&&codes.size()>0) {
+            for(InvitationCountAndTime code: codes) {
+                int count = code.getCount();
+                int time = code.getTime();
+
+                for(int i=0;i<count;i++) {
+                    String invitation = snowFlake.getId();
+                    CommonInvitation commonInvitation = new CommonInvitation();
+                    commonInvitation.setInvitationId(invitation);
+                    commonInvitation.setTotalCount(time);
+                    commonInvitation.setAvailableCount(time);
+                    commonInvitationMapper.insertSelective(commonInvitation);
+                }
             }
         }
+
+        CommonInvitationExample invitationExample = new CommonInvitationExample();
+        invitationExample.createCriteria().andAvailableCountLessThanOrEqualTo(0);
+        commonInvitationMapper.deleteByExample(invitationExample);
     }
 
 }

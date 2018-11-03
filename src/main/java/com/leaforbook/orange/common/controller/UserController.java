@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.leaforbook.orange.common.auth.CertificateUtils;
 import com.leaforbook.orange.common.auth.UserInfo;
 import com.leaforbook.orange.common.controller.form.*;
+import com.leaforbook.orange.common.controller.vo.ProofVO;
 import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.util.BasicBusinessException;
@@ -79,12 +80,15 @@ public class UserController {
 
     @PostMapping("/setProof")
     @ApiOperation(value = "设置重置密码凭证接口", notes = "")
-    public BasicResponse setProof(HttpServletRequest request,@RequestBody UserForm form) {
+    public ProofVO setProof(HttpServletRequest request, @RequestBody UserForm form) {
         log.info("UserController-setProof-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 
-        userService.setProof(form.getUserName());
-        return new BasicResponse();
+        String proof = userService.setProof(form.getUserName());
+        ProofVO vo = new ProofVO();
+        vo.setProof(proof);
+
+        return vo;
     }
 
 
@@ -95,6 +99,16 @@ public class UserController {
         this.notXiaoyilin(request);
 
         userService.frozenUser(form.getUserName());
+        return new BasicResponse();
+    }
+
+    @PostMapping("/thawUser")
+    @ApiOperation(value = "解冻用户接口", notes = "")
+    public BasicResponse thawUser(HttpServletRequest request,@RequestBody UserForm form) {
+        log.info("UserController-thawUser-form:"+JSON.toJSONString(form));
+        this.notXiaoyilin(request);
+
+        userService.thawUser(form.getUserName());
         return new BasicResponse();
     }
 
@@ -115,7 +129,7 @@ public class UserController {
         String certificate =  CertificateUtils.getCertificate(request);
         UserInfo userInfo = userService.getUserInfo(certificate);
         if(!"xiaoyilin".equals(userInfo.getUserName())) {
-            throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
+            throw new BasicBusinessException(ExceptionEnum.NOT_XIAOYILIN);
         }
     }
 
