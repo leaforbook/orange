@@ -55,7 +55,7 @@ public class LoginFilter implements Filter {
         }
         UserInfo userInfo = null;
         try{
-            userInfo = (UserInfo)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate);
+            userInfo = JSON.parseObject((String)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate),UserInfo.class);
         } finally {
             if(userInfo==null) {
                 return false;

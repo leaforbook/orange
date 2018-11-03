@@ -7,7 +7,10 @@ public enum ExceptionEnum {
     INVITATION_INVALID("000004","邀请码无效"),
     USERNAME_USED("000005","用户名被占用"),
     PASSWORD_DIFFER("000006","两次密码输入不一致"),
-
+    LOGIN_AGAIN("000007","不能多处登录"),
+    USER_NON_EXISTENT("000008","用户不存在"),
+    PASSWORD_WRONG("000009","密码错误"),
+    NOT_XIAOYILIN("000010","不可以，你不是肖一林"),
     ;
 
     private String code;

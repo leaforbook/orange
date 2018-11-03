@@ -9,17 +9,21 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public interface UserService {
 
-    UserInfo getUserInfo(HttpServletRequest request);
+    UserInfo getUserInfo(String certificate);
 
     String register(RegisterForm form);
 
-    void login(LoginForm form);
+    String login(LoginForm form);
 
-    void loginOut(HttpServletRequest request);
+    void loginOut(String certificate);
 
     void resetPassword(ResetPasswordForm form);
 
     void modifyPassword(ModifyPasswordForm form);
 
-    void initPassword(InitPasswordForm form);
+    String setProof(String userName);
+
+    void frozenUser(String userName);
+
+    void generateInvitation(InvitationForm form);
 }

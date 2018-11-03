@@ -1,8 +1,10 @@
 package com.leaforbook.orange.common.dao.model;
 
+import com.leaforbook.orange.util.BasicModel;
+
 import java.util.Date;
 
-public class CommonRole {
+public class CommonRole  extends BasicModel {
     private String roleId;
 
     private String roleName;
@@ -11,15 +13,6 @@ public class CommonRole {
 
     private String roleStatus;
 
-    private Date dateCreate;
-
-    private Date dateUpdate;
-
-    private String byCreate;
-
-    private String byUpdate;
-
-    private String dataStatus;
 
     public String getRoleId() {
         return roleId;
@@ -53,43 +46,4 @@ public class CommonRole {
         this.roleStatus = roleStatus;
     }
 
-    public Date getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
-    public Date getDateUpdate() {
-        return dateUpdate;
-    }
-
-    public void setDateUpdate(Date dateUpdate) {
-        this.dateUpdate = dateUpdate;
-    }
-
-    public String getByCreate() {
-        return byCreate;
-    }
-
-    public void setByCreate(String byCreate) {
-        this.byCreate = byCreate;
-    }
-
-    public String getByUpdate() {
-        return byUpdate;
-    }
-
-    public void setByUpdate(String byUpdate) {
-        this.byUpdate = byUpdate;
-    }
-
-    public String getDataStatus() {
-        return dataStatus;
-    }
-
-    public void setDataStatus(String dataStatus) {
-        this.dataStatus = dataStatus;
-    }
 }

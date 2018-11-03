@@ -4,7 +4,7 @@ import com.leaforbook.orange.util.BasicModel;
 
 import java.util.Date;
 
-public class CommonUser extends BasicModel {
+public class CommonUser  extends BasicModel {
     private String userId;
 
     private String userName;
@@ -16,16 +16,6 @@ public class CommonUser extends BasicModel {
     private String telephone;
 
     private String userStatus;
-
-    private Date dateCreate;
-
-    private Date dateUpdate;
-
-    private String byCreate;
-
-    private String byUpdate;
-
-    private String dataStatus;
 
     public String getUserId() {
         return userId;
@@ -75,43 +65,4 @@ public class CommonUser extends BasicModel {
         this.userStatus = userStatus;
     }
 
-    public Date getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
-    public Date getDateUpdate() {
-        return dateUpdate;
-    }
-
-    public void setDateUpdate(Date dateUpdate) {
-        this.dateUpdate = dateUpdate;
-    }
-
-    public String getByCreate() {
-        return byCreate;
-    }
-
-    public void setByCreate(String byCreate) {
-        this.byCreate = byCreate;
-    }
-
-    public String getByUpdate() {
-        return byUpdate;
-    }
-
-    public void setByUpdate(String byUpdate) {
-        this.byUpdate = byUpdate;
-    }
-
-    public String getDataStatus() {
-        return dataStatus;
-    }
-
-    public void setDataStatus(String dataStatus) {
-        this.dataStatus = dataStatus;
-    }
 }

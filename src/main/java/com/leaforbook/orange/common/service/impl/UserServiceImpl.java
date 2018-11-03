@@ -1,6 +1,6 @@
 package com.leaforbook.orange.common.service.impl;
 
-import com.leaforbook.orange.common.auth.CertificateUtils;
+import com.alibaba.fastjson.JSON;
 import com.leaforbook.orange.common.auth.UserInfo;
 import com.leaforbook.orange.common.controller.form.*;
 import com.leaforbook.orange.common.dao.mapper.CommonInvitationMapper;
@@ -22,9 +22,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,19 +43,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CommonUserMapper userMapper;
 
-
+    /**
+     * 获取用户信息
+     * @param certificate
+     * @return
+     */
     @Override
-    public UserInfo getUserInfo(HttpServletRequest request) {
+    public UserInfo getUserInfo(String certificate) {
 
-        UserInfo userInfo = null;
-        String certificate = CertificateUtils.getCertificate(request);
         if(StringUtils.isBlank(certificate)) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
-
+        UserInfo userInfo = new UserInfo();
         try{
-            userInfo = (UserInfo)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate);
+            userInfo = JSON.parseObject((String)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate),UserInfo.class);
         } catch (Throwable e) {
             throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
         }
@@ -67,7 +69,13 @@ public class UserServiceImpl implements UserService {
         return userInfo;
     }
 
+    /**
+     * 注册新用户
+     * @param form
+     * @return
+     */
     @Override
+    @Transactional
     public String register(RegisterForm form) {
         //验证邀请码有效性
         CommonInvitationExample invitationExample = new CommonInvitationExample();
@@ -100,10 +108,8 @@ public class UserServiceImpl implements UserService {
         userMapper.insertSelective(user);
 
         //加入登录态
-        String oneofus = snowFlake.getId();
-        UserInfo userInfo = new UserInfo();
-        BeanUtils.copyProperties(user,userInfo);
-        redisTemplate.opsForHash().put(UserConstants.LOGIN_CERTIFICATE,oneofus,userInfo);
+        String certificate = snowFlake.getId();
+        this.setLoginState(certificate,user);
 
         //把邀请码的可用次数减一
         invitation.setAvailableCount(invitation.getAvailableCount()-1);
@@ -112,46 +118,188 @@ public class UserServiceImpl implements UserService {
         }
         commonInvitationMapper.updateByPrimaryKeySelective(invitation);
 
-        return oneofus;
+        return certificate;
     }
 
+    /**
+     * 登录
+     * @param form
+     * @return
+     */
     @Override
-    public void login(LoginForm form) {
+    public String login(LoginForm form) {
         //验证是否已登录
-
-        //验证用户是否已注册
+        String certificateInRedis = (String)redisTemplate.opsForHash().get(UserConstants.LOGIN_USERNAME,form.getUserName());
+        if(StringUtils.isNotBlank(certificateInRedis)) {
+            Object userInfo = redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificateInRedis);
+            if(userInfo!=null) {
+                throw new BasicBusinessException(ExceptionEnum.LOGIN_AGAIN);
+            }
+        }
 
         //验证用户密码
+        CommonUser user = this.authentication(form.getUserName(),form.getPassword());
 
         //加入登录态
+        String certificate = snowFlake.getId();
+        this.setLoginState(certificate,user);
+
+        return certificate;
     }
 
+    /**
+     * 设置登录态
+     * @param certificate
+     * @param user
+     */
+    private void setLoginState(String certificate,CommonUser user) {
+        UserInfo userInfo = new UserInfo();
+        BeanUtils.copyProperties(user,userInfo);
+        redisTemplate.opsForHash().put(UserConstants.LOGIN_CERTIFICATE,certificate, JSON.toJSONString(userInfo));
+        redisTemplate.opsForHash().put(UserConstants.LOGIN_USERNAME,userInfo.getUserName(),certificate);
+    }
+
+    /**
+     * 清楚登录态
+     * @param certificate
+     */
     @Override
-    public void loginOut(HttpServletRequest request) {
+    public void loginOut(String certificate) {
         //清除登陆态
+        UserInfo userInfo = JSON.parseObject((String)redisTemplate.opsForHash().get(UserConstants.LOGIN_CERTIFICATE,certificate),UserInfo.class);
+        if(userInfo==null) {
+            throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
+        }
+
+        String userName = userInfo.getUserName();
+        redisTemplate.opsForHash().delete(UserConstants.LOGIN_CERTIFICATE,certificate);
+        redisTemplate.opsForHash().delete(UserConstants.LOGIN_USERNAME,userName);
     }
 
+    /**
+     * 修改密码
+     * @param form
+     */
     @Override
-    public void resetPassword(ResetPasswordForm form) {
-        //验证旧密码是否正确
-
-        //验证两次新密码是否一致
-
-        //更新密码
-    }
-
-    @Override
+    @Transactional
     public void modifyPassword(ModifyPasswordForm form) {
-        //验证凭据
+        //验证旧密码是否正确
+        CommonUser user = this.authentication(form.getUserName(),form.getPassword());
 
         //验证两次新密码是否一致
+        if(!form.getNewPassword().equals(form.getRepeatNewPassword())) {
+            throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
+        }
 
         //更新密码
+        user.setPassword(DigestUtils.md5DigestAsHex(form.getNewPassword().getBytes()));
+        user.setDateUpdate(new Date());
+
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
-    @Override
-    public void initPassword(InitPasswordForm form) {
-        //检查用户是否存在
-        //初始化密码gnqcdlzs2018
+    /**
+     * 认证用户密码是否正确
+     * @param userName
+     * @param password
+     * @return
+     */
+    private CommonUser authentication(String userName,String password) {
+
+        CommonUser user = this.getUser(userName);
+        String passwordInDB = user.getPassword();
+        if(!DigestUtils.md5DigestAsHex(password.getBytes()).equals(passwordInDB)) {
+            throw new BasicBusinessException(ExceptionEnum.PASSWORD_WRONG);
+        }
+
+        return user;
     }
+
+    /**
+     * 根据用户名获取用户信息
+     * @param userName
+     * @return
+     */
+    private CommonUser getUser(String userName) {
+        CommonUserExample userExample = new CommonUserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName);
+        List<CommonUser> userList = userMapper.selectByExample(userExample);
+        if(userList==null||userList.size()==0) {
+            throw new BasicBusinessException(ExceptionEnum.USER_NON_EXISTENT);
+        }
+
+        CommonUser user = userList.get(0);
+
+        return user;
+    }
+
+    /**
+     * 重置密码
+     * @param form
+     */
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordForm form) {
+        //验证凭据
+        String proofInRedis = (String)redisTemplate.opsForHash().get(UserConstants.MODIFY_PASSWORD_PROOF,form.getUserName());
+        if(!form.getProof().equals(proofInRedis)) {
+            throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
+        }
+
+        //验证两次新密码是否一致
+        if(!form.getPassword().equals(form.getRepeatPassword())) {
+            throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
+        }
+
+        //更新密码
+        CommonUser user = this.getUser(form.getUserName());
+        user.setPassword(DigestUtils.md5DigestAsHex(form.getPassword().getBytes()));
+        user.setDateUpdate(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    /**
+     * 设置重置密码凭据
+     * @param userName
+     * @return
+     */
+    @Override
+    public String setProof(String userName) {
+        String proof = snowFlake.getId();
+        redisTemplate.opsForHash().put(UserConstants.MODIFY_PASSWORD_PROOF,userName,proof);
+        return proof;
+    }
+
+    /**
+     * 冻结用户
+     * @param userName
+     */
+    @Override
+    @Transactional
+    public void frozenUser(String userName) {
+        CommonUser user = this.getUser(userName);
+        user.setUserStatus(UserStatus.FROZEN.getValue());
+        user.setDateUpdate(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
+
+
+    @Override
+    public void generateInvitation(InvitationForm form) {
+        List<InvitationCountAndTime> codes = form.getCodes();
+        for(InvitationCountAndTime code: codes) {
+            int count = code.getCount();
+            int time = code.getTime();
+
+            for(int i=0;i<count;i++) {
+                String invitation = snowFlake.getId();
+                CommonInvitation commonInvitation = new CommonInvitation();
+                commonInvitation.setInvitationId(invitation);
+                commonInvitation.setTotalCount(time);
+                commonInvitation.setAvailableCount(time);
+                commonInvitationMapper.insertSelective(commonInvitation);
+            }
+        }
+    }
+
 }
