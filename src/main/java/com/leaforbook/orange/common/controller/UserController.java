@@ -30,10 +30,10 @@ public class UserController {
 
     @PostMapping("/get")
     @ApiOperation(value = "获取用户信息", notes = "")
-    public UserInfo getUserInfo(HttpServletRequest request) {
+    public BasicResponse getUserInfo(HttpServletRequest request) {
         String certificate =  CertificateUtils.getCertificate(request);
         UserInfo userInfo = userService.getUserInfo(certificate);
-        return userInfo;
+        return new BasicResponse(userInfo);
     }
 
     @PostMapping("/register")
@@ -80,7 +80,7 @@ public class UserController {
 
     @PostMapping("/setProof")
     @ApiOperation(value = "设置重置密码凭证接口", notes = "")
-    public ProofVO setProof(HttpServletRequest request, @RequestBody UserForm form) {
+    public BasicResponse setProof(HttpServletRequest request, @RequestBody UserForm form) {
         log.info("UserController-setProof-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 
@@ -88,7 +88,7 @@ public class UserController {
         ProofVO vo = new ProofVO();
         vo.setProof(proof);
 
-        return vo;
+        return new BasicResponse(vo);
     }
 
 

@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UserInfo extends BasicResponse implements Serializable {
+public class UserInfo implements Serializable {
     private String userId;
 
     private String userName;
