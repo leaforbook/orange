@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class LoginFilter implements Filter {
@@ -59,6 +60,12 @@ public class LoginFilter implements Filter {
         } finally {
             if(userInfo==null) {
                 return false;
+            }else {
+                long time = redisTemplate.getExpire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate, TimeUnit.SECONDS);
+                if(time<5*60l) {
+                    redisTemplate.expire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,time+10*60l, TimeUnit.SECONDS);
+                    redisTemplate.expire(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),time+10*60l, TimeUnit.SECONDS);
+                }
             }
         }
 

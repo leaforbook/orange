@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/common/user")
@@ -38,7 +39,7 @@ public class UserController {
 
     @PostMapping("/register")
     @ApiOperation(value = "注册接口", notes = "")
-    public BasicResponse register(HttpServletResponse response,@RequestBody RegisterForm form) {
+    public BasicResponse register(HttpServletResponse response,@RequestBody @Valid RegisterForm form) {
         String certificate  = userService.register(form);
         this.addLoginState(response,certificate);
 
@@ -47,7 +48,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value = "登录接口", notes = "")
-    public BasicResponse login(HttpServletResponse response, @RequestBody LoginForm form) {
+    public BasicResponse login(HttpServletResponse response, @RequestBody @Valid LoginForm form) {
         String certificate  = userService.login(form);
         this.addLoginState(response,certificate);
 
@@ -65,14 +66,14 @@ public class UserController {
 
     @PostMapping("/modifyPassword")
     @ApiOperation(value = "修改密码接口", notes = "")
-    public BasicResponse modifyPassword(@RequestBody ModifyPasswordForm form) {
+    public BasicResponse modifyPassword(@RequestBody  @Valid ModifyPasswordForm form) {
         userService.modifyPassword(form);
         return new BasicResponse();
     }
 
     @PostMapping("/resetPassword")
     @ApiOperation(value = "修改密码接口", notes = "")
-    public BasicResponse resetPassword(@RequestBody ResetPasswordForm form) {
+    public BasicResponse resetPassword(@RequestBody  @Valid ResetPasswordForm form) {
         userService.resetPassword(form);
         return new BasicResponse();
     }
@@ -80,7 +81,7 @@ public class UserController {
 
     @PostMapping("/setProof")
     @ApiOperation(value = "设置重置密码凭证接口", notes = "")
-    public BasicResponse setProof(HttpServletRequest request, @RequestBody UserForm form) {
+    public BasicResponse setProof(HttpServletRequest request, @RequestBody  @Valid UserForm form) {
         log.info("UserController-setProof-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 
@@ -94,7 +95,7 @@ public class UserController {
 
     @PostMapping("/frozenUser")
     @ApiOperation(value = "冻结用户接口", notes = "")
-    public BasicResponse frozenUser(HttpServletRequest request,@RequestBody UserForm form) {
+    public BasicResponse frozenUser(HttpServletRequest request,@RequestBody  @Valid UserForm form) {
         log.info("UserController-frozenUser-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 
@@ -104,7 +105,7 @@ public class UserController {
 
     @PostMapping("/thawUser")
     @ApiOperation(value = "解冻用户接口", notes = "")
-    public BasicResponse thawUser(HttpServletRequest request,@RequestBody UserForm form) {
+    public BasicResponse thawUser(HttpServletRequest request,@RequestBody  @Valid UserForm form) {
         log.info("UserController-thawUser-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 
@@ -115,7 +116,7 @@ public class UserController {
 
     @PostMapping("/generateInvitation")
     @ApiOperation(value = "生成邀请码", notes = "")
-    public BasicResponse generateInvitation(@RequestBody InvitationForm form,HttpServletRequest request) {
+    public BasicResponse generateInvitation(@RequestBody  @Valid InvitationForm form,HttpServletRequest request) {
         log.info("UserController-generateInvitation-form:"+JSON.toJSONString(form));
         this.notXiaoyilin(request);
 

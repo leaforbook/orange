@@ -151,8 +151,8 @@ public class UserServiceImpl implements UserService {
 
         redisTemplate.opsForValue().set(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,JSON.toJSONString(userInfo));
         redisTemplate.opsForValue().set(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),certificate);
-        redisTemplate.expire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,60*60*3, TimeUnit.SECONDS);
-        redisTemplate.expire(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),60*60*3, TimeUnit.SECONDS);
+        redisTemplate.expire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,60*60*3l, TimeUnit.SECONDS);
+        redisTemplate.expire(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),60*60*3l, TimeUnit.SECONDS);
     }
 
     /**
@@ -277,7 +277,7 @@ public class UserServiceImpl implements UserService {
         this.getUser(userName);
         String proof = snowFlake.getId();
         redisTemplate.opsForValue().set(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,proof);
-        redisTemplate.expire(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,60*30, TimeUnit.SECONDS);
+        redisTemplate.expire(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,60*30l, TimeUnit.SECONDS);
         return proof;
     }
 
