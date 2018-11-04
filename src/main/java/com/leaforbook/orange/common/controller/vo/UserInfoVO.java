@@ -1,4 +1,4 @@
-package com.leaforbook.orange.common.auth;
+package com.leaforbook.orange.common.controller.vo;
 
 import com.leaforbook.orange.util.BasicResponse;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class UserInfo implements Serializable {
+public class UserInfoVO implements Serializable {
     private String userId;
 
     private String userName;

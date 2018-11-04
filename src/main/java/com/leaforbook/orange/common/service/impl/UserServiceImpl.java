@@ -1,7 +1,7 @@
 package com.leaforbook.orange.common.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.leaforbook.orange.common.auth.UserInfo;
+import com.leaforbook.orange.common.controller.vo.UserInfoVO;
 import com.leaforbook.orange.common.controller.form.*;
 import com.leaforbook.orange.common.dao.mapper.CommonInvitationMapper;
 import com.leaforbook.orange.common.dao.mapper.CommonUserMapper;
@@ -50,15 +50,15 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public UserInfo getUserInfo(String certificate) {
+    public UserInfoVO getUserInfo(String certificate) {
 
         if(StringUtils.isBlank(certificate)) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
-        UserInfo userInfo = new UserInfo();
+        UserInfoVO userInfo = new UserInfoVO();
         try{
-            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate),UserInfo.class);
+            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate), UserInfoVO.class);
         } catch (Throwable e) {
             throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
         }
@@ -146,7 +146,7 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     private void setLoginState(String certificate,CommonUser user) {
-        UserInfo userInfo = new UserInfo();
+        UserInfoVO userInfo = new UserInfoVO();
         BeanUtils.copyProperties(user,userInfo);
 
         redisTemplate.opsForValue().set(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,JSON.toJSONString(userInfo));
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void loginOut(String certificate) {
         //清除登陆态
-        UserInfo userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate),UserInfo.class);
+        UserInfoVO userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate), UserInfoVO.class);
         if(userInfo==null) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }

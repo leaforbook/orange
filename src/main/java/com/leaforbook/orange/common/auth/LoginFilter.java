@@ -1,6 +1,7 @@
 package com.leaforbook.orange.common.auth;
 
 import com.alibaba.fastjson.JSON;
+import com.leaforbook.orange.common.controller.vo.UserInfoVO;
 import com.leaforbook.orange.common.dict.UserConstants;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -54,9 +54,9 @@ public class LoginFilter implements Filter {
         if(StringUtils.isBlank(certificate)) {
             return false;
         }
-        UserInfo userInfo = null;
+        UserInfoVO userInfo = null;
         try{
-            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate),UserInfo.class);
+            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate), UserInfoVO.class);
         } finally {
             if(userInfo==null) {
                 return false;
