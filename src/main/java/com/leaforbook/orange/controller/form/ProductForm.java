@@ -1,19 +1,19 @@
 package com.leaforbook.orange.controller.form;
 
-import com.leaforbook.orange.dao.model.OrangeProductPrice;
 import lombok.Data;
 
-import java.util.List;
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class ProductForm {
-    private String productId;
 
-    private String userId;
-
+    @NotBlank(message = "产品名称不能为空")
     private String productName;
 
     private String productDesc;
 
-    private List<OrangeProductPrice> productPriceList;
+    private String priceAttribute;
+
+    private String freightAttribute;
+
 }

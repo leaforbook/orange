@@ -21,16 +21,6 @@ public class OrangeCustomAddress {
 
     private String bak;
 
-    private Date dateCreate;
-
-    private Date dateUpdate;
-
-    private String byCreate;
-
-    private String byUpdate;
-
-    private String dataStatus;
-
     public String getAddressId() {
         return addressId;
     }
@@ -103,43 +93,4 @@ public class OrangeCustomAddress {
         this.bak = bak;
     }
 
-    public Date getDateCreate() {
-        return dateCreate;
-    }
-
-    public void setDateCreate(Date dateCreate) {
-        this.dateCreate = dateCreate;
-    }
-
-    public Date getDateUpdate() {
-        return dateUpdate;
-    }
-
-    public void setDateUpdate(Date dateUpdate) {
-        this.dateUpdate = dateUpdate;
-    }
-
-    public String getByCreate() {
-        return byCreate;
-    }
-
-    public void setByCreate(String byCreate) {
-        this.byCreate = byCreate;
-    }
-
-    public String getByUpdate() {
-        return byUpdate;
-    }
-
-    public void setByUpdate(String byUpdate) {
-        this.byUpdate = byUpdate;
-    }
-
-    public String getDataStatus() {
-        return dataStatus;
-    }
-
-    public void setDataStatus(String dataStatus) {
-        this.dataStatus = dataStatus;
-    }
 }

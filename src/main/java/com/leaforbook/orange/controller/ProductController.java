@@ -3,12 +3,15 @@ package com.leaforbook.orange.controller;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductIdForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
-import com.leaforbook.orange.util.BasicResponse;
+import com.leaforbook.orange.service.ProductService;
+import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -17,9 +20,22 @@ import javax.validation.Valid;
 @Api(value = "产品信息维护", description = "产品信息维护")
 public class ProductController {
 
+    @Autowired
+    private UserInfoUtils userInfoUtils;
+
+    @Autowired
+    private ProductService productService;
+
     @PostMapping("/create")
     @ApiOperation(value = "创建产品信息", notes = "")
-    public BasicResponse create(@RequestBody @Valid ProductForm form) {
+    public BasicResponse create(@RequestBody @Valid ProductForm form, HttpServletRequest request) {
+        UserInfo userInfo = userInfoUtils.getUserInfo(request);
+        if(userInfo!=null) {
+            productService.create(userInfo.getUserId(),form);
+        } else {
+            throw new BasicBusinessException(ExceptionEnum.LOGIN_EXPIRE);
+        }
+
         return new BasicResponse();
     }
 
