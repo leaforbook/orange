@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2018-11-01 17:10:02
+Date: 2018-11-05 19:12:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,9 +22,7 @@ DROP TABLE IF EXISTS `orange_product_price`;
 CREATE TABLE `orange_product_price` (
   `price_id` varchar(64) NOT NULL,
   `product_id` varchar(64) NOT NULL,
-  `product_class` varchar(2) NOT NULL,
-  `level` varchar(2) NOT NULL,
-  `weight` double NOT NULL,
+  `attribute_json` json DEFAULT NULL,
   `in_price` decimal(10,0) NOT NULL,
   `out_min_price` decimal(10,0) NOT NULL,
   `out_max_price` decimal(10,0) NOT NULL,
