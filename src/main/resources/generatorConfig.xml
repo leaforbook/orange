@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <classPathEntry location="C:\Users\lenovo\.m2\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/>
-
+<!--    <classPathEntry location="C:\Users\lenovo\.m2\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/> -->
+    <classPathEntry location="C:\Users\yilinxiao\.m2\repository\mysql\mysql-connector-java\8.0.13\mysql-connector-java-8.0.13.jar"/>
+<!--
     <context id="CommonDB" targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
@@ -46,7 +47,7 @@
         </table>
 
     </context>
-
+-->
     <context id="OrangeDB" targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
@@ -70,21 +71,22 @@
 
         <javaClientGenerator targetPackage="com.leaforbook.orange.dao.mapper"
                              targetProject="src/main/java" type="XMLMAPPER"/>
+        <!--
+                <table tableName="orange_custom_address">
+                </table>
 
-        <table tableName="orange_custom_address">
-        </table>
+                <table tableName="orange_order">
+                </table>
+        -->
+        <!--
+                <table tableName="orange_product">
+                </table>
+  -->
+                <table tableName="orange_product_freight">
+                </table>
 
-        <table tableName="orange_order">
-        </table>
+                <table tableName="orange_product_price">
+                </table>
 
-        <table tableName="orange_product">
-        </table>
-
-        <table tableName="orange_product_freight">
-        </table>
-
-        <table tableName="orange_product_price">
-        </table>
-
-    </context>
-</generatorConfiguration>
+            </context>
+        </generatorConfiguration>

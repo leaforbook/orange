@@ -21,6 +21,10 @@ public class OrangeProduct {
 
     private String dataStatus;
 
+    private String priceAttribute;
+
+    private String freightAttribute;
+
     public String getProductId() {
         return productId;
     }
@@ -91,5 +95,21 @@ public class OrangeProduct {
 
     public void setDataStatus(String dataStatus) {
         this.dataStatus = dataStatus;
+    }
+
+    public String getPriceAttribute() {
+        return priceAttribute;
+    }
+
+    public void setPriceAttribute(String priceAttribute) {
+        this.priceAttribute = priceAttribute;
+    }
+
+    public String getFreightAttribute() {
+        return freightAttribute;
+    }
+
+    public void setFreightAttribute(String freightAttribute) {
+        this.freightAttribute = freightAttribute;
     }
 }

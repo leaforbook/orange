@@ -16,15 +16,21 @@ public interface OrangeProductFreightMapper {
 
     int insertSelective(OrangeProductFreight record);
 
+    List<OrangeProductFreight> selectByExampleWithBLOBs(OrangeProductFreightExample example);
+
     List<OrangeProductFreight> selectByExample(OrangeProductFreightExample example);
 
     OrangeProductFreight selectByPrimaryKey(String freightId);
 
     int updateByExampleSelective(@Param("record") OrangeProductFreight record, @Param("example") OrangeProductFreightExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") OrangeProductFreight record, @Param("example") OrangeProductFreightExample example);
+
     int updateByExample(@Param("record") OrangeProductFreight record, @Param("example") OrangeProductFreightExample example);
 
     int updateByPrimaryKeySelective(OrangeProductFreight record);
+
+    int updateByPrimaryKeyWithBLOBs(OrangeProductFreight record);
 
     int updateByPrimaryKey(OrangeProductFreight record);
 }

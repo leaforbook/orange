@@ -7,12 +7,6 @@ public class OrangeProductPrice {
 
     private String productId;
 
-    private String productClass;
-
-    private String level;
-
-    private Double weight;
-
     private Long inPrice;
 
     private Long outMinPrice;
@@ -29,6 +23,8 @@ public class OrangeProductPrice {
 
     private String dataStatus;
 
+    private String attributeJson;
+
     public String getPriceId() {
         return priceId;
     }
@@ -43,30 +39,6 @@ public class OrangeProductPrice {
 
     public void setProductId(String productId) {
         this.productId = productId;
-    }
-
-    public String getProductClass() {
-        return productClass;
-    }
-
-    public void setProductClass(String productClass) {
-        this.productClass = productClass;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 
     public Long getInPrice() {
@@ -131,5 +103,13 @@ public class OrangeProductPrice {
 
     public void setDataStatus(String dataStatus) {
         this.dataStatus = dataStatus;
+    }
+
+    public String getAttributeJson() {
+        return attributeJson;
+    }
+
+    public void setAttributeJson(String attributeJson) {
+        this.attributeJson = attributeJson;
     }
 }

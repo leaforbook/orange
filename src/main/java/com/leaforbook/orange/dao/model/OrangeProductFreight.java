@@ -9,12 +9,6 @@ public class OrangeProductFreight {
 
     private String provinceId;
 
-    private Double weight;
-
-    private String expressClass;
-
-    private Long freight;
-
     private Date dateCreate;
 
     private Date dateUpdate;
@@ -24,6 +18,8 @@ public class OrangeProductFreight {
     private String byUpdate;
 
     private String dataStatus;
+
+    private String attributeValue;
 
     public String getFreightId() {
         return freightId;
@@ -47,30 +43,6 @@ public class OrangeProductFreight {
 
     public void setProvinceId(String provinceId) {
         this.provinceId = provinceId;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
-    }
-
-    public String getExpressClass() {
-        return expressClass;
-    }
-
-    public void setExpressClass(String expressClass) {
-        this.expressClass = expressClass;
-    }
-
-    public Long getFreight() {
-        return freight;
-    }
-
-    public void setFreight(Long freight) {
-        this.freight = freight;
     }
 
     public Date getDateCreate() {
@@ -111,5 +83,13 @@ public class OrangeProductFreight {
 
     public void setDataStatus(String dataStatus) {
         this.dataStatus = dataStatus;
+    }
+
+    public String getAttributeValue() {
+        return attributeValue;
+    }
+
+    public void setAttributeValue(String attributeValue) {
+        this.attributeValue = attributeValue;
     }
 }
