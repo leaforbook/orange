@@ -3,6 +3,8 @@ package com.leaforbook.orange.controller;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductIdForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
+import com.leaforbook.orange.controller.form.ProductUpadateForm;
+import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
@@ -41,25 +43,37 @@ public class ProductController {
 
     @PostMapping("/update")
     @ApiOperation(value = "更新产品信息", notes = "")
-    public BasicResponse update(@RequestBody @Valid ProductForm form) {
+    public BasicResponse update(@RequestBody @Valid ProductUpadateForm form, HttpServletRequest request) {
+
+        productService.update(form);
+
         return new BasicResponse();
     }
 
     @PostMapping("/query")
     @ApiOperation(value = "查询产品列表信息", notes = "")
     public BasicResponse query(@RequestBody @Valid ProductQueryForm form) {
+
+
+
         return new BasicResponse();
     }
 
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
     public BasicResponse detail(@RequestBody @Valid ProductIdForm form) {
-        return new BasicResponse();
+
+        OrangeProduct product = productService.detail(form.getProductId());
+
+        return new BasicResponse(product);
     }
 
     @PostMapping("/remove")
     @ApiOperation(value = "移除产品信息", notes = "")
     public BasicResponse remove(@RequestBody @Valid ProductIdForm form) {
+
+        productService.remove(form.getProductId());
+
         return new BasicResponse();
     }
 }

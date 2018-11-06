@@ -12,6 +12,8 @@ public enum ExceptionEnum {
     PASSWORD_WRONG("000009","密码错误"),
     NOT_XIAOYILIN("000010","不可以，你不是肖一林"),
     PROOF_WRONG("000011","修改密码凭据错误"),
+    UPDATE_FAILURE("000012","未更新数据"),
+    DELETE_FAILURE("000013","未删除数据"),
     ;
 
     private String code;
