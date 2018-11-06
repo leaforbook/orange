@@ -1,5 +1,6 @@
 package com.leaforbook.orange.common.controller.form;
 
+import com.leaforbook.orange.util.Json;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

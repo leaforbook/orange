@@ -1,5 +1,6 @@
 package com.leaforbook.orange.controller.form;
 
+import com.leaforbook.orange.util.Json;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -12,8 +13,10 @@ public class ProductForm {
 
     private String productDesc;
 
+    @Json
     private String priceAttribute;
 
+    @Json
     private String freightAttribute;
 
 }
