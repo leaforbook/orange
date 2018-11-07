@@ -1,6 +1,7 @@
 package com.leaforbook.orange.util;
 
 import com.alibaba.fastjson.JSON;
+import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,16 @@ public class UserInfoUtils {
             }
         }
 
-        return JSON.parseObject(redisTemplate.opsForValue().get("oneofus"+"_"+certificate),UserInfo.class);
+        String value = redisTemplate.opsForValue().get("oneofus"+"_"+certificate);
+        if(StringUtils.isBlank(value)) {
+            throw new BasicBusinessException(ExceptionEnum.LOGIN_EXPIRE);
+        }
+
+        return JSON.parseObject(value,UserInfo.class);
+    }
+
+    public String getUserId(HttpServletRequest request) {
+        return this.getUserInfo(request).getUserId();
     }
 
 }

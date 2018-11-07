@@ -1,5 +1,6 @@
 package com.leaforbook.orange.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductIdForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
@@ -31,12 +32,7 @@ public class ProductController {
     @PostMapping("/create")
     @ApiOperation(value = "创建产品信息", notes = "")
     public BasicResponse create(@RequestBody @Valid ProductForm form, HttpServletRequest request) {
-        UserInfo userInfo = userInfoUtils.getUserInfo(request);
-        if(userInfo!=null) {
-            productService.create(userInfo.getUserId(),form);
-        } else {
-            throw new BasicBusinessException(ExceptionEnum.LOGIN_EXPIRE);
-        }
+        productService.create(userInfoUtils.getUserId(request),form);
 
         return new BasicResponse();
     }
@@ -45,34 +41,34 @@ public class ProductController {
     @ApiOperation(value = "更新产品信息", notes = "")
     public BasicResponse update(@RequestBody @Valid ProductUpadateForm form, HttpServletRequest request) {
 
-        productService.update(form);
+        productService.update(userInfoUtils.getUserId(request),form);
 
         return new BasicResponse();
     }
 
     @PostMapping("/query")
     @ApiOperation(value = "查询产品列表信息", notes = "")
-    public BasicResponse query(@RequestBody @Valid ProductQueryForm form) {
+    public BasicResponse query(@RequestBody @Valid ProductQueryForm form, HttpServletRequest request) {
 
+        PageInfo<OrangeProduct> data =  productService.query(userInfoUtils.getUserId(request),form);
 
-
-        return new BasicResponse();
+        return new BasicResponse(data);
     }
 
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
-    public BasicResponse detail(@RequestBody @Valid ProductIdForm form) {
+    public BasicResponse detail(@RequestBody @Valid ProductIdForm form, HttpServletRequest request) {
 
-        OrangeProduct product = productService.detail(form.getProductId());
+        OrangeProduct product = product = productService.detail(userInfoUtils.getUserId(request),form.getProductId());
 
         return new BasicResponse(product);
     }
 
     @PostMapping("/remove")
     @ApiOperation(value = "移除产品信息", notes = "")
-    public BasicResponse remove(@RequestBody @Valid ProductIdForm form) {
+    public BasicResponse remove(@RequestBody @Valid ProductIdForm form, HttpServletRequest request) {
 
-        productService.remove(form.getProductId());
+        productService.remove(userInfoUtils.getUserId(request),form.getProductId());
 
         return new BasicResponse();
     }
