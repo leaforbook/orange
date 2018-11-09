@@ -36,7 +36,7 @@ public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgume
         boolean notNull = session.notNull();
 
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        UserInfo userInfo = sessionUtil.getUserInfo(request);
+        UserInfo userInfo = sessionUtil.getSessionInfo(request);
 
         String value = null;
         if(SessionUtil.LOGIN_CERTIFICATE.equals(key)) {

@@ -24,7 +24,7 @@ public class LoginFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
-        String certificate = CertificateUtils.getCertificate(httpServletRequest);
+        String certificate = sessionUtil.getCertificate(httpServletRequest);
         boolean flag = isLogined(certificate);
         if(!flag) {
             httpServletResponse.setCharacterEncoding("UTF-8");
