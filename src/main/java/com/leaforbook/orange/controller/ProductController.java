@@ -13,8 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -24,51 +22,53 @@ import javax.validation.Valid;
 public class ProductController {
 
     @Autowired
-    private UserInfoUtils userInfoUtils;
-
-    @Autowired
     private ProductService productService;
 
     @PostMapping("/create")
     @ApiOperation(value = "创建产品信息", notes = "")
-    public BasicResponse create(@RequestBody @Valid ProductForm form, HttpServletRequest request) {
-        productService.create(userInfoUtils.getUserId(request),form);
+    public BasicResponse create(@RequestBody @Valid ProductForm form,
+                                @Session UserInfo userInfo) {
+        productService.create(userInfo.getUserId(),form);
 
         return new BasicResponse();
     }
 
     @PostMapping("/update")
     @ApiOperation(value = "更新产品信息", notes = "")
-    public BasicResponse update(@RequestBody @Valid ProductUpadateForm form, HttpServletRequest request) {
+    public BasicResponse update(@RequestBody @Valid ProductUpadateForm form,
+                                @Session UserInfo userInfo) {
 
-        productService.update(userInfoUtils.getUserId(request),form);
+        productService.update(userInfo.getUserId(),form);
 
         return new BasicResponse();
     }
 
     @PostMapping("/query")
     @ApiOperation(value = "查询产品列表信息", notes = "")
-    public BasicResponse query(@RequestBody @Valid ProductQueryForm form, HttpServletRequest request) {
+    public BasicResponse query(@RequestBody @Valid ProductQueryForm form,
+                               @Session UserInfo userInfo) {
 
-        PageInfo<OrangeProduct> data =  productService.query(userInfoUtils.getUserId(request),form);
+        PageInfo<OrangeProduct> data =  productService.query(userInfo.getUserId(),form);
 
         return new BasicResponse(data);
     }
 
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
-    public BasicResponse detail(@RequestBody @Valid ProductIdForm form, HttpServletRequest request) {
+    public BasicResponse detail(@RequestBody @Valid ProductIdForm form,
+                                @Session UserInfo userInfo) {
 
-        OrangeProduct product = product = productService.detail(userInfoUtils.getUserId(request),form.getProductId());
+        OrangeProduct product = productService.detail(userInfo.getUserId(),form.getProductId());
 
         return new BasicResponse(product);
     }
 
     @PostMapping("/remove")
     @ApiOperation(value = "移除产品信息", notes = "")
-    public BasicResponse remove(@RequestBody @Valid ProductIdForm form, HttpServletRequest request) {
+    public BasicResponse remove(@RequestBody @Valid ProductIdForm form,
+                                @Session UserInfo userInfo) {
 
-        productService.remove(userInfoUtils.getUserId(request),form.getProductId());
+        productService.remove(userInfo.getUserId(),form.getProductId());
 
         return new BasicResponse();
     }

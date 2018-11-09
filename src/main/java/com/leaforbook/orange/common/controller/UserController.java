@@ -1,15 +1,11 @@
 package com.leaforbook.orange.common.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.leaforbook.orange.common.auth.CertificateUtils;
-import com.leaforbook.orange.common.controller.vo.UserInfoVO;
 import com.leaforbook.orange.common.controller.form.*;
 import com.leaforbook.orange.common.controller.vo.ProofVO;
 import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.service.UserService;
-import com.leaforbook.orange.util.BasicBusinessException;
-import com.leaforbook.orange.util.BasicResponse;
-import com.leaforbook.orange.util.ExceptionEnum;
+import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +24,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private SessionUtil sessionUtil;
 
     @PostMapping("/get")
     @ApiOperation(value = "获取用户信息", notes = "")
     public BasicResponse getUserInfo(HttpServletRequest request) {
-        String certificate =  CertificateUtils.getCertificate(request);
-        UserInfoVO userInfo = userService.getUserInfo(certificate);
+        String certificate =  sessionUtil.getCertificate(request);
+        UserInfo userInfo = userService.getUserInfo(certificate);
         return new BasicResponse(userInfo);
     }
 
@@ -58,7 +57,7 @@ public class UserController {
     @PostMapping("/loginOut")
     @ApiOperation(value = "退出接口", notes = "")
     public BasicResponse loginOut(HttpServletRequest request) {
-        String certificate =  CertificateUtils.getCertificate(request);
+        String certificate =  sessionUtil.getCertificate(request);
         userService.loginOut(certificate);
 
         return new BasicResponse();
@@ -127,8 +126,8 @@ public class UserController {
     }
 
     private void notXiaoyilin(HttpServletRequest request) {
-        String certificate =  CertificateUtils.getCertificate(request);
-        UserInfoVO userInfo = userService.getUserInfo(certificate);
+        String certificate =  sessionUtil.getCertificate(request);
+        UserInfo userInfo = userService.getUserInfo(certificate);
         if(!"xiaoyilin".equals(userInfo.getUserName())) {
             throw new BasicBusinessException(ExceptionEnum.NOT_XIAOYILIN);
         }

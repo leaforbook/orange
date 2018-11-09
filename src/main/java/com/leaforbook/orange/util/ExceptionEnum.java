@@ -14,6 +14,7 @@ public enum ExceptionEnum {
     PROOF_WRONG("000011","修改密码凭据错误"),
     UPDATE_FAILURE("000012","未更新数据"),
     DELETE_FAILURE("000013","未删除数据"),
+    SESSION_ATTRIBUTE_NON_EXISTENT("000014","会话属性不存在"),
     ;
 
     private String code;

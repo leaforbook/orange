@@ -1,14 +1,14 @@
 package com.leaforbook.orange.common.service;
 
-import com.leaforbook.orange.common.controller.vo.UserInfoVO;
 import com.leaforbook.orange.common.controller.form.*;
+import com.leaforbook.orange.util.UserInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public interface UserService {
 
-    UserInfoVO getUserInfo(String certificate);
+    UserInfo getUserInfo(String certificate);
 
     String register(RegisterForm form);
 

@@ -1,7 +1,5 @@
 package com.leaforbook.orange.common.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.leaforbook.orange.common.controller.vo.UserInfoVO;
 import com.leaforbook.orange.common.controller.form.*;
 import com.leaforbook.orange.common.dao.mapper.CommonInvitationMapper;
 import com.leaforbook.orange.common.dao.mapper.CommonUserMapper;
@@ -12,28 +10,20 @@ import com.leaforbook.orange.common.dao.model.CommonUserExample;
 import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.dict.UserStatus;
 import com.leaforbook.orange.common.service.UserService;
-import com.leaforbook.orange.util.BasicBusinessException;
-import com.leaforbook.orange.util.DataStatus;
-import com.leaforbook.orange.util.ExceptionEnum;
-import com.leaforbook.orange.util.SnowFlake;
+import com.leaforbook.orange.util.*;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
-
-    @Autowired
-    private StringRedisTemplate redisTemplate;
 
     @Autowired
     private SnowFlake snowFlake;
@@ -44,21 +34,24 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private CommonUserMapper userMapper;
 
+    @Autowired
+    private SessionUtil sessionUtil;
+
     /**
      * 获取用户信息
      * @param certificate
      * @return
      */
     @Override
-    public UserInfoVO getUserInfo(String certificate) {
+    public UserInfo getUserInfo(String certificate) {
 
         if(StringUtils.isBlank(certificate)) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
-        UserInfoVO userInfo = new UserInfoVO();
+        UserInfo userInfo = null;
         try{
-            userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate), UserInfoVO.class);
+            userInfo = sessionUtil.getSessionInfo(certificate);
         } catch (Throwable e) {
             throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
         }
@@ -100,7 +93,7 @@ public class UserServiceImpl implements UserService {
             throw new BasicBusinessException(ExceptionEnum.PASSWORD_DIFFER);
         }
 
-        //注册用户信息，密码加密和初始化角色信息
+        //注册用户信息，密码加密
         CommonUser user = new CommonUser();
         BeanUtils.copyProperties(form,user);
         user.setPassword(DigestUtils.md5DigestAsHex(form.getPassword().getBytes()));
@@ -146,13 +139,10 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     private void setLoginState(String certificate,CommonUser user) {
-        UserInfoVO userInfo = new UserInfoVO();
+        UserInfo userInfo = new UserInfo();
         BeanUtils.copyProperties(user,userInfo);
 
-        redisTemplate.opsForValue().set(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,JSON.toJSONString(userInfo));
-        redisTemplate.opsForValue().set(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),certificate);
-        redisTemplate.expire(UserConstants.LOGIN_CERTIFICATE+"_"+certificate,60*60*3l, TimeUnit.SECONDS);
-        redisTemplate.expire(UserConstants.LOGIN_USERNAME+"_"+userInfo.getUserName(),60*60*3l, TimeUnit.SECONDS);
+        sessionUtil.addSession(certificate,userInfo);
     }
 
     /**
@@ -162,14 +152,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void loginOut(String certificate) {
         //清除登陆态
-        UserInfoVO userInfo = JSON.parseObject((String)redisTemplate.opsForValue().get(UserConstants.LOGIN_CERTIFICATE+"_"+certificate), UserInfoVO.class);
+        UserInfo userInfo = sessionUtil.getSessionInfo(certificate);
         if(userInfo==null) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
-        String userName = userInfo.getUserName();
-        redisTemplate.delete(UserConstants.LOGIN_CERTIFICATE+"_"+certificate);
-        redisTemplate.delete(UserConstants.LOGIN_USERNAME+"_"+userName);
+        sessionUtil.deleteSession(certificate);
     }
 
     /**
@@ -229,7 +217,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private CommonUser getUserForAll(String userName) {
+    private CommonUser getUserForAllStatus(String userName) {
         CommonUserExample userExample = new CommonUserExample();
         userExample.createCriteria().andUserNameEqualTo(userName);
         List<CommonUser> userList = userMapper.selectByExample(userExample);
@@ -250,7 +238,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void resetPassword(ResetPasswordForm form) {
         //验证凭据
-        String proofInRedis = (String)redisTemplate.opsForValue().get(UserConstants.MODIFY_PASSWORD_PROOF+"_"+form.getUserName());
+        String proofInRedis = sessionUtil.getAttribute(UserConstants.MODIFY_PASSWORD_PROOF,form.getUserName(),String.class);
         if(!form.getProof().equals(proofInRedis)) {
             throw new BasicBusinessException(ExceptionEnum.PROOF_WRONG);
         }
@@ -276,8 +264,7 @@ public class UserServiceImpl implements UserService {
     public String setProof(String userName) {
         this.getUser(userName);
         String proof = snowFlake.getId();
-        redisTemplate.opsForValue().set(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,proof);
-        redisTemplate.expire(UserConstants.MODIFY_PASSWORD_PROOF+"_"+userName,60*30l, TimeUnit.SECONDS);
+        sessionUtil.addAttribute(UserConstants.MODIFY_PASSWORD_PROOF,userName,proof,60*30l);
         return proof;
     }
 
@@ -294,16 +281,23 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByPrimaryKeySelective(user);
     }
 
+    /**
+     * 解冻用户
+     * @param userName
+     */
     @Override
     @Transactional
     public void thawUser(String userName) {
-        CommonUser user = this.getUserForAll(userName);
+        CommonUser user = this.getUserForAllStatus(userName);
         user.setUserStatus(UserStatus.NORMAL.getValue());
         user.setDateUpdate(new Date());
         userMapper.updateByPrimaryKeySelective(user);
     }
 
-
+    /**
+     * 生成邀请码
+     * @param form
+     */
     @Override
     public void generateInvitation(InvitationForm form) {
         List<InvitationCountAndTime> codes = form.getCodes();
