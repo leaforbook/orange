@@ -38,32 +38,6 @@ public class UserServiceImpl implements UserService {
     private SessionUtil sessionUtil;
 
     /**
-     * 获取用户信息
-     * @param certificate
-     * @return
-     */
-    @Override
-    public UserInfo getUserInfo(String certificate) {
-
-        if(StringUtils.isBlank(certificate)) {
-            throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
-        }
-
-        UserInfo userInfo = null;
-        try{
-            userInfo = sessionUtil.getSessionInfo(certificate);
-        } catch (Throwable e) {
-            throw new BasicBusinessException(ExceptionEnum.GET_USRINFO_FAILURE);
-        }
-
-        if(userInfo==null) {
-            throw new BasicBusinessException(ExceptionEnum.LOGIN_EXPIRE);
-        }
-
-        return userInfo;
-    }
-
-    /**
      * 注册新用户
      * @param form
      * @return

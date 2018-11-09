@@ -31,8 +31,7 @@ public class UserController {
     @PostMapping("/get")
     @ApiOperation(value = "获取用户信息", notes = "")
     public BasicResponse getUserInfo(HttpServletRequest request) {
-        String certificate =  sessionUtil.getCertificate(request);
-        UserInfo userInfo = userService.getUserInfo(certificate);
+        UserInfo userInfo = sessionUtil.getSessionInfo(request);
         return new BasicResponse(userInfo);
     }
 
@@ -126,8 +125,7 @@ public class UserController {
     }
 
     private void notXiaoyilin(HttpServletRequest request) {
-        String certificate =  sessionUtil.getCertificate(request);
-        UserInfo userInfo = userService.getUserInfo(certificate);
+        UserInfo userInfo = sessionUtil.getSessionInfo(request);
         if(!"xiaoyilin".equals(userInfo.getUserName())) {
             throw new BasicBusinessException(ExceptionEnum.NOT_XIAOYILIN);
         }

@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public interface UserService {
 
-    UserInfo getUserInfo(String certificate);
-
     String register(RegisterForm form);
 
     String login(LoginForm form);
