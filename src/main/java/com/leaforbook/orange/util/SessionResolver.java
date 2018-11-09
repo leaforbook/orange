@@ -11,7 +11,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import javax.servlet.http.HttpServletRequest;
 
-public class SessionHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class SessionResolver implements HandlerMethodArgumentResolver {
 
     @Autowired
     private StringRedisTemplate redisTemplate;

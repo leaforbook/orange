@@ -1,6 +1,6 @@
 package com.leaforbook.orange.config;
 
-import com.leaforbook.orange.util.SessionHandlerMethodArgumentResolver;
+import com.leaforbook.orange.util.SessionResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -15,7 +15,7 @@ public class WebConfigure implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new SessionHandlerMethodArgumentResolver());
+        argumentResolvers.add(new SessionResolver());
         // equivalent to <mvc:argument-resolvers>
     }
 
