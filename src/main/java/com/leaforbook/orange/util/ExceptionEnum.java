@@ -15,6 +15,8 @@ public enum ExceptionEnum {
     UPDATE_FAILURE("000012","未更新数据"),
     DELETE_FAILURE("000013","未删除数据"),
     SESSION_ATTRIBUTE_NON_EXISTENT("000014","会话属性不存在"),
+    HAS_NO_ROLE("000015","权限不足"),
+    PARAMETERS_NOT_ENOUGH("000016","参数不足"),
     ;
 
     private String code;

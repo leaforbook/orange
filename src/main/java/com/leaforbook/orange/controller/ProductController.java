@@ -6,6 +6,7 @@ import com.leaforbook.orange.controller.form.ProductIdForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
 import com.leaforbook.orange.controller.form.ProductUpadateForm;
 import com.leaforbook.orange.dao.model.OrangeProduct;
+import com.leaforbook.orange.dict.RoleEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
@@ -14,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+
+import static com.leaforbook.orange.dict.RoleEnum.PRODUCT_CREATE;
 
 @RestController
 @RequestMapping("/orange/product")
@@ -35,6 +38,7 @@ public class ProductController {
 
     @PostMapping("/update")
     @ApiOperation(value = "更新产品信息", notes = "")
+    @HasRole(preKey = "PRC_",sufKey = "productId")
     public BasicResponse update(@RequestBody @Valid ProductUpadateForm form,
                                 @Session UserInfo userInfo) {
 
@@ -55,6 +59,7 @@ public class ProductController {
 
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
+    @HasRole(preKey = "PRU_",sufKey = "productId")
     public BasicResponse detail(@RequestBody @Valid ProductIdForm form,
                                 @Session UserInfo userInfo) {
 
@@ -65,6 +70,7 @@ public class ProductController {
 
     @PostMapping("/remove")
     @ApiOperation(value = "移除产品信息", notes = "")
+    @HasRole(preKey = "PRC_",sufKey = "productId")
     public BasicResponse remove(@RequestBody @Valid ProductIdForm form,
                                 @Session UserInfo userInfo) {
 

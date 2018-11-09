@@ -2,6 +2,8 @@ package com.leaforbook.orange.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.leaforbook.orange.common.service.RoleService;
+import com.leaforbook.orange.common.service.UserRoleService;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
 import com.leaforbook.orange.controller.form.ProductUpadateForm;
@@ -9,6 +11,7 @@ import com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper;
 import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.dao.model.OrangeProductExample;
+import com.leaforbook.orange.dict.RoleEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.BasicBusinessException;
 import com.leaforbook.orange.util.DataStatus;
@@ -34,17 +37,27 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private OrangeProductExtendMapper productExtendMapper;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private UserRoleService userRoleService;
+
     @Override
     public void create(String userId, ProductForm form) {
         OrangeProduct product = new OrangeProduct();
         BeanUtils.copyProperties(form,product);
         product.setUserId(userId);
-        product.setProductId(snowFlake.getId());
+        String productId = snowFlake.getId();
+        product.setProductId(productId);
         productMapper.insertSelective(product);
+
+        this.setRole(productId,userId);
     }
 
     @Override
     public void update(String userId,ProductUpadateForm form) {
+
         OrangeProduct product = new OrangeProduct();
         BeanUtils.copyProperties(form,product);
         OrangeProductExample example = new OrangeProductExample();
@@ -57,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public OrangeProduct detail(String userId,String productId) {
+
         OrangeProductExample example = new OrangeProductExample();
         example.createCriteria().andProductIdEqualTo(productId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
         List<OrangeProduct> list = productMapper.selectByExampleWithBLOBs(example);
@@ -68,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void remove(String userId,String productId) {
+
         OrangeProduct product = new OrangeProduct();
         product.setDataStatus(DataStatus.UNAVAILABLE.getValue());
         OrangeProductExample example = new OrangeProductExample();
@@ -76,6 +91,8 @@ public class ProductServiceImpl implements ProductService {
         if(count==0) {
             throw new BasicBusinessException(ExceptionEnum.DELETE_FAILURE);
         }
+
+        this.deleteRole(productId);
     }
 
     @Override
@@ -87,6 +104,24 @@ public class ProductServiceImpl implements ProductService {
         params.setProductName(form.getProductName());
         PageInfo<OrangeProduct> datas = (PageInfo<OrangeProduct>)productExtendMapper.query(params);
         return datas;
+    }
+
+    private void setRole(String productId,String userId) {
+        roleService.create(RoleEnum.PRODUCT_CREATE.getRoleName()+productId
+                ,productId+RoleEnum.PRODUCT_CREATE.getRoleDesc());
+        roleService.create(RoleEnum.PRODUCT_USE.getRoleName()+productId
+                ,productId+RoleEnum.PRODUCT_USE.getRoleDesc());
+
+        userRoleService.create(userId,RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
+        userRoleService.create(userId,RoleEnum.PRODUCT_USE.getRoleName()+productId);
+    }
+
+    private void deleteRole(String productId) {
+        roleService.remove(RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
+        roleService.remove(RoleEnum.PRODUCT_USE.getRoleName()+productId);
+
+        userRoleService.remove(RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
+        userRoleService.remove(RoleEnum.PRODUCT_USE.getRoleName()+productId);
     }
 
 }
