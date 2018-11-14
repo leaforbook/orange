@@ -2,6 +2,7 @@ package com.leaforbook.orange.config;
 
 import com.leaforbook.orange.util.HasRoleInterceptor;
 import com.leaforbook.orange.util.SessionResolver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -15,15 +16,21 @@ import java.util.List;
 @EnableWebMvc
 public class WebConfigure implements WebMvcConfigurer {
 
+    @Autowired
+    private SessionResolver sessionResolver;
+
+    @Autowired
+    private HasRoleInterceptor hasRoleInterceptor;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new SessionResolver());
+        argumentResolvers.add(sessionResolver);
         // equivalent to <mvc:argument-resolvers>
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new HasRoleInterceptor());
+        registry.addInterceptor(hasRoleInterceptor);
     }
 
 

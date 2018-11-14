@@ -8,4 +8,5 @@ public interface RoleService {
     void create(String roleId,String roleDesc);
     CommonRole get(String roleId);
     void remove(String roleId);
+    void update(CommonRole role);
 }

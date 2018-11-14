@@ -1,6 +1,7 @@
 package com.leaforbook.orange.common.auth;
 
 import com.alibaba.fastjson.JSON;
+import com.leaforbook.orange.util.OrangeHttpServletRequestWrapper;
 import com.leaforbook.orange.util.SessionUtil;
 import com.leaforbook.orange.util.UserInfo;
 import io.micrometer.core.instrument.util.StringUtils;
@@ -8,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,7 +23,7 @@ public class LoginFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+        HttpServletRequest httpServletRequest = new OrangeHttpServletRequestWrapper((HttpServletRequest)servletRequest);
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 
         String certificate = sessionUtil.getCertificate(httpServletRequest);

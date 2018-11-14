@@ -6,7 +6,6 @@ import com.leaforbook.orange.controller.form.ProductIdForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
 import com.leaforbook.orange.controller.form.ProductUpadateForm;
 import com.leaforbook.orange.dao.model.OrangeProduct;
-import com.leaforbook.orange.dict.RoleEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
@@ -15,8 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-
-import static com.leaforbook.orange.dict.RoleEnum.PRODUCT_CREATE;
 
 @RestController
 @RequestMapping("/orange/product")

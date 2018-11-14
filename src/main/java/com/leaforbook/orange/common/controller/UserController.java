@@ -133,6 +133,7 @@ public class UserController {
 
     private void addLoginState(HttpServletResponse response,String certificate) {
         Cookie c = new Cookie(UserConstants.LOGIN_CERTIFICATE,certificate);
+        c.setPath("/");
         response.addCookie(c);
     }
 }
