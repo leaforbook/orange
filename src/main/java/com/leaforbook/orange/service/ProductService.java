@@ -18,4 +18,6 @@ public interface ProductService {
     void remove(String userId,String productId);
 
     PageInfo<OrangeProduct> query(String userId,ProductQueryForm form);
+
+    void share(String productId, String userName);
 }

@@ -1,10 +1,7 @@
 package com.leaforbook.orange.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.leaforbook.orange.controller.form.ProductForm;
-import com.leaforbook.orange.controller.form.ProductIdForm;
-import com.leaforbook.orange.controller.form.ProductQueryForm;
-import com.leaforbook.orange.controller.form.ProductUpadateForm;
+import com.leaforbook.orange.controller.form.*;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
@@ -72,6 +69,16 @@ public class ProductController {
                                 @Session UserInfo userInfo) {
 
         productService.remove(userInfo.getUserId(),form.getProductId());
+
+        return new BasicResponse();
+    }
+
+    @PostMapping("/share")
+    @ApiOperation(value = "分享产品信息", notes = "")
+    @HasRole(preKey = "PRC_",sufKey = "productId")
+    public BasicResponse share(@RequestBody @Valid ProductShareForm form) {
+
+        productService.share(form.getProductId(),form.getUserName());
 
         return new BasicResponse();
     }

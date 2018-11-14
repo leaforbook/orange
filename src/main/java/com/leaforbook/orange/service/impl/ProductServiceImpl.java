@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
         BeanUtils.copyProperties(form,product);
         OrangeProductExample example = new OrangeProductExample();
         example.createCriteria().andUserIdEqualTo(userId).andProductIdEqualTo(form.getProductId());
-        int count = productMapper.updateByExampleWithBLOBs(product,example);
+        int count = productMapper.updateByExampleSelective(product,example);
         if(count==0) {
             throw new BasicBusinessException(ExceptionEnum.UPDATE_FAILURE);
         }
@@ -87,7 +87,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDataStatus(DataStatus.UNAVAILABLE.getValue());
         OrangeProductExample example = new OrangeProductExample();
         example.createCriteria().andUserIdEqualTo(userId).andProductIdEqualTo(productId);
-        int count = productMapper.updateByExampleWithBLOBs(product,example);
+        int count = productMapper.updateByExampleSelective(product,example);
         if(count==0) {
             throw new BasicBusinessException(ExceptionEnum.DELETE_FAILURE);
         }
@@ -102,8 +102,12 @@ public class ProductServiceImpl implements ProductService {
         params.setUserId(userId);
         params.setProductId(form.getProductId());
         params.setProductName(form.getProductName());
-        PageInfo<OrangeProduct> datas = (PageInfo<OrangeProduct>)productExtendMapper.query(params);
-        return datas;
+        return (PageInfo<OrangeProduct>)productExtendMapper.query(params);
+    }
+
+    @Override
+    public void share(String productId, String userName) {
+
     }
 
     private void setRole(String productId,String userId) {
