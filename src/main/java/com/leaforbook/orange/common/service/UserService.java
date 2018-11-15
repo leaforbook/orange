@@ -26,4 +26,6 @@ public interface UserService {
     void thawUser(String userName);
 
     void generateInvitation(InvitationForm form);
+
+    UserInfo getUserByName(String userName);
 }

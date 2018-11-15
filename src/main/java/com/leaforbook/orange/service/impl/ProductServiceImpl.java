@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leaforbook.orange.common.service.RoleService;
 import com.leaforbook.orange.common.service.UserRoleService;
+import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
 import com.leaforbook.orange.controller.form.ProductUpadateForm;
@@ -13,10 +14,7 @@ import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.dao.model.OrangeProductExample;
 import com.leaforbook.orange.dict.RoleEnum;
 import com.leaforbook.orange.service.ProductService;
-import com.leaforbook.orange.util.BasicBusinessException;
-import com.leaforbook.orange.util.DataStatus;
-import com.leaforbook.orange.util.ExceptionEnum;
-import com.leaforbook.orange.util.SnowFlake;
+import com.leaforbook.orange.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +40,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public void create(String userId, ProductForm form) {
@@ -107,7 +108,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void share(String productId, String userName) {
-
+        UserInfo user = userService.getUserByName(userName);
+        userRoleService.create(user.getUserId(),RoleEnum.PRODUCT_USE.getRoleName()+productId);
     }
 
     private void setRole(String productId,String userId) {
