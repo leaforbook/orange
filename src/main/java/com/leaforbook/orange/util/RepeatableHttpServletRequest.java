@@ -11,11 +11,11 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-public class OrangeHttpServletRequestWrapper extends HttpServletRequestWrapper {
+public class RepeatableHttpServletRequest extends HttpServletRequestWrapper {
 
     private final byte[] bytes;
 
-    public OrangeHttpServletRequestWrapper(HttpServletRequest request) throws IOException {
+    public RepeatableHttpServletRequest(HttpServletRequest request) throws IOException {
         super(request);
         bytes = IOUtils.toByteArray(request.getInputStream());
     }

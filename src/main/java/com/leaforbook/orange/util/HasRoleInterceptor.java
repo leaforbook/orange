@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
@@ -61,7 +62,10 @@ public class HasRoleInterceptor implements HandlerInterceptor {
         if ("POST".equalsIgnoreCase(request.getMethod()))
         {
             try {
-                return request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+                BufferedReader reader = request.getReader();
+                String body = reader.lines().collect(Collectors.joining(System.lineSeparator()));
+                reader.close();
+                return body;
             } catch (IOException e) {
                 log.error("获取请求Body失败",e);
             }
@@ -71,7 +75,6 @@ public class HasRoleInterceptor implements HandlerInterceptor {
     }
 
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable ModelAndView modelAndView) throws Exception {
-        log.info(JSON.toJSONString(modelAndView));
     }
 
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
