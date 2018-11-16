@@ -2,7 +2,7 @@ package com.leaforbook.orange.util;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.leaforbook.orange.common.service.UserRoleService;
+import com.leaforbook.orange.common.service.CommonResourceService;
 import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
@@ -20,37 +19,38 @@ import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class HasRoleInterceptor implements HandlerInterceptor {
+public class HasResourceInterceptor implements HandlerInterceptor {
 
     @Autowired
     private SessionUtil sessionUtil;
 
     @Autowired
-    private UserRoleService userRoleService;
+    private CommonResourceService commonResourceService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HandlerMethod method = (HandlerMethod)handler;
-        HasRole hasRole = method.getMethodAnnotation(HasRole.class);
+        HasResource hasResource = method.getMethodAnnotation(HasResource.class);
 
-        if(hasRole!=null) {
-            String sufValue = null;
+        if(hasResource!=null) {
+            String resourceId = null;
             if ("POST".equalsIgnoreCase(request.getMethod())) {
                 String body = this.getBody(request);
                 JSONObject json = JSON.parseObject(body);
-                sufValue = json.getString(hasRole.sufKey());
+                resourceId = json.getString(hasResource.resourceId());
             } else if("GET".equalsIgnoreCase(request.getMethod())) {
-                sufValue = request.getParameter(hasRole.sufKey());
+                resourceId = request.getParameter(hasResource.resourceId());
             }
 
-            if(StringUtils.isEmpty(sufValue)) {
+            if(StringUtils.isEmpty(resourceId)) {
                 throw new BasicBusinessException(ExceptionEnum.PARAMETERS_NOT_ENOUGH);
             }
-            String roleId = hasRole.preKey()+sufValue;
+
             UserInfo userInfo = sessionUtil.getSessionInfo(request);
-            boolean flag = userRoleService.hasRole(userInfo.getUserId(),roleId);
+            boolean flag = commonResourceService.hasResource(userInfo.getUserId(),hasResource.resourceType(),resourceId);
+
             if(!flag) {
-                throw new BasicBusinessException(ExceptionEnum.HAS_NO_ROLE);
+                throw new BasicBusinessException(ExceptionEnum.HAS_NO_RESOURCE);
             }
         }
 

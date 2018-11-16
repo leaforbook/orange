@@ -15,6 +15,8 @@ public interface ProductService {
 
     OrangeProduct detail(String userId,String productId);
 
+    void delete(String userId,String productId);
+
     void remove(String userId,String productId);
 
     PageInfo<OrangeProduct> query(String userId,ProductQueryForm form);

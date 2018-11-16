@@ -32,7 +32,7 @@ public class ProductController {
 
     @PostMapping("/update")
     @ApiOperation(value = "更新产品信息", notes = "")
-    @HasRole(preKey = "PRC_",sufKey = "productId")
+    @HasResource(resourceType = "PRC",resourceId = "productId")
     public BasicResponse update(@RequestBody @Valid ProductUpadateForm form,
                                 @Session UserInfo userInfo) {
 
@@ -53,7 +53,7 @@ public class ProductController {
 
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
-    @HasRole(preKey = "PRU_",sufKey = "productId")
+    @HasResource(resourceType = "PRU",resourceId = "productId")
     public BasicResponse detail(@RequestBody @Valid ProductIdForm form,
                                 @Session UserInfo userInfo) {
 
@@ -64,7 +64,7 @@ public class ProductController {
 
     @PostMapping("/remove")
     @ApiOperation(value = "移除产品信息", notes = "")
-    @HasRole(preKey = "PRC_",sufKey = "productId")
+    @HasResource(resourceType = "PRU",resourceId = "productId")
     public BasicResponse remove(@RequestBody @Valid ProductIdForm form,
                                 @Session UserInfo userInfo) {
 
@@ -73,9 +73,20 @@ public class ProductController {
         return new BasicResponse();
     }
 
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除产品信息", notes = "")
+    @HasResource(resourceType = "PRC",resourceId = "productId")
+    public BasicResponse delete(@RequestBody @Valid ProductIdForm form,
+                                @Session UserInfo userInfo) {
+
+        productService.delete(userInfo.getUserId(),form.getProductId());
+
+        return new BasicResponse();
+    }
+
     @PostMapping("/share")
     @ApiOperation(value = "分享产品信息", notes = "")
-    @HasRole(preKey = "PRC_",sufKey = "productId")
+    @HasResource(resourceType = "PRC",resourceId = "productId")
     public BasicResponse share(@RequestBody @Valid ProductShareForm form) {
 
         productService.share(form.getProductId(),form.getUserName());

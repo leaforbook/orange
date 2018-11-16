@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaforbook.orange.common.dao.mapper.CommonResourceMapper">
+  <resultMap id="BaseResultMap" type="com.leaforbook.orange.common.dao.model.CommonResource">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
+    <result column="resource_id" jdbcType="VARCHAR" property="resourceId" />
+    <result column="resource_url" jdbcType="VARCHAR" property="resourceUrl" />
+    <result column="date_create" jdbcType="TIMESTAMP" property="dateCreate" />
+    <result column="date_update" jdbcType="TIMESTAMP" property="dateUpdate" />
+    <result column="by_create" jdbcType="VARCHAR" property="byCreate" />
+    <result column="by_update" jdbcType="VARCHAR" property="byUpdate" />
+    <result column="data_status" jdbcType="VARCHAR" property="dataStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, user_id, resource_type, resource_id, resource_url, date_create, date_update, 
+    by_create, by_update, data_status
+  </sql>
+  <select id="selectByExample" parameterType="com.leaforbook.orange.common.dao.model.CommonResourceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from common_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from common_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from common_resource
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.leaforbook.orange.common.dao.model.CommonResourceExample">
+    delete from common_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.leaforbook.orange.common.dao.model.CommonResource">
+    insert into common_resource (id, user_id, resource_type, 
+      resource_id, resource_url, date_create, 
+      date_update, by_create, by_update, 
+      data_status)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{resourceType,jdbcType=VARCHAR}, 
+      #{resourceId,jdbcType=VARCHAR}, #{resourceUrl,jdbcType=VARCHAR}, #{dateCreate,jdbcType=TIMESTAMP}, 
+      #{dateUpdate,jdbcType=TIMESTAMP}, #{byCreate,jdbcType=VARCHAR}, #{byUpdate,jdbcType=VARCHAR}, 
+      #{dataStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.leaforbook.orange.common.dao.model.CommonResource">
+    insert into common_resource
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="resourceType != null">
+        resource_type,
+      </if>
+      <if test="resourceId != null">
+        resource_id,
+      </if>
+      <if test="resourceUrl != null">
+        resource_url,
+      </if>
+      <if test="dateCreate != null">
+        date_create,
+      </if>
+      <if test="dateUpdate != null">
+        date_update,
+      </if>
+      <if test="byCreate != null">
+        by_create,
+      </if>
+      <if test="byUpdate != null">
+        by_update,
+      </if>
+      <if test="dataStatus != null">
+        data_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null">
+        #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceUrl != null">
+        #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreate != null">
+        #{dateCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateUpdate != null">
+        #{dateUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byCreate != null">
+        #{byCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="byUpdate != null">
+        #{byUpdate,jdbcType=VARCHAR},
+      </if>
+      <if test="dataStatus != null">
+        #{dataStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.leaforbook.orange.common.dao.model.CommonResourceExample" resultType="java.lang.Long">
+    select count(*) from common_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update common_resource
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceType != null">
+        resource_type = #{record.resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceId != null">
+        resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.resourceUrl != null">
+        resource_url = #{record.resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dateCreate != null">
+        date_create = #{record.dateCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.dateUpdate != null">
+        date_update = #{record.dateUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.byCreate != null">
+        by_create = #{record.byCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.byUpdate != null">
+        by_update = #{record.byUpdate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dataStatus != null">
+        data_status = #{record.dataStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update common_resource
+    set id = #{record.id,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      resource_type = #{record.resourceType,jdbcType=VARCHAR},
+      resource_id = #{record.resourceId,jdbcType=VARCHAR},
+      resource_url = #{record.resourceUrl,jdbcType=VARCHAR},
+      date_create = #{record.dateCreate,jdbcType=TIMESTAMP},
+      date_update = #{record.dateUpdate,jdbcType=TIMESTAMP},
+      by_create = #{record.byCreate,jdbcType=VARCHAR},
+      by_update = #{record.byUpdate,jdbcType=VARCHAR},
+      data_status = #{record.dataStatus,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.leaforbook.orange.common.dao.model.CommonResource">
+    update common_resource
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceType != null">
+        resource_type = #{resourceType,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceId != null">
+        resource_id = #{resourceId,jdbcType=VARCHAR},
+      </if>
+      <if test="resourceUrl != null">
+        resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="dateCreate != null">
+        date_create = #{dateCreate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dateUpdate != null">
+        date_update = #{dateUpdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byCreate != null">
+        by_create = #{byCreate,jdbcType=VARCHAR},
+      </if>
+      <if test="byUpdate != null">
+        by_update = #{byUpdate,jdbcType=VARCHAR},
+      </if>
+      <if test="dataStatus != null">
+        data_status = #{dataStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.leaforbook.orange.common.dao.model.CommonResource">
+    update common_resource
+    set user_id = #{userId,jdbcType=VARCHAR},
+      resource_type = #{resourceType,jdbcType=VARCHAR},
+      resource_id = #{resourceId,jdbcType=VARCHAR},
+      resource_url = #{resourceUrl,jdbcType=VARCHAR},
+      date_create = #{dateCreate,jdbcType=TIMESTAMP},
+      date_update = #{dateUpdate,jdbcType=TIMESTAMP},
+      by_create = #{byCreate,jdbcType=VARCHAR},
+      by_update = #{byUpdate,jdbcType=VARCHAR},
+      data_status = #{dataStatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

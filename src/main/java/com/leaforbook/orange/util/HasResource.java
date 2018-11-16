@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 @Documented
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface HasRole {
-    String preKey();
-    String sufKey();
+public @interface HasResource {
+    String resourceType();
+    String resourceId();
 }

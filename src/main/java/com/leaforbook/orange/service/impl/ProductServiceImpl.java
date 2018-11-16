@@ -2,8 +2,8 @@ package com.leaforbook.orange.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.leaforbook.orange.common.service.RoleService;
-import com.leaforbook.orange.common.service.UserRoleService;
+import com.leaforbook.orange.common.dao.model.CommonResource;
+import com.leaforbook.orange.common.service.CommonResourceService;
 import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
@@ -12,7 +12,7 @@ import com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper;
 import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.dao.model.OrangeProductExample;
-import com.leaforbook.orange.dict.RoleEnum;
+import com.leaforbook.orange.util.ResourceEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
 import lombok.extern.slf4j.Slf4j;
@@ -36,13 +36,10 @@ public class ProductServiceImpl implements ProductService {
     private OrangeProductExtendMapper productExtendMapper;
 
     @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserRoleService userRoleService;
-
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommonResourceService commonResourceService;
 
     @Override
     public void create(String userId, ProductForm form) {
@@ -53,7 +50,8 @@ public class ProductServiceImpl implements ProductService {
         product.setProductId(productId);
         productMapper.insertSelective(product);
 
-        this.setRole(productId,userId);
+        this.setResource(productId,userId, ResourceEnum.PRODUCT_CREATE.getResourceType());
+        this.setResource(productId,userId, ResourceEnum.PRODUCT_USE.getResourceType());
     }
 
     @Override
@@ -82,7 +80,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void remove(String userId,String productId) {
+    public void delete(String userId,String productId) {
 
         OrangeProduct product = new OrangeProduct();
         product.setDataStatus(DataStatus.UNAVAILABLE.getValue());
@@ -93,7 +91,12 @@ public class ProductServiceImpl implements ProductService {
             throw new BasicBusinessException(ExceptionEnum.DELETE_FAILURE);
         }
 
-        this.deleteRole(productId);
+        this.deleteResource(productId);
+    }
+
+    @Override
+    public void remove(String userId, String productId) {
+        this.removeResource(userId,productId);
     }
 
     @Override
@@ -109,25 +112,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void share(String productId, String userName) {
         UserInfo user = userService.getUserByName(userName);
-        userRoleService.create(user.getUserId(),RoleEnum.PRODUCT_USE.getRoleName()+productId);
+        this.setResource(productId,user.getUserId(), ResourceEnum.PRODUCT_USE.getResourceType());
     }
 
-    private void setRole(String productId,String userId) {
-        roleService.create(RoleEnum.PRODUCT_CREATE.getRoleName()+productId
-                ,productId+RoleEnum.PRODUCT_CREATE.getRoleDesc());
-        roleService.create(RoleEnum.PRODUCT_USE.getRoleName()+productId
-                ,productId+RoleEnum.PRODUCT_USE.getRoleDesc());
-
-        userRoleService.create(userId,RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
-        userRoleService.create(userId,RoleEnum.PRODUCT_USE.getRoleName()+productId);
+    private void setResource(String productId,String userId,String resourceType) {
+        CommonResource resource = new CommonResource();
+        resource.setUserId(userId);
+        resource.setResourceType(resourceType);
+        resource.setResourceId(productId);
+        commonResourceService.insert(resource);
     }
 
-    private void deleteRole(String productId) {
-        roleService.remove(RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
-        roleService.remove(RoleEnum.PRODUCT_USE.getRoleName()+productId);
+    private void deleteResource(String productId) {
+        commonResourceService.deleteResource(productId);
+    }
 
-        userRoleService.remove(RoleEnum.PRODUCT_CREATE.getRoleName()+productId);
-        userRoleService.remove(RoleEnum.PRODUCT_USE.getRoleName()+productId);
+    private void removeResource(String userId, String productId) {
+        commonResourceService.removeResource(userId,productId);
     }
 
 }
