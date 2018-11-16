@@ -9,6 +9,6 @@ import javax.validation.constraints.NotBlank;
 public class PageForm {
     @Min(1)
     private int pageSize;
-    @Min(1)
+    @Min(0)
     private int pageNum;
 }

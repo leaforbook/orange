@@ -39,18 +39,18 @@
         <include refid="Example_Where_Clause" />
     </select>
     
-    <update id="createTmpTable" parameterType="java.lang.String">
+    <update id="createTmpTable" parameterType="com.leaforbook.orange.dao.model.TmpTable">
         create temporary table ${tableName} (
           id varchar(64) not null
         )
     </update>
 
-    <update id="dropTmpTable" parameterType="java.lang.String">
+    <update id="dropTmpTable" parameterType="com.leaforbook.orange.dao.model.TmpTable">
         DROP TABLE IF EXISTS ${tableName}
     </update>
 
     <update id="insertTmpTable" parameterType="com.leaforbook.orange.dao.model.TmpTable">
-        insert into ${tableName} (id) values (${productId})
+        insert into ${tableName} (id) values (${id})
     </update>
 
 

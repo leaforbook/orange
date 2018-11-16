@@ -1,6 +1,6 @@
 package com.leaforbook.orange.controller;
 
-import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.Page;
 import com.leaforbook.orange.controller.form.*;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.service.ProductService;
@@ -46,7 +46,7 @@ public class ProductController {
     public BasicResponse query(@RequestBody @Valid ProductQueryForm form,
                                @Session UserInfo userInfo) {
 
-        PageInfo<OrangeProduct> data =  productService.query(userInfo.getUserId(),form);
+        Page<OrangeProduct> data =  productService.query(userInfo.getUserId(),form);
 
         return new BasicResponse(data);
     }

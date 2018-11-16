@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrangeProductExtendMapper {
     List<OrangeProduct> query(OrangeProduct params);
-    void createTmpTable(String tableName);
+    void createTmpTable(TmpTable table);
     void insertTmpTable(TmpTable table);
-    void dropTmpTable(String tableName);
+    void dropTmpTable(TmpTable table);
 }

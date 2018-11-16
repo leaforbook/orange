@@ -1,7 +1,7 @@
 package com.leaforbook.orange.service.impl;
 
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.leaforbook.orange.common.dao.model.CommonResource;
 import com.leaforbook.orange.common.service.CommonResourceService;
 import com.leaforbook.orange.common.service.UserService;
@@ -101,27 +101,27 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public PageInfo<OrangeProduct> query(String userId,ProductQueryForm form) {
+    public Page<OrangeProduct> query(String userId,ProductQueryForm form) {
         List<CommonResource> resources = commonResourceService.select(userId,ResourceEnum.PRODUCT_USE.getResourceType());
         String tableName = "T"+snowFlake.getId();
-        productExtendMapper.createTmpTable(tableName);
+        TmpTable table = new TmpTable();
+        table.setTableName(tableName);
+        productExtendMapper.createTmpTable(table);
 
         for(CommonResource resource:resources) {
-            TmpTable table = new TmpTable();
             table.setId(resource.getResourceId());
-            table.setTableName(tableName);
             productExtendMapper.insertTmpTable(table);
         }
 
 
-        PageHelper.offsetPage(form.getPageNum(),form.getPageSize());
+        PageHelper.offsetPage(form.getPageNum()-1,form.getPageSize());
         OrangeProduct params = new OrangeProduct();
         params.setProductId(form.getProductId());
         params.setProductName(form.getProductName());
         params.setTableName(tableName);
-        PageInfo<OrangeProduct> result = (PageInfo<OrangeProduct>)productExtendMapper.query(params);
+        Page<OrangeProduct> result = (Page<OrangeProduct>)productExtendMapper.query(params);
 
-        productExtendMapper.dropTmpTable(tableName);
+        productExtendMapper.dropTmpTable(table);
 
         return result;
     }
