@@ -297,4 +297,20 @@ public class UserServiceImpl implements UserService {
         commonInvitationMapper.deleteByExample(invitationExample);
     }
 
+    @Override
+    public UserInfo getUserByName(String userName) {
+        CommonUserExample userExample = new CommonUserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName);
+        List<CommonUser> userList = userMapper.selectByExample(userExample);
+        if(userList!=null&&userList.size()>0) {
+            UserInfo user = new UserInfo();
+            user.setUserName(userName);
+            user.setTelephone(userList.get(0).getTelephone());
+            user.setRealName(userList.get(0).getRealName());
+            user.setUserId(userList.get(0).getUserId());
+            return user;
+        }
+        return null;
+    }
+
 }
