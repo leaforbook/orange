@@ -3,6 +3,8 @@ package com.leaforbook.orange.common.service;
 import com.leaforbook.orange.common.dao.model.CommonResource;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface CommonResourceService {
     void insert(CommonResource resource);
@@ -11,4 +13,6 @@ public interface CommonResourceService {
     void update(CommonResource resource);
     boolean hasResource(String userId, String resourceType, String resourceId);
     void removeResource(String userId, String resourceId);
+
+    List<CommonResource> select(String userId, String resourceType);
 }

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -76,5 +77,15 @@ public class CommonResourceServiceImpl implements CommonResourceService {
         resource.setDataStatus(DataStatus.UNAVAILABLE.getValue());
         resource.setDateUpdate(new Date());
         commonResourceMapper.updateByExampleSelective(resource,example);
+    }
+
+    @Override
+    public List<CommonResource> select(String userId, String resourceType) {
+        CommonResourceExample example = new CommonResourceExample();
+        example.createCriteria().andUserIdEqualTo(userId)
+                .andResourceTypeEqualTo(resourceType)
+                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
+
+        return commonResourceMapper.selectByExample(example);
     }
 }

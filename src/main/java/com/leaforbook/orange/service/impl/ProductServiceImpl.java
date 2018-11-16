@@ -12,6 +12,7 @@ import com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper;
 import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.dao.model.OrangeProductExample;
+import com.leaforbook.orange.dao.model.TmpTable;
 import com.leaforbook.orange.util.ResourceEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
@@ -101,12 +102,28 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageInfo<OrangeProduct> query(String userId,ProductQueryForm form) {
+        List<CommonResource> resources = commonResourceService.select(userId,ResourceEnum.PRODUCT_USE.getResourceType());
+        String tableName = "T"+snowFlake.getId();
+        productExtendMapper.createTmpTable(tableName);
+
+        for(CommonResource resource:resources) {
+            TmpTable table = new TmpTable();
+            table.setId(resource.getResourceId());
+            table.setTableName(tableName);
+            productExtendMapper.insertTmpTable(table);
+        }
+
+
         PageHelper.offsetPage(form.getPageNum(),form.getPageSize());
         OrangeProduct params = new OrangeProduct();
-        params.setUserId(userId);
         params.setProductId(form.getProductId());
         params.setProductName(form.getProductName());
-        return (PageInfo<OrangeProduct>)productExtendMapper.query(params);
+        params.setTableName(tableName);
+        PageInfo<OrangeProduct> result = (PageInfo<OrangeProduct>)productExtendMapper.query(params);
+
+        productExtendMapper.dropTmpTable(tableName);
+
+        return result;
     }
 
     @Override

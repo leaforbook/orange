@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper">
+    <resultMap id="BaseResultMap" type="com.leaforbook.orange.dao.model.OrangeProduct">
+        <id column="product_id" jdbcType="VARCHAR" property="productId" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_desc" jdbcType="VARCHAR" property="productDesc" />
+        <result column="date_create" jdbcType="TIMESTAMP" property="dateCreate" />
+        <result column="date_update" jdbcType="TIMESTAMP" property="dateUpdate" />
+        <result column="by_create" jdbcType="VARCHAR" property="byCreate" />
+        <result column="by_update" jdbcType="VARCHAR" property="byUpdate" />
+        <result column="data_status" jdbcType="VARCHAR" property="dataStatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    product_id, user_id, product_name, product_desc, date_create, date_update, by_create,
+    by_update, data_status,price_attribute, freight_attribute
+  </sql>
+
+    <sql id="Table_Name">
+        orange_product p
+    </sql>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <if test="productId != null and productId !='' ">
+                p.product_id like concat(concat('%', #{productId}), '%')
+            </if>
+            <if test="productName != null and productName !='' ">
+                AND p.product_name like concat(concat('%', #{productName}), '%')
+            </if>
+        </where>
+    </sql>
+
+    <select id="query" parameterType="com.leaforbook.orange.dao.model.OrangeProduct" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from <include refid="Table_Name" />
+        inner join ${tableName} t on p.product_id = t.id
+        <include refid="Example_Where_Clause" />
+    </select>
+    
+    <update id="createTmpTable" parameterType="java.lang.String">
+        create temporary table ${tableName} (
+          id varchar(64) not null
+        )
+    </update>
+
+    <update id="dropTmpTable" parameterType="java.lang.String">
+        DROP TABLE IF EXISTS ${tableName}
+    </update>
+
+    <update id="insertTmpTable" parameterType="com.leaforbook.orange.dao.model.TmpTable">
+        insert into ${tableName} (id) values (${productId})
+    </update>
+
+
+</mapper>
