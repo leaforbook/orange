@@ -13,6 +13,7 @@ import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
 import com.leaforbook.orange.dao.model.OrangeProduct;
 import com.leaforbook.orange.dao.model.OrangeProductExample;
 import com.leaforbook.orange.dao.model.TmpTable;
+import com.leaforbook.orange.service.ProductFreightService;
 import com.leaforbook.orange.util.ResourceEnum;
 import com.leaforbook.orange.service.ProductService;
 import com.leaforbook.orange.util.*;
@@ -41,6 +42,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CommonResourceService commonResourceService;
+
+    @Autowired
+    private ProductFreightService productFreightService;
 
     @Override
     public void create(String userId, ProductForm form) {
@@ -93,6 +97,8 @@ public class ProductServiceImpl implements ProductService {
         }
 
         this.deleteResource(productId);
+
+        productFreightService.delete(productId);
     }
 
     @Override

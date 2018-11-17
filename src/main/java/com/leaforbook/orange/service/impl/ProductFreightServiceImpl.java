@@ -1,10 +1,132 @@
 package com.leaforbook.orange.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.leaforbook.orange.controller.form.*;
+import com.leaforbook.orange.dao.mapper.OrangeProductFreightMapper;
+import com.leaforbook.orange.dao.model.OrangeProductFreight;
+import com.leaforbook.orange.dao.model.OrangeProductFreightExample;
 import com.leaforbook.orange.service.ProductFreightService;
+import com.leaforbook.orange.util.BasicBusinessException;
+import com.leaforbook.orange.util.DataStatus;
+import com.leaforbook.orange.util.ExceptionEnum;
+import com.leaforbook.orange.util.SnowFlake;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Slf4j
 public class ProductFreightServiceImpl implements ProductFreightService {
+
+    @Autowired
+    private OrangeProductFreightMapper freightMapper;
+
+    @Autowired
+    private SnowFlake snowFlake;
+
+    @Override
+    public void create(String userId, ProductFreightListForm form) {
+
+        for(ProductFreightForm singleForm:form.getList()) {
+            OrangeProductFreightExample example = new OrangeProductFreightExample();
+            example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
+            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExampleWithBLOBs(example);
+
+            boolean flag = false;
+            String freightId = null;
+            if(dataInDB!=null&&dataInDB.size()>0) {
+                for(OrangeProductFreight freight:dataInDB) {
+                    if(this.isAttributeValueEquals(singleForm.getAttributeValue(),freight.getAttributeValue())
+                            &&this.isProvinceEquals(singleForm.getProvinceId(),freight.getProvinceId())) {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+
+            if(!flag) {
+
+                OrangeProductFreight freight = new OrangeProductFreight();
+
+                BeanUtils.copyProperties(form,freight);
+
+                freight.setFreightId(snowFlake.getId());
+                freight.setByCreate(userId);
+                freight.setByUpdate(userId);
+                freight.setDateCreate(new Date());
+                freight.setDateUpdate(new Date());
+                freight.setDataStatus(DataStatus.AVAILABLE.getValue());
+
+                freightMapper.insertSelective(freight);
+            }
+
+        }
+
+    }
+
+
+    @Override
+    public void update(String userId, ProductFreightUpdateForm form) {
+
+        OrangeProductFreight freight = new OrangeProductFreight();
+        BeanUtils.copyProperties(form,freight);
+        freight.setByUpdate(userId);
+        freight.setDateUpdate(new Date());
+
+        freightMapper.updateByPrimaryKeySelective(freight);
+    }
+
+    @Override
+    public OrangeProductFreight get(ProductFreightGetForm form) {
+        OrangeProductFreightExample example = new OrangeProductFreightExample();
+        example.createCriteria().andProductIdEqualTo(form.getProductId());
+        List<OrangeProductFreight> list = freightMapper.selectByExampleWithBLOBs(example);
+
+        if(list!=null&&list.size()>0) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    @Override
+    public void delete(String productId) {
+        OrangeProductFreightExample example = new OrangeProductFreightExample();
+        example.createCriteria().andProductIdEqualTo(productId);
+        OrangeProductFreight freight = new OrangeProductFreight();
+        freight.setDataStatus(DataStatus.UNAVAILABLE.getValue());
+        freight.setDateUpdate(new Date());
+        freightMapper.updateByExampleSelective(freight,example);
+    }
+
+    @Override
+    public BigDecimal getPrice(ProductFreightGetPriceForm form) {
+        return null;
+    }
+
+    private boolean isAttributeValueEquals(String attribute1,String attribute2) {
+        return JSON.parseObject(attribute1).equals(JSON.parseObject(attribute2));
+    }
+
+    private boolean isProvinceEquals(String province1,String province2) {
+        String[] arr1 = province1.split(",");
+        String[] arr2 = province2.split(",");
+        Set<String> s1 = new HashSet<String>();
+        Set<String> s2 = new HashSet<String>();
+        for(String s:arr1) {
+            s1.add(s);
+        }
+        for(String s:arr2) {
+            s2.add(s);
+        }
+        return s1.equals(s2);
+    }
 }

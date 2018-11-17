@@ -1,5 +1,6 @@
 package com.leaforbook.orange.dao.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -312,6 +313,66 @@ public class OrangeProductFreightExample {
 
         public Criteria andProvinceIdNotBetween(String value1, String value2) {
             addCriterion("province_id not between", value1, value2, "provinceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceIsNull() {
+            addCriterion("freight_price is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceIsNotNull() {
+            addCriterion("freight_price is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceEqualTo(BigDecimal value) {
+            addCriterion("freight_price =", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceNotEqualTo(BigDecimal value) {
+            addCriterion("freight_price <>", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceGreaterThan(BigDecimal value) {
+            addCriterion("freight_price >", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("freight_price >=", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceLessThan(BigDecimal value) {
+            addCriterion("freight_price <", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("freight_price <=", value, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceIn(List<BigDecimal> values) {
+            addCriterion("freight_price in", values, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceNotIn(List<BigDecimal> values) {
+            addCriterion("freight_price not in", values, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("freight_price between", value1, value2, "freightPrice");
+            return (Criteria) this;
+        }
+
+        public Criteria andFreightPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("freight_price not between", value1, value2, "freightPrice");
             return (Criteria) this;
         }
 

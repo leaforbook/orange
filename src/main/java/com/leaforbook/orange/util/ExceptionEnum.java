@@ -17,6 +17,7 @@ public enum ExceptionEnum {
     SESSION_ATTRIBUTE_NON_EXISTENT("000014","会话属性不存在"),
     HAS_NO_RESOURCE("000015","权限不足"),
     PARAMETERS_NOT_ENOUGH("000016","参数不足"),
+    PRODUCT_FREIGHT_ONCE("000017","一个产品只能创建一条运费信息"),
     ;
 
     private String code;
