@@ -40,7 +40,6 @@ public class ProductFreightServiceImpl implements ProductFreightService {
             List<OrangeProductFreight>  dataInDB = freightMapper.selectByExampleWithBLOBs(example);
 
             boolean flag = false;
-            String freightId = null;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductFreight freight:dataInDB) {
                     if(this.isAttributeValueEquals(singleForm.getAttributeValue(),freight.getAttributeValue())
@@ -53,19 +52,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
 
 
             if(!flag) {
-
-                OrangeProductFreight freight = new OrangeProductFreight();
-
-                BeanUtils.copyProperties(form,freight);
-
-                freight.setFreightId(snowFlake.getId());
-                freight.setByCreate(userId);
-                freight.setByUpdate(userId);
-                freight.setDateCreate(new Date());
-                freight.setDateUpdate(new Date());
-                freight.setDataStatus(DataStatus.AVAILABLE.getValue());
-
-                freightMapper.insertSelective(freight);
+                this.insertProductFreight(userId,singleForm);
             }
 
         }
@@ -74,27 +61,61 @@ public class ProductFreightServiceImpl implements ProductFreightService {
 
 
     @Override
-    public void update(String userId, ProductFreightUpdateForm form) {
+    public void update(String userId, ProductFreightUpdateListForm form) {
 
-        OrangeProductFreight freight = new OrangeProductFreight();
-        BeanUtils.copyProperties(form,freight);
-        freight.setByUpdate(userId);
-        freight.setDateUpdate(new Date());
+        //把该产品的所有运费信息都置为不可用
+        OrangeProductFreightExample freightExample = new OrangeProductFreightExample();
+        freightExample.createCriteria().andProductIdEqualTo(form.getList().get(0).getProductId());
+        OrangeProductFreight productFreight = new OrangeProductFreight();
+        productFreight.setDataStatus(DataStatus.UNAVAILABLE.getValue());
+        freightMapper.updateByExampleSelective(productFreight,freightExample);
 
-        freightMapper.updateByPrimaryKeySelective(freight);
+        List<ProductFreightUpdateForm> list = form.getList();
+        for(ProductFreightUpdateForm singleForm:list) {
+
+            OrangeProductFreightExample example = new OrangeProductFreightExample();
+            example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
+            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExampleWithBLOBs(example);
+
+            boolean flag = false;
+            String freightId = null;
+            if(dataInDB!=null&&dataInDB.size()>0) {
+                for(OrangeProductFreight freight:dataInDB) {
+                    if(this.isAttributeValueEquals(singleForm.getAttributeValue(),freight.getAttributeValue())
+                            &&this.isProvinceEquals(singleForm.getProvinceId(),freight.getProvinceId())) {
+                        flag = true;
+                        freightId = freight.getFreightId();
+                        break;
+                    }
+                }
+            }
+
+            if(!flag) {
+                this.insertProductFreight(userId,singleForm);
+            } else {
+                OrangeProductFreight freight = new OrangeProductFreight();
+                BeanUtils.copyProperties(singleForm,freight);
+                freight.setByUpdate(userId);
+                freight.setDateUpdate(new Date());
+                freight.setFreightId(freightId);
+
+                freightMapper.updateByPrimaryKeySelective(freight);
+            }
+
+        }
+
+
+
     }
 
     @Override
-    public OrangeProductFreight get(ProductFreightGetForm form) {
+    public List<OrangeProductFreight> get(ProductFreightGetForm form) {
         OrangeProductFreightExample example = new OrangeProductFreightExample();
-        example.createCriteria().andProductIdEqualTo(form.getProductId());
+        example.createCriteria().andProductIdEqualTo(form.getProductId())
+                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
         List<OrangeProductFreight> list = freightMapper.selectByExampleWithBLOBs(example);
 
-        if(list!=null&&list.size()>0) {
-            return list.get(0);
-        }
-
-        return null;
+        return list;
     }
 
     @Override
@@ -107,10 +128,6 @@ public class ProductFreightServiceImpl implements ProductFreightService {
         freightMapper.updateByExampleSelective(freight,example);
     }
 
-    @Override
-    public BigDecimal getPrice(ProductFreightGetPriceForm form) {
-        return null;
-    }
 
     private boolean isAttributeValueEquals(String attribute1,String attribute2) {
         return JSON.parseObject(attribute1).equals(JSON.parseObject(attribute2));
@@ -128,5 +145,35 @@ public class ProductFreightServiceImpl implements ProductFreightService {
             s2.add(s);
         }
         return s1.equals(s2);
+    }
+
+    private void insertProductFreight(String userId,ProductFreightForm form) {
+        OrangeProductFreight freight = new OrangeProductFreight();
+
+        BeanUtils.copyProperties(form,freight);
+
+        freight.setFreightId(snowFlake.getId());
+        freight.setByCreate(userId);
+        freight.setByUpdate(userId);
+        freight.setDateCreate(new Date());
+        freight.setDateUpdate(new Date());
+        freight.setDataStatus(DataStatus.AVAILABLE.getValue());
+
+        freightMapper.insertSelective(freight);
+    }
+
+    private void insertProductFreight(String userId,ProductFreightUpdateForm form) {
+        OrangeProductFreight freight = new OrangeProductFreight();
+
+        BeanUtils.copyProperties(form,freight);
+
+        freight.setFreightId(snowFlake.getId());
+        freight.setByCreate(userId);
+        freight.setByUpdate(userId);
+        freight.setDateCreate(new Date());
+        freight.setDateUpdate(new Date());
+        freight.setDataStatus(DataStatus.AVAILABLE.getValue());
+
+        freightMapper.insertSelective(freight);
     }
 }

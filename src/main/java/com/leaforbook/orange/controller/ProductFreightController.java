@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/orange/freight")
@@ -42,7 +43,7 @@ public class ProductFreightController {
     @PostMapping("/update")
     @ApiOperation(value = "更新产品的运费信息", notes = "")
     @HasResource(resourceType = "PRC",resourceId = "productId")
-    public BasicResponse update(@RequestBody @Valid ProductFreightUpdateForm form,
+    public BasicResponse update(@RequestBody @Valid ProductFreightUpdateListForm form,
                                 @Session UserInfo userInfo) {
 
         productFreightService.update(userInfo.getUserId(),form);
@@ -55,19 +56,10 @@ public class ProductFreightController {
     @HasResource(resourceType = "PRU",resourceId = "productId")
     public BasicResponse get(@RequestBody @Valid ProductFreightGetForm form) {
 
-        OrangeProductFreight freight = productFreightService.get(form);
+        List<OrangeProductFreight> freightList = productFreightService.get(form);
 
-        return new BasicResponse(freight);
+        return new BasicResponse(freightList);
     }
 
-    @PostMapping("/getPrice")
-    @ApiOperation(value = "获取产品的运费信息", notes = "")
-    @HasResource(resourceType = "PRU",resourceId = "productId")
-    public BasicResponse getPrice(@RequestBody @Valid ProductFreightGetPriceForm form) {
-
-        BigDecimal freightPrice = productFreightService.getPrice(form);
-
-        return new BasicResponse(freightPrice);
-    }
 
 }
