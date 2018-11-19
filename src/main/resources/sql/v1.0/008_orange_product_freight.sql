@@ -24,6 +24,7 @@ CREATE TABLE `orange_product_freight` (
   `product_id` varchar(64) NOT NULL,
   `province_id` varchar(1024) NOT NULL,
   `attribute_value` json DEFAULT NULL,
+  `freight_price` decimal(10,2) NOT NULL,
   `date_create` datetime NOT NULL COMMENT '创建时间',
   `date_update` datetime NOT NULL COMMENT '更新时间',
   `by_create` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',

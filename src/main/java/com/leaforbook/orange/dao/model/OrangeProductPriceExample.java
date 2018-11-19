@@ -1,5 +1,6 @@
 package com.leaforbook.orange.dao.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -255,52 +256,52 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andInPriceEqualTo(Long value) {
+        public Criteria andInPriceEqualTo(BigDecimal value) {
             addCriterion("in_price =", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceNotEqualTo(Long value) {
+        public Criteria andInPriceNotEqualTo(BigDecimal value) {
             addCriterion("in_price <>", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceGreaterThan(Long value) {
+        public Criteria andInPriceGreaterThan(BigDecimal value) {
             addCriterion("in_price >", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andInPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("in_price >=", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceLessThan(Long value) {
+        public Criteria andInPriceLessThan(BigDecimal value) {
             addCriterion("in_price <", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceLessThanOrEqualTo(Long value) {
+        public Criteria andInPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("in_price <=", value, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceIn(List<Long> values) {
+        public Criteria andInPriceIn(List<BigDecimal> values) {
             addCriterion("in_price in", values, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceNotIn(List<Long> values) {
+        public Criteria andInPriceNotIn(List<BigDecimal> values) {
             addCriterion("in_price not in", values, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceBetween(Long value1, Long value2) {
+        public Criteria andInPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("in_price between", value1, value2, "inPrice");
             return (Criteria) this;
         }
 
-        public Criteria andInPriceNotBetween(Long value1, Long value2) {
+        public Criteria andInPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("in_price not between", value1, value2, "inPrice");
             return (Criteria) this;
         }
@@ -315,52 +316,52 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceEqualTo(Long value) {
+        public Criteria andOutMinPriceEqualTo(BigDecimal value) {
             addCriterion("out_min_price =", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceNotEqualTo(Long value) {
+        public Criteria andOutMinPriceNotEqualTo(BigDecimal value) {
             addCriterion("out_min_price <>", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceGreaterThan(Long value) {
+        public Criteria andOutMinPriceGreaterThan(BigDecimal value) {
             addCriterion("out_min_price >", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andOutMinPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("out_min_price >=", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceLessThan(Long value) {
+        public Criteria andOutMinPriceLessThan(BigDecimal value) {
             addCriterion("out_min_price <", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceLessThanOrEqualTo(Long value) {
+        public Criteria andOutMinPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("out_min_price <=", value, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceIn(List<Long> values) {
+        public Criteria andOutMinPriceIn(List<BigDecimal> values) {
             addCriterion("out_min_price in", values, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceNotIn(List<Long> values) {
+        public Criteria andOutMinPriceNotIn(List<BigDecimal> values) {
             addCriterion("out_min_price not in", values, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceBetween(Long value1, Long value2) {
+        public Criteria andOutMinPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("out_min_price between", value1, value2, "outMinPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMinPriceNotBetween(Long value1, Long value2) {
+        public Criteria andOutMinPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("out_min_price not between", value1, value2, "outMinPrice");
             return (Criteria) this;
         }
@@ -375,52 +376,52 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceEqualTo(Long value) {
+        public Criteria andOutMaxPriceEqualTo(BigDecimal value) {
             addCriterion("out_max_price =", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceNotEqualTo(Long value) {
+        public Criteria andOutMaxPriceNotEqualTo(BigDecimal value) {
             addCriterion("out_max_price <>", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceGreaterThan(Long value) {
+        public Criteria andOutMaxPriceGreaterThan(BigDecimal value) {
             addCriterion("out_max_price >", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andOutMaxPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("out_max_price >=", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceLessThan(Long value) {
+        public Criteria andOutMaxPriceLessThan(BigDecimal value) {
             addCriterion("out_max_price <", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceLessThanOrEqualTo(Long value) {
+        public Criteria andOutMaxPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("out_max_price <=", value, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceIn(List<Long> values) {
+        public Criteria andOutMaxPriceIn(List<BigDecimal> values) {
             addCriterion("out_max_price in", values, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceNotIn(List<Long> values) {
+        public Criteria andOutMaxPriceNotIn(List<BigDecimal> values) {
             addCriterion("out_max_price not in", values, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceBetween(Long value1, Long value2) {
+        public Criteria andOutMaxPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("out_max_price between", value1, value2, "outMaxPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOutMaxPriceNotBetween(Long value1, Long value2) {
+        public Criteria andOutMaxPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("out_max_price not between", value1, value2, "outMaxPrice");
             return (Criteria) this;
         }
