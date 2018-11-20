@@ -1,6 +1,10 @@
 package com.leaforbook.orange.dao.model;
 
+import com.alibaba.fastjson.JSONObject;
+import io.micrometer.core.instrument.util.StringUtils;
+
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 
 public class OrangeProductFreight {
@@ -23,6 +27,27 @@ public class OrangeProductFreight {
     private String dataStatus;
 
     private String attributeValue;
+
+    private String display;
+
+    public String getDisplay() {
+        JSONObject jsonObject = JSONObject.parseObject(attributeValue);
+        Collection<Object> collection =  jsonObject.values();
+        String display = null;
+        for(Object obj:collection) {
+            display += obj.toString() + " * ";
+        }
+
+        if(StringUtils.isNotEmpty(display)) {
+            display = display.substring(0,display.length()-3);
+        }
+
+        return display;
+    }
+
+    public void setDisplay(String display) {
+        this.display = display;
+    }
 
     public String getFreightId() {
         return freightId;
