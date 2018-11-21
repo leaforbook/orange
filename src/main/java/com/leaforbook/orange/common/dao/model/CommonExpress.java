@@ -5,9 +5,9 @@ import java.util.Date;
 public class CommonExpress {
     private String expressId;
 
-    private String type;
-
     private String name;
+
+    private String inCommonUse;
 
     private Date dateCreate;
 
@@ -27,20 +27,20 @@ public class CommonExpress {
         this.expressId = expressId;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getInCommonUse() {
+        return inCommonUse;
+    }
+
+    public void setInCommonUse(String inCommonUse) {
+        this.inCommonUse = inCommonUse;
     }
 
     public Date getDateCreate() {

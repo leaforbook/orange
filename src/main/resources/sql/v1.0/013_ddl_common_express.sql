@@ -21,8 +21,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `common_express`;
 CREATE TABLE `common_express` (
   `express_id` varchar(64) NOT NULL COMMENT '快递公司ID',
-  `type` varchar(32) NOT NULL COMMENT '快递公司代码',
   `name` varchar(64) NOT NULL COMMENT '快递公司名称',
+  `in_common_use` varchar(2) NOT NULL DEFAULT '0' COMMENT '是否常用 1常用 0不常用',
   `date_create` datetime NOT NULL COMMENT '创建时间',
   `date_update` datetime NOT NULL COMMENT '更新时间',
   `by_create` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建人',

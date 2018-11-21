@@ -175,76 +175,6 @@ public class CommonExpressExample {
             return (Criteria) this;
         }
 
-        public Criteria andTypeIsNull() {
-            addCriterion("type is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIsNotNull() {
-            addCriterion("type is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeEqualTo(String value) {
-            addCriterion("type =", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotEqualTo(String value) {
-            addCriterion("type <>", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThan(String value) {
-            addCriterion("type >", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeGreaterThanOrEqualTo(String value) {
-            addCriterion("type >=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThan(String value) {
-            addCriterion("type <", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLessThanOrEqualTo(String value) {
-            addCriterion("type <=", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeLike(String value) {
-            addCriterion("type like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotLike(String value) {
-            addCriterion("type not like", value, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeIn(List<String> values) {
-            addCriterion("type in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotIn(List<String> values) {
-            addCriterion("type not in", values, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeBetween(String value1, String value2) {
-            addCriterion("type between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
-        public Criteria andTypeNotBetween(String value1, String value2) {
-            addCriterion("type not between", value1, value2, "type");
-            return (Criteria) this;
-        }
-
         public Criteria andNameIsNull() {
             addCriterion("name is null");
             return (Criteria) this;
@@ -312,6 +242,76 @@ public class CommonExpressExample {
 
         public Criteria andNameNotBetween(String value1, String value2) {
             addCriterion("name not between", value1, value2, "name");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseIsNull() {
+            addCriterion("in_common_use is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseIsNotNull() {
+            addCriterion("in_common_use is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseEqualTo(String value) {
+            addCriterion("in_common_use =", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseNotEqualTo(String value) {
+            addCriterion("in_common_use <>", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseGreaterThan(String value) {
+            addCriterion("in_common_use >", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseGreaterThanOrEqualTo(String value) {
+            addCriterion("in_common_use >=", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseLessThan(String value) {
+            addCriterion("in_common_use <", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseLessThanOrEqualTo(String value) {
+            addCriterion("in_common_use <=", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseLike(String value) {
+            addCriterion("in_common_use like", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseNotLike(String value) {
+            addCriterion("in_common_use not like", value, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseIn(List<String> values) {
+            addCriterion("in_common_use in", values, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseNotIn(List<String> values) {
+            addCriterion("in_common_use not in", values, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseBetween(String value1, String value2) {
+            addCriterion("in_common_use between", value1, value2, "inCommonUse");
+            return (Criteria) this;
+        }
+
+        public Criteria andInCommonUseNotBetween(String value1, String value2) {
+            addCriterion("in_common_use not between", value1, value2, "inCommonUse");
             return (Criteria) this;
         }
 
