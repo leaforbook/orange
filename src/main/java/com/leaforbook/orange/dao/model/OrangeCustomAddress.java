@@ -1,8 +1,10 @@
 package com.leaforbook.orange.dao.model;
 
+import com.leaforbook.orange.util.BasicModel;
+
 import java.util.Date;
 
-public class OrangeCustomAddress {
+public class OrangeCustomAddress extends BasicModel {
     private String addressId;
 
     private String userId;
