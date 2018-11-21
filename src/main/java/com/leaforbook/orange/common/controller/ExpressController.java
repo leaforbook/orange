@@ -17,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/common/user")
+@RequestMapping("/common/express")
 @Slf4j
 @Api(value = "快递公司信息维护", description = "快递公司信息维护")
 public class ExpressController {
