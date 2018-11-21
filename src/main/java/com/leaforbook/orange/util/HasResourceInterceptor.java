@@ -28,8 +28,13 @@ public class HasResourceInterceptor implements HandlerInterceptor {
     private CommonResourceService commonResourceService;
 
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        HandlerMethod method = null;
+        try {
+            method = (HandlerMethod)handler;
+        } catch (Throwable e) {
+            return true;
+        }
 
-        HandlerMethod method = (HandlerMethod)handler;
         HasResource hasResource = method.getMethodAnnotation(HasResource.class);
 
         if(hasResource!=null) {
