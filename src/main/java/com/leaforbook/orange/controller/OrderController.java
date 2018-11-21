@@ -10,4 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Api(value = "订单信息维护", description = "订单信息维护")
 public class OrderController {
+
 }
