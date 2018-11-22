@@ -18,5 +18,5 @@ public interface OrderService {
 
     OrangeOrder detail(OrderIDForm form);
 
-    Page<OrangeOrder> query(OrderQueryForm form);
+    Page<OrangeOrder> query(String userId,OrderQueryForm form);
 }

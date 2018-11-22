@@ -21,6 +21,7 @@ public enum ExceptionEnum {
     ONE_ADDRESS_ONE_LOGISTICS("000018","相同地址才能同时发货"),
     ONE_ORDER_ONE_LOGISTICS("000019","一个订单只能有一个物流信息"),
     ONT_UNSEND_ORDER_LOGISTICS("000020","只有未发货订单能发货"),
+    HAS_NO_ORDER("000021","该用户没有给该订单发货的权限"),
     ;
 
     private String code;

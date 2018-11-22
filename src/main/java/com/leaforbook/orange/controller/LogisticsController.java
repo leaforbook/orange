@@ -6,6 +6,7 @@ import com.leaforbook.orange.controller.form.LogisticsSingleForm;
 import com.leaforbook.orange.controller.form.LogisticsUpdateForm;
 import com.leaforbook.orange.service.LogisticsService;
 import com.leaforbook.orange.util.BasicResponse;
+import com.leaforbook.orange.util.HasResource;
 import com.leaforbook.orange.util.Session;
 import com.leaforbook.orange.util.UserInfo;
 import io.swagger.annotations.Api;
@@ -40,6 +41,7 @@ public class LogisticsController {
 
     @PostMapping("/update")
     @ApiOperation(value = "修改订单的物流信息", notes = "")
+    @HasResource(resourceType = "ORC",resourceId = "orderId")
     public BasicResponse update(@RequestBody @Valid LogisticsUpdateForm form,
                                 @Session UserInfo userInfo) {
 
@@ -50,6 +52,7 @@ public class LogisticsController {
 
     @PostMapping("/get")
     @ApiOperation(value = "获取订单的物流信息", notes = "")
+    @HasResource(resourceType = "ORC",resourceId = "orderId")
     public BasicResponse get(LogisticsSingleForm form) {
         JSONObject obj = logisticsService.get(form);
         return new BasicResponse(obj);

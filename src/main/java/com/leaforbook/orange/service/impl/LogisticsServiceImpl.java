@@ -51,6 +51,9 @@ public class LogisticsServiceImpl implements LogisticsService {
             OrderIDForm orderIDForm = new OrderIDForm();
             orderIDForm.setOrderId(orderId);
             OrangeOrder order = orderService.detail(orderIDForm);
+            if(order==null||!order.getUserId().equals(userId)) {
+                throw new BasicBusinessException(ExceptionEnum.HAS_NO_ORDER);
+            }
             if(!OrderStatus.UN_SEND.equals(order.getOrderStatus())) {
                 throw new BasicBusinessException(ExceptionEnum.ONT_UNSEND_ORDER_LOGISTICS);
             }
