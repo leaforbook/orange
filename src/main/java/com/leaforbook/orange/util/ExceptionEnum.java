@@ -18,6 +18,9 @@ public enum ExceptionEnum {
     HAS_NO_RESOURCE("000015","权限不足"),
     PARAMETERS_NOT_ENOUGH("000016","参数不足"),
     PRODUCT_FREIGHT_ONCE("000017","一个产品只能创建一条运费信息"),
+    ONE_ADDRESS_ONE_LOGISTICS("000018","相同地址才能同时发货"),
+    ONE_ORDER_ONE_LOGISTICS("000019","一个订单只能有一个物流信息"),
+    ONT_UNSEND_ORDER_LOGISTICS("000020","只有未发货订单能发货"),
     ;
 
     private String code;

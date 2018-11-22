@@ -1,10 +1,9 @@
 package com.leaforbook.orange.dao.model;
 
-import com.leaforbook.orange.util.BasicModel;
-
+import java.math.BigDecimal;
 import java.util.Date;
 
-public class OrangeOrder extends BasicModel {
+public class OrangeOrder {
     private String orderId;
 
     private String userId;
@@ -17,19 +16,29 @@ public class OrangeOrder extends BasicModel {
 
     private String addressId;
 
-    private Long amount;
+    private Integer amount;
 
-    private Long actualUnitPrice;
+    private BigDecimal actualUnitPrice;
 
-    private Long totalPrice;
+    private BigDecimal totalPrice;
 
-    private Long actualFreight;
+    private BigDecimal actualFreight;
 
-    private Long totalCost;
+    private BigDecimal totalCost;
 
     private Date deliveryDate;
 
     private String orderStatus;
+
+    private Date dateCreate;
+
+    private Date dateUpdate;
+
+    private String byCreate;
+
+    private String byUpdate;
+
+    private String dataStatus;
 
     public String getOrderId() {
         return orderId;
@@ -79,43 +88,43 @@ public class OrangeOrder extends BasicModel {
         this.addressId = addressId;
     }
 
-    public Long getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Integer amount) {
         this.amount = amount;
     }
 
-    public Long getActualUnitPrice() {
+    public BigDecimal getActualUnitPrice() {
         return actualUnitPrice;
     }
 
-    public void setActualUnitPrice(Long actualUnitPrice) {
+    public void setActualUnitPrice(BigDecimal actualUnitPrice) {
         this.actualUnitPrice = actualUnitPrice;
     }
 
-    public Long getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Long totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public Long getActualFreight() {
+    public BigDecimal getActualFreight() {
         return actualFreight;
     }
 
-    public void setActualFreight(Long actualFreight) {
+    public void setActualFreight(BigDecimal actualFreight) {
         this.actualFreight = actualFreight;
     }
 
-    public Long getTotalCost() {
+    public BigDecimal getTotalCost() {
         return totalCost;
     }
 
-    public void setTotalCost(Long totalCost) {
+    public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
 
@@ -135,4 +144,43 @@ public class OrangeOrder extends BasicModel {
         this.orderStatus = orderStatus;
     }
 
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
+
+    public String getByCreate() {
+        return byCreate;
+    }
+
+    public void setByCreate(String byCreate) {
+        this.byCreate = byCreate;
+    }
+
+    public String getByUpdate() {
+        return byUpdate;
+    }
+
+    public void setByUpdate(String byUpdate) {
+        this.byUpdate = byUpdate;
+    }
+
+    public String getDataStatus() {
+        return dataStatus;
+    }
+
+    public void setDataStatus(String dataStatus) {
+        this.dataStatus = dataStatus;
+    }
 }

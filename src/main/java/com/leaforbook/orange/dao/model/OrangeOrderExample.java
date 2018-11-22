@@ -1,5 +1,6 @@
 package com.leaforbook.orange.dao.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -535,52 +536,52 @@ public class OrangeOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andAmountEqualTo(Long value) {
+        public Criteria andAmountEqualTo(Integer value) {
             addCriterion("amount =", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotEqualTo(Long value) {
+        public Criteria andAmountNotEqualTo(Integer value) {
             addCriterion("amount <>", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThan(Long value) {
+        public Criteria andAmountGreaterThan(Integer value) {
             addCriterion("amount >", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountGreaterThanOrEqualTo(Long value) {
+        public Criteria andAmountGreaterThanOrEqualTo(Integer value) {
             addCriterion("amount >=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThan(Long value) {
+        public Criteria andAmountLessThan(Integer value) {
             addCriterion("amount <", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountLessThanOrEqualTo(Long value) {
+        public Criteria andAmountLessThanOrEqualTo(Integer value) {
             addCriterion("amount <=", value, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountIn(List<Long> values) {
+        public Criteria andAmountIn(List<Integer> values) {
             addCriterion("amount in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotIn(List<Long> values) {
+        public Criteria andAmountNotIn(List<Integer> values) {
             addCriterion("amount not in", values, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountBetween(Long value1, Long value2) {
+        public Criteria andAmountBetween(Integer value1, Integer value2) {
             addCriterion("amount between", value1, value2, "amount");
             return (Criteria) this;
         }
 
-        public Criteria andAmountNotBetween(Long value1, Long value2) {
+        public Criteria andAmountNotBetween(Integer value1, Integer value2) {
             addCriterion("amount not between", value1, value2, "amount");
             return (Criteria) this;
         }
@@ -595,52 +596,52 @@ public class OrangeOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceEqualTo(Long value) {
+        public Criteria andActualUnitPriceEqualTo(BigDecimal value) {
             addCriterion("actual_unit_price =", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceNotEqualTo(Long value) {
+        public Criteria andActualUnitPriceNotEqualTo(BigDecimal value) {
             addCriterion("actual_unit_price <>", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceGreaterThan(Long value) {
+        public Criteria andActualUnitPriceGreaterThan(BigDecimal value) {
             addCriterion("actual_unit_price >", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andActualUnitPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("actual_unit_price >=", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceLessThan(Long value) {
+        public Criteria andActualUnitPriceLessThan(BigDecimal value) {
             addCriterion("actual_unit_price <", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceLessThanOrEqualTo(Long value) {
+        public Criteria andActualUnitPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("actual_unit_price <=", value, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceIn(List<Long> values) {
+        public Criteria andActualUnitPriceIn(List<BigDecimal> values) {
             addCriterion("actual_unit_price in", values, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceNotIn(List<Long> values) {
+        public Criteria andActualUnitPriceNotIn(List<BigDecimal> values) {
             addCriterion("actual_unit_price not in", values, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceBetween(Long value1, Long value2) {
+        public Criteria andActualUnitPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("actual_unit_price between", value1, value2, "actualUnitPrice");
             return (Criteria) this;
         }
 
-        public Criteria andActualUnitPriceNotBetween(Long value1, Long value2) {
+        public Criteria andActualUnitPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("actual_unit_price not between", value1, value2, "actualUnitPrice");
             return (Criteria) this;
         }
@@ -655,52 +656,52 @@ public class OrangeOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceEqualTo(Long value) {
+        public Criteria andTotalPriceEqualTo(BigDecimal value) {
             addCriterion("total_price =", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotEqualTo(Long value) {
+        public Criteria andTotalPriceNotEqualTo(BigDecimal value) {
             addCriterion("total_price <>", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThan(Long value) {
+        public Criteria andTotalPriceGreaterThan(BigDecimal value) {
             addCriterion("total_price >", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceGreaterThanOrEqualTo(Long value) {
+        public Criteria andTotalPriceGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("total_price >=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThan(Long value) {
+        public Criteria andTotalPriceLessThan(BigDecimal value) {
             addCriterion("total_price <", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceLessThanOrEqualTo(Long value) {
+        public Criteria andTotalPriceLessThanOrEqualTo(BigDecimal value) {
             addCriterion("total_price <=", value, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceIn(List<Long> values) {
+        public Criteria andTotalPriceIn(List<BigDecimal> values) {
             addCriterion("total_price in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotIn(List<Long> values) {
+        public Criteria andTotalPriceNotIn(List<BigDecimal> values) {
             addCriterion("total_price not in", values, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceBetween(Long value1, Long value2) {
+        public Criteria andTotalPriceBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("total_price between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
 
-        public Criteria andTotalPriceNotBetween(Long value1, Long value2) {
+        public Criteria andTotalPriceNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("total_price not between", value1, value2, "totalPrice");
             return (Criteria) this;
         }
@@ -715,52 +716,52 @@ public class OrangeOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightEqualTo(Long value) {
+        public Criteria andActualFreightEqualTo(BigDecimal value) {
             addCriterion("actual_freight =", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightNotEqualTo(Long value) {
+        public Criteria andActualFreightNotEqualTo(BigDecimal value) {
             addCriterion("actual_freight <>", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightGreaterThan(Long value) {
+        public Criteria andActualFreightGreaterThan(BigDecimal value) {
             addCriterion("actual_freight >", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightGreaterThanOrEqualTo(Long value) {
+        public Criteria andActualFreightGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("actual_freight >=", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightLessThan(Long value) {
+        public Criteria andActualFreightLessThan(BigDecimal value) {
             addCriterion("actual_freight <", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightLessThanOrEqualTo(Long value) {
+        public Criteria andActualFreightLessThanOrEqualTo(BigDecimal value) {
             addCriterion("actual_freight <=", value, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightIn(List<Long> values) {
+        public Criteria andActualFreightIn(List<BigDecimal> values) {
             addCriterion("actual_freight in", values, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightNotIn(List<Long> values) {
+        public Criteria andActualFreightNotIn(List<BigDecimal> values) {
             addCriterion("actual_freight not in", values, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightBetween(Long value1, Long value2) {
+        public Criteria andActualFreightBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("actual_freight between", value1, value2, "actualFreight");
             return (Criteria) this;
         }
 
-        public Criteria andActualFreightNotBetween(Long value1, Long value2) {
+        public Criteria andActualFreightNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("actual_freight not between", value1, value2, "actualFreight");
             return (Criteria) this;
         }
@@ -775,52 +776,52 @@ public class OrangeOrderExample {
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostEqualTo(Long value) {
+        public Criteria andTotalCostEqualTo(BigDecimal value) {
             addCriterion("total_cost =", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostNotEqualTo(Long value) {
+        public Criteria andTotalCostNotEqualTo(BigDecimal value) {
             addCriterion("total_cost <>", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostGreaterThan(Long value) {
+        public Criteria andTotalCostGreaterThan(BigDecimal value) {
             addCriterion("total_cost >", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostGreaterThanOrEqualTo(Long value) {
+        public Criteria andTotalCostGreaterThanOrEqualTo(BigDecimal value) {
             addCriterion("total_cost >=", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostLessThan(Long value) {
+        public Criteria andTotalCostLessThan(BigDecimal value) {
             addCriterion("total_cost <", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostLessThanOrEqualTo(Long value) {
+        public Criteria andTotalCostLessThanOrEqualTo(BigDecimal value) {
             addCriterion("total_cost <=", value, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostIn(List<Long> values) {
+        public Criteria andTotalCostIn(List<BigDecimal> values) {
             addCriterion("total_cost in", values, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostNotIn(List<Long> values) {
+        public Criteria andTotalCostNotIn(List<BigDecimal> values) {
             addCriterion("total_cost not in", values, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostBetween(Long value1, Long value2) {
+        public Criteria andTotalCostBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("total_cost between", value1, value2, "totalCost");
             return (Criteria) this;
         }
 
-        public Criteria andTotalCostNotBetween(Long value1, Long value2) {
+        public Criteria andTotalCostNotBetween(BigDecimal value1, BigDecimal value2) {
             addCriterion("total_cost not between", value1, value2, "totalCost");
             return (Criteria) this;
         }

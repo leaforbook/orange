@@ -27,7 +27,13 @@ public class ExpressServiceImpl implements ExpressService {
     public JSONObject getExpressInfo(String com, String postid) {
         RestTemplate restTemplate=new RestTemplate();
         String url = CommonConstants.KUAIDI100_URL_1+com+CommonConstants.KUAIDI100_URL_2+postid;
-        String json = restTemplate.getForObject(url,String.class);
+        String json = null;
+        try {
+            json = restTemplate.getForObject(url,String.class);
+        } catch (Throwable e) {
+
+        }
+
         return JSON.parseObject(json);
     }
 
