@@ -15,6 +15,7 @@ import com.leaforbook.orange.service.CustomAddressService;
 import com.leaforbook.orange.util.DataStatus;
 import com.leaforbook.orange.util.ResourceEnum;
 import com.leaforbook.orange.util.SnowFlake;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,12 +97,17 @@ public class CustomAddressServiceImpl implements CustomAddressService {
     public Page<OrangeCustomAddress> query(String userId, CustomAddressQueryForm form) {
 
         OrangeCustomAddressExample example = new OrangeCustomAddressExample();
-        example.createCriteria().andUserIdEqualTo(userId)
-        .andNameLike("%"+ form.getName() +"%")
-        .andAddressLike("%"+ form.getAddress() +"%")
-        .andTelephoneLike("%"+ form.getTelephone() +"%")
-        ;
+        example.createCriteria().andUserIdEqualTo(userId);
+        if(StringUtils.isNotEmpty(form.getQueryParam())) {
+            example.or(example.createCriteria().andNameLike("%"+ form.getQueryParam() +"%"));
+            example.or(example.createCriteria().andAddressLike("%"+ form.getQueryParam() +"%"));
+            example.or(example.createCriteria().andTelephoneLike("%"+ form.getQueryParam() +"%"));
+            example.or(example.createCriteria().andProvinceNameLike("%"+ form.getQueryParam() +"%"));
+            //example.or(example.createCriteria().andMailcodeLike("%"+ form.getQueryParam() +"%"));
+            //example.or(example.createCriteria().andBakLike("%"+ form.getQueryParam() +"%"));
+        }
 
+        example.setOrderByClause(" date_update desc ");
 
         PageHelper.offsetPage(form.getPageNum()-1,form.getPageSize());
         Page<OrangeCustomAddress> page = (Page<OrangeCustomAddress>)addressMapper.selectByExample(example);

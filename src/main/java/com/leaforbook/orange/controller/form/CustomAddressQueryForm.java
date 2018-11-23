@@ -7,6 +7,8 @@ import javax.validation.constraints.Pattern;
 
 @Data
 public class CustomAddressQueryForm extends PageForm {
+    private String queryParam;
+
     private String name;
 
     private String provinceName;
