@@ -120,20 +120,19 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     private void insertProductPrice(String userId, ProductPriceForm singleForm) {
         OrangeProductPrice price = new OrangeProductPrice();
         BeanUtils.copyProperties(singleForm,price);
-        price.setPriceId(snowFlake.getId());
-        price.setByCreate(userId);
-        price.setByUpdate(userId);
-        price.setDateCreate(new Date());
-        price.setDateUpdate(new Date());
-        price.setDataStatus(DataStatus.AVAILABLE.getValue());
 
-        productPriceMapper.insertSelective(price);
+        this.insertProductPrice(userId,price);
     }
 
 
     private void insertProductPrice(String userId, ProductPriceUpdateForm singleForm) {
         OrangeProductPrice price = new OrangeProductPrice();
         BeanUtils.copyProperties(singleForm,price);
+
+        this.insertProductPrice(userId,price);
+    }
+
+    private void insertProductPrice(String userId,OrangeProductPrice price) {
         price.setPriceId(snowFlake.getId());
         price.setByCreate(userId);
         price.setByUpdate(userId);
@@ -143,6 +142,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 
         productPriceMapper.insertSelective(price);
     }
+
 
 
 }

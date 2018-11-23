@@ -54,10 +54,9 @@ public class ProductController {
     @PostMapping("/detail")
     @ApiOperation(value = "查询产品详情信息", notes = "")
     @HasResource(resourceType = "PRU",resourceId = "productId")
-    public BasicResponse detail(@RequestBody @Valid ProductIdForm form,
-                                @Session UserInfo userInfo) {
+    public BasicResponse detail(@RequestBody @Valid ProductIdForm form) {
 
-        OrangeProduct product = productService.detail(userInfo.getUserId(),form.getProductId());
+        OrangeProduct product = productService.detail(form.getProductId());
 
         return new BasicResponse(product);
     }

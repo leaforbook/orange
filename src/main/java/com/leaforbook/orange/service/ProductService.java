@@ -13,7 +13,7 @@ public interface ProductService {
 
     void update(String userId,ProductUpadateForm form);
 
-    OrangeProduct detail(String userId,String productId);
+    OrangeProduct detail(String productId);
 
     void delete(String userId,String productId);
 

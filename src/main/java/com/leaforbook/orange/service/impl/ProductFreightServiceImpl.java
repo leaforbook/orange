@@ -6,16 +6,12 @@ import com.leaforbook.orange.dao.mapper.OrangeProductFreightMapper;
 import com.leaforbook.orange.dao.model.OrangeProductFreight;
 import com.leaforbook.orange.dao.model.OrangeProductFreightExample;
 import com.leaforbook.orange.service.ProductFreightService;
-import com.leaforbook.orange.util.BasicBusinessException;
 import com.leaforbook.orange.util.DataStatus;
-import com.leaforbook.orange.util.ExceptionEnum;
 import com.leaforbook.orange.util.SnowFlake;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -149,23 +145,19 @@ public class ProductFreightServiceImpl implements ProductFreightService {
 
     private void insertProductFreight(String userId,ProductFreightForm form) {
         OrangeProductFreight freight = new OrangeProductFreight();
-
         BeanUtils.copyProperties(form,freight);
 
-        freight.setFreightId(snowFlake.getId());
-        freight.setByCreate(userId);
-        freight.setByUpdate(userId);
-        freight.setDateCreate(new Date());
-        freight.setDateUpdate(new Date());
-        freight.setDataStatus(DataStatus.AVAILABLE.getValue());
-
-        freightMapper.insertSelective(freight);
+        this.insertProductFreight(userId,freight);
     }
 
     private void insertProductFreight(String userId,ProductFreightUpdateForm form) {
         OrangeProductFreight freight = new OrangeProductFreight();
-
         BeanUtils.copyProperties(form,freight);
+
+        this.insertProductFreight(userId,freight);
+    }
+
+    private void insertProductFreight(String userId,OrangeProductFreight freight) {
 
         freight.setFreightId(snowFlake.getId());
         freight.setByCreate(userId);
