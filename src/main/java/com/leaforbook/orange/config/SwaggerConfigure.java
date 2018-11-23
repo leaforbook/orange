@@ -3,6 +3,7 @@ package com.leaforbook.orange.config;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.RequestHandler;
@@ -18,12 +19,31 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfigure {
+
+    @Value("${swagger.custom.base.package}")
+    private String basePackage;
+
+    @Value("${swagger.custom.title}")
+    private String title;
+
+    @Value("${swagger.custom.description}")
+    private String description;
+
+    @Value("${swagger.custom.url}")
+    private String url;
+
+    @Value("${swagger.custom.name}")
+    private String name;
+
+    @Value("${swagger.custom.email}")
+    private String email;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(SwaggerConfigure.basePackage("com.leaforbook.orange.common.controller,com.leaforbook.orange.controller"))
+                .apis(SwaggerConfigure.basePackage(basePackage))
                 //.apis(RequestHandlerSelectors.basePackage("com.leaforbook.orange.controller"))
                 .paths(PathSelectors.any())
                 .build();
@@ -31,10 +51,10 @@ public class SwaggerConfigure {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("orange项目接口")
-                .description("orange项目接口")
-                .termsOfServiceUrl("www.leaforbook.com")
-                .contact(new Contact("xiaoyilin","www.leaforbook.com","240688248@qq.com"))
+                .title(title)
+                .description(description)
+                .termsOfServiceUrl(url)
+                .contact(new Contact(name,url,email))
                 .version("1.0")
                 .build();
     }
