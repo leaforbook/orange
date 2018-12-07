@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional
-    public void resetPassword(ResetPasswordForm form) {
+    public String resetPassword(ResetPasswordForm form) {
         //验证凭据
         String proofInRedis = sessionUtil.getAttribute(UserConstants.MODIFY_PASSWORD_PROOF,form.getUserName(),String.class);
         if(!form.getProof().equals(proofInRedis)) {
@@ -227,6 +227,12 @@ public class UserServiceImpl implements UserService {
         user.setPassword(DigestUtils.md5DigestAsHex(form.getPassword().getBytes()));
         user.setDateUpdate(new Date());
         userMapper.updateByPrimaryKeySelective(user);
+
+        //加入登录态
+        String certificate = snowFlake.getId();
+        this.setLoginState(certificate,user);
+
+        return certificate;
     }
 
     /**

@@ -14,7 +14,7 @@ public interface UserService {
 
     void loginOut(String certificate);
 
-    void resetPassword(ResetPasswordForm form);
+    String resetPassword(ResetPasswordForm form);
 
     void modifyPassword(ModifyPasswordForm form);
 

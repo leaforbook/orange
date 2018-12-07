@@ -2,6 +2,7 @@ package com.leaforbook.orange.util;
 
 import com.alibaba.fastjson.JSON;
 import io.micrometer.core.instrument.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Slf4j
 public class SessionUtil {
     
     public static final String LOGIN_CERTIFICATE = "oneofus";
@@ -165,10 +167,33 @@ public class SessionUtil {
         }
 
         if(certificate==null) {
+            certificate = request.getHeader("Authorization");
+        }
+
+        if(certificate==null) {
             throw new BasicBusinessException(ExceptionEnum.UNLOGIN);
         }
 
         return certificate;
+    }
+
+    public boolean isLogined(HttpServletRequest request) {
+
+        String certificate = this.getCertificate(request);
+
+        if(StringUtils.isBlank(certificate)) {
+            return false;
+        }
+        UserInfo userInfo = null;
+        try{
+            userInfo = this.getSessionInfo(certificate);
+        } finally {
+            if(userInfo==null) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

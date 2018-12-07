@@ -2,6 +2,7 @@ package com.leaforbook.orange.common.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.leaforbook.orange.common.controller.form.*;
+import com.leaforbook.orange.common.controller.vo.OneOfUsVO;
 import com.leaforbook.orange.common.controller.vo.ProofVO;
 import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.service.UserService;
@@ -28,6 +29,13 @@ public class UserController {
     @Autowired
     private SessionUtil sessionUtil;
 
+    @PostMapping("/isLogined")
+    @ApiOperation(value = "获取用户信息", notes = "")
+    public BasicResponse isLogined(HttpServletRequest request) {
+        boolean isLogined = sessionUtil.isLogined(request);
+        return new BasicResponse(isLogined);
+    }
+
     @PostMapping("/get")
     @ApiOperation(value = "获取用户信息", notes = "")
     public BasicResponse getUserInfo(HttpServletRequest request) {
@@ -41,7 +49,9 @@ public class UserController {
         String certificate  = userService.register(form);
         this.addLoginState(response,certificate);
 
-        return new BasicResponse();
+        OneOfUsVO vo = new OneOfUsVO();
+        vo.setOneofus(certificate);
+        return new BasicResponse(vo);
     }
 
     @PostMapping("/login")
@@ -50,7 +60,9 @@ public class UserController {
         String certificate  = userService.login(form);
         this.addLoginState(response,certificate);
 
-        return new BasicResponse();
+        OneOfUsVO vo = new OneOfUsVO();
+        vo.setOneofus(certificate);
+        return new BasicResponse(vo);
     }
 
     @PostMapping("/loginOut")
@@ -71,9 +83,13 @@ public class UserController {
 
     @PostMapping("/resetPassword")
     @ApiOperation(value = "修改密码接口", notes = "")
-    public BasicResponse resetPassword(@RequestBody  @Valid ResetPasswordForm form) {
-        userService.resetPassword(form);
-        return new BasicResponse();
+    public BasicResponse resetPassword(HttpServletResponse response,@RequestBody  @Valid ResetPasswordForm form) {
+        String certificate = userService.resetPassword(form);
+        this.addLoginState(response,certificate);
+
+        OneOfUsVO vo = new OneOfUsVO();
+        vo.setOneofus(certificate);
+        return new BasicResponse(vo);
     }
 
 
