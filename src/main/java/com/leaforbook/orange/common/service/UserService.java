@@ -28,4 +28,10 @@ public interface UserService {
     void generateInvitation(InvitationForm form);
 
     UserInfo getUserByName(String userName);
+
+    void update(UserInfo userInfo,boolean flag,String certificate);
+
+    boolean userNameIsUsed(String userName);
+
+    boolean verifyPassword(String userId,String userName, String password);
 }

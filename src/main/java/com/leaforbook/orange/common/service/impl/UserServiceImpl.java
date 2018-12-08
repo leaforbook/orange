@@ -11,7 +11,6 @@ import com.leaforbook.orange.common.dict.UserConstants;
 import com.leaforbook.orange.common.dict.UserStatus;
 import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.util.*;
-import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -317,6 +316,52 @@ public class UserServiceImpl implements UserService {
             return user;
         }
         return null;
+    }
+
+    @Override
+    public void update(UserInfo userInfo,boolean flag,String certificate) {
+
+        if(!flag) {
+            //验证用户名是否被占用
+            CommonUserExample userExample = new CommonUserExample();
+            userExample.createCriteria().andUserNameEqualTo(userInfo.getUserName());
+            long count = userMapper.countByExample(userExample);
+            if(count>0l) {
+                throw new BasicBusinessException(ExceptionEnum.USERNAME_USED);
+            }
+        }
+
+        CommonUser user = new CommonUser();
+        user.setUserId(userInfo.getUserId());
+        user.setRealName(userInfo.getRealName());
+        user.setUserName(userInfo.getUserName());
+        user.setTelephone(userInfo.getTelephone());
+        user.setDateUpdate(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+
+        this.setLoginState(certificate,user);
+    }
+
+    @Override
+    public boolean userNameIsUsed(String userName) {
+        //验证用户名是否被占用
+        CommonUserExample userExample = new CommonUserExample();
+        userExample.createCriteria().andUserNameEqualTo(userName);
+        long count = userMapper.countByExample(userExample);
+        if(count>0l) {
+            throw new BasicBusinessException(ExceptionEnum.USERNAME_USED);
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean verifyPassword(String userId,String userName, String password) {
+        this.authentication(userName,password);
+
+        sessionUtil.addAttribute(UserConstants.VERIFY_PASSWORD,userId,new Boolean(true),15);
+
+        return true;
     }
 
 }

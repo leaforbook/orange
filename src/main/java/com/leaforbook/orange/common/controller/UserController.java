@@ -29,6 +29,40 @@ public class UserController {
     @Autowired
     private SessionUtil sessionUtil;
 
+
+    @PostMapping("/verifyPassword")
+    @ApiOperation(value = "验证密码", notes = "")
+    public BasicResponse verifyPassword(HttpServletRequest request,@RequestBody PasswordForm form) {
+        UserInfo userInfo = sessionUtil.getSessionInfo(request);
+        boolean flag = userService.verifyPassword(userInfo.getUserId(),userInfo.getUserName(),form.getPassword());
+
+        return new BasicResponse(flag);
+    }
+
+    @PostMapping("/update")
+    @ApiOperation(value = "修改用户信息", notes = "")
+    @HasSession(key="verifyPassword")
+    public BasicResponse update(HttpServletRequest request,@RequestBody UpdateUserForm form) {
+        UserInfo userInfo = sessionUtil.getSessionInfo(request);
+        String certificate = sessionUtil.getCertificate(request);
+        boolean flag = form.getUserName().equals(userInfo.getUserName());
+        userInfo.setRealName(form.getRealName());
+        userInfo.setTelephone(form.getTelephone());
+        userInfo.setUserName(form.getUserName());
+
+        userService.update(userInfo,flag,certificate);
+
+        return new BasicResponse();
+    }
+
+    @PostMapping("/userNameIsUsed")
+    @ApiOperation(value = "判断用户名是否被占用", notes = "")
+    public BasicResponse userNameIsUsed(@RequestBody UserForm form) {
+        boolean flag = userService.userNameIsUsed(form.getUserName());
+        return new BasicResponse(flag);
+    }
+
+
     @PostMapping("/isLogined")
     @ApiOperation(value = "获取用户信息", notes = "")
     public BasicResponse isLogined(HttpServletRequest request) {
@@ -82,7 +116,7 @@ public class UserController {
     }
 
     @PostMapping("/resetPassword")
-    @ApiOperation(value = "修改密码接口", notes = "")
+    @ApiOperation(value = "重置密码接口", notes = "")
     public BasicResponse resetPassword(HttpServletResponse response,@RequestBody  @Valid ResetPasswordForm form) {
         String certificate = userService.resetPassword(form);
         this.addLoginState(response,certificate);

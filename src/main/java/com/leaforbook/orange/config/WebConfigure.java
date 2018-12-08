@@ -1,6 +1,7 @@
 package com.leaforbook.orange.config;
 
 import com.leaforbook.orange.util.HasResourceInterceptor;
+import com.leaforbook.orange.util.HasSessionInterceptor;
 import com.leaforbook.orange.util.SessionResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,9 @@ public class WebConfigure implements WebMvcConfigurer {
     @Autowired
     private HasResourceInterceptor hasResourceInterceptor;
 
+    @Autowired
+    private HasSessionInterceptor hasSessionInterceptor;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(sessionResolver);
@@ -32,6 +36,7 @@ public class WebConfigure implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(hasResourceInterceptor);
+        registry.addInterceptor(hasSessionInterceptor);
     }
 
 
