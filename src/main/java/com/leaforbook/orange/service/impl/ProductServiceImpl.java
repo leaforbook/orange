@@ -146,7 +146,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
 
-        PageHelper.offsetPage(form.getPageNum()-1,form.getPageSize());
+        PageHelper.offsetPage((form.getPageNum()-1)*form.getPageSize(),form.getPageSize());
         OrangeProduct params = new OrangeProduct();
         params.setProductId(form.getProductId());
         params.setProductName(form.getProductName());
