@@ -1,16 +1,14 @@
 package com.leaforbook.orange.dao.model;
 
-import com.alibaba.fastjson.JSONObject;
-import io.micrometer.core.instrument.util.StringUtils;
-
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 
 public class OrangeProductPrice {
     private String priceId;
 
     private String productId;
+
+    private String attributeJson;
 
     private BigDecimal inPrice;
 
@@ -28,29 +26,6 @@ public class OrangeProductPrice {
 
     private String dataStatus;
 
-    private String attributeJson;
-
-    private String display;
-
-    public String getDisplay() {
-        JSONObject jsonObject = JSONObject.parseObject(attributeJson);
-        Collection<Object> collection =  jsonObject.values();
-        String display = null;
-        for(Object obj:collection) {
-            display += obj.toString() + " * ";
-        }
-
-        if(StringUtils.isNotEmpty(display)) {
-            display = display.substring(0,display.length()-3);
-        }
-
-        return display;
-    }
-
-    public void setDisplay(String display) {
-        this.display = display;
-    }
-
     public String getPriceId() {
         return priceId;
     }
@@ -65,6 +40,14 @@ public class OrangeProductPrice {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAttributeJson() {
+        return attributeJson;
+    }
+
+    public void setAttributeJson(String attributeJson) {
+        this.attributeJson = attributeJson;
     }
 
     public BigDecimal getInPrice() {
@@ -129,13 +112,5 @@ public class OrangeProductPrice {
 
     public void setDataStatus(String dataStatus) {
         this.dataStatus = dataStatus;
-    }
-
-    public String getAttributeJson() {
-        return attributeJson;
-    }
-
-    public void setAttributeJson(String attributeJson) {
-        this.attributeJson = attributeJson;
     }
 }

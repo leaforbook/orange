@@ -21,5 +21,7 @@ public interface ProductService {
 
     Page<OrangeProduct> query(String userId, ProductQueryForm form);
 
-    void share(String productId, String userName);
+    String share(String productId, String userName);
+
+    boolean isCreater(String productId,String userId);
 }

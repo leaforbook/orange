@@ -16,21 +16,15 @@ public interface OrangeProductPriceMapper {
 
     int insertSelective(OrangeProductPrice record);
 
-    List<OrangeProductPrice> selectByExampleWithBLOBs(OrangeProductPriceExample example);
-
     List<OrangeProductPrice> selectByExample(OrangeProductPriceExample example);
 
     OrangeProductPrice selectByPrimaryKey(String priceId);
 
     int updateByExampleSelective(@Param("record") OrangeProductPrice record, @Param("example") OrangeProductPriceExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") OrangeProductPrice record, @Param("example") OrangeProductPriceExample example);
-
     int updateByExample(@Param("record") OrangeProductPrice record, @Param("example") OrangeProductPriceExample example);
 
     int updateByPrimaryKeySelective(OrangeProductPrice record);
-
-    int updateByPrimaryKeyWithBLOBs(OrangeProductPrice record);
 
     int updateByPrimaryKey(OrangeProductPrice record);
 }

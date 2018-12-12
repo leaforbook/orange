@@ -316,6 +316,76 @@ public class OrangeProductFreightExample {
             return (Criteria) this;
         }
 
+        public Criteria andAttributeValueIsNull() {
+            addCriterion("attribute_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueIsNotNull() {
+            addCriterion("attribute_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueEqualTo(String value) {
+            addCriterion("attribute_value =", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotEqualTo(String value) {
+            addCriterion("attribute_value <>", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueGreaterThan(String value) {
+            addCriterion("attribute_value >", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueGreaterThanOrEqualTo(String value) {
+            addCriterion("attribute_value >=", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLessThan(String value) {
+            addCriterion("attribute_value <", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLessThanOrEqualTo(String value) {
+            addCriterion("attribute_value <=", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLike(String value) {
+            addCriterion("attribute_value like", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotLike(String value) {
+            addCriterion("attribute_value not like", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueIn(List<String> values) {
+            addCriterion("attribute_value in", values, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotIn(List<String> values) {
+            addCriterion("attribute_value not in", values, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueBetween(String value1, String value2) {
+            addCriterion("attribute_value between", value1, value2, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotBetween(String value1, String value2) {
+            addCriterion("attribute_value not between", value1, value2, "attributeValue");
+            return (Criteria) this;
+        }
+
         public Criteria andFreightPriceIsNull() {
             addCriterion("freight_price is null");
             return (Criteria) this;

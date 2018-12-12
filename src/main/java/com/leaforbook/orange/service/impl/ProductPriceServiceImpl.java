@@ -8,6 +8,7 @@ import com.leaforbook.orange.dao.model.OrangeProductPriceExample;
 import com.leaforbook.orange.service.ProductPriceService;
 import com.leaforbook.orange.util.DataStatus;
 import com.leaforbook.orange.util.SnowFlake;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,12 +33,12 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         for(ProductPriceForm singleForm:form.getList()) {
             OrangeProductPriceExample example = new OrangeProductPriceExample();
             example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
-            List<OrangeProductPrice> dataInDB = productPriceMapper.selectByExampleWithBLOBs(example);
+            List<OrangeProductPrice> dataInDB = productPriceMapper.selectByExample(example);
 
             boolean flag = false;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductPrice price:dataInDB) {
-                    if(this.isAttributeValueEquals(singleForm.getAttributeJson(),price.getAttributeJson())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeJson())&&singleForm.getAttributeJson().equals(price.getAttributeJson())) {
                         flag = true;
                         break;
                     }
@@ -65,13 +66,13 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 
             OrangeProductPriceExample example = new OrangeProductPriceExample();
             example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
-            List<OrangeProductPrice>  dataInDB = productPriceMapper.selectByExampleWithBLOBs(example);
+            List<OrangeProductPrice>  dataInDB = productPriceMapper.selectByExample(example);
 
             boolean flag = false;
             String priceId = null;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductPrice price:dataInDB) {
-                    if(this.isAttributeValueEquals(singleForm.getAttributeJson(),price.getAttributeJson())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeJson())&&singleForm.getAttributeJson().equals(price.getAttributeJson())) {
                         flag = true;
                         priceId = price.getPriceId();
                         break;
@@ -99,7 +100,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         OrangeProductPriceExample example = new OrangeProductPriceExample();
         example.createCriteria().andProductIdEqualTo(form.getProductId())
                 .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
-        List<OrangeProductPrice> list = productPriceMapper.selectByExampleWithBLOBs(example);
+        List<OrangeProductPrice> list = productPriceMapper.selectByExample(example);
         return list;
     }
 
@@ -111,10 +112,6 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         price.setDataStatus(DataStatus.UNAVAILABLE.getValue());
         price.setDateUpdate(new Date());
         productPriceMapper.updateByExampleSelective(price,example);
-    }
-
-    private boolean isAttributeValueEquals(String attributeJson, String attributeJson1) {
-        return JSON.parseObject(attributeJson).equals(JSON.parseObject(attributeJson1));
     }
 
     private void insertProductPrice(String userId, ProductPriceForm singleForm) {

@@ -1,14 +1,14 @@
 package com.leaforbook.orange.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leaforbook.orange.common.dao.model.CommonResource;
 import com.leaforbook.orange.common.service.CommonResourceService;
 import com.leaforbook.orange.common.service.UserService;
-import com.leaforbook.orange.controller.form.ProductForm;
-import com.leaforbook.orange.controller.form.ProductQueryForm;
-import com.leaforbook.orange.controller.form.ProductUpadateForm;
+import com.leaforbook.orange.controller.form.*;
 import com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper;
 import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
 import com.leaforbook.orange.dao.model.OrangeProduct;
@@ -26,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -64,6 +65,106 @@ public class ProductServiceImpl implements ProductService {
 
         this.setResource(productId,userId, ResourceEnum.PRODUCT_CREATE.getResourceType());
         this.setResource(productId,userId, ResourceEnum.PRODUCT_USE.getResourceType());
+
+        this.createPriceTable(form.getPriceAttribute(),productId,userId);
+        this.createFreightTable(form.getFreightAttribute(),productId,userId);
+
+    }
+
+    private void createPriceTable(String priceAttribute,String productId,String userId) {
+        List<String> valueGroup = this.getValueGroup(priceAttribute);
+        ProductPriceListForm listForm = new ProductPriceListForm();
+        List<ProductPriceForm> list = new ArrayList<>();
+
+        for(String attribute:valueGroup) {
+            ProductPriceForm form = new ProductPriceForm();
+            form.setAttributeJson(attribute);
+            form.setProductId(productId);
+            list.add(form);
+            listForm.setList(list);
+            productPriceService.create(userId,listForm);
+        }
+    }
+
+    private void createFreightTable(String freightAttribute,String productId,String userId) {
+        List<String> valueGroup = this.getValueGroup(freightAttribute);
+        ProductFreightListForm listForm = new ProductFreightListForm();
+        List<ProductFreightForm> list = new ArrayList<>();
+
+        for(String attribute:valueGroup) {
+            ProductFreightForm form = new ProductFreightForm();
+            form.setAttributeValue(attribute);
+            form.setProductId(productId);
+            list.add(form);
+            listForm.setList(list);
+            productFreightService.create(userId,listForm);
+        }
+    }
+
+
+    private List<String> getValueGroup(String attribute) {
+        JSONArray arr = JSON.parseArray(attribute);
+
+        List<List<String>> valueList = new ArrayList<>();
+
+        try {
+            for(int i=0;i<arr.size();i++) {
+                Object obj =  arr.get(i);
+                if(obj==null) {
+                    continue;
+                }
+
+                JSONObject jsonObject = JSON.parseObject(obj.toString());
+                Object value = jsonObject.get("value");
+                if(value==null) {
+                    continue;
+                }
+
+                JSONArray jsonValue = JSON.parseArray(value.toString());
+                List<String> values = new ArrayList<String>();
+                for(int j=0;j<jsonValue.size();j++) {
+                    if(jsonValue.get(j)!=null) {
+                        values.add(jsonValue.get(j).toString());
+                    }
+                }
+
+                if(values.size()>0) {
+                    valueList.add(values);
+                }
+            }
+        }catch (Throwable e) {
+            log.error("属性json解析错误",e);
+        }
+
+        List<String> valueGroup = new ArrayList<>();
+
+
+        if(valueList.size()==0) {
+            valueGroup.add("统一价");
+        } else {
+            for(int i=0;i<valueList.size();i++) {
+                List<String> values = valueList.get(i);
+                List<String> valueGroupTemp = new ArrayList<>();
+                for(int j=0;j<values.size();j++) {
+
+                    if(valueGroup.size()==0) {
+
+                        valueGroupTemp.add(values.get(j));
+                    } else {
+                        for(int k=0;k<valueGroup.size();k++) {
+                            String temp = valueGroup.get(k) +"*"+values.get(j);
+                            valueGroupTemp.add(temp);
+                        }
+
+                    }
+                }
+                valueGroup = valueGroupTemp;
+            }
+        }
+
+        log.info("getValueGroup"+JSON.toJSONString(valueGroup));
+
+        return valueGroup;
     }
 
     @Override
@@ -82,19 +183,22 @@ public class ProductServiceImpl implements ProductService {
             throw new BasicBusinessException(ExceptionEnum.UPDATE_FAILURE);
         }
 
-        if(StringUtils.isNotEmpty(form.getFreightAttribute())
-                &&this.isAttributeEquals(form.getFreightAttribute(),productInDB.getFreightAttribute())) {
+        if(!(StringUtils.isNotEmpty(form.getFreightAttribute())
+                &&this.isAttributeEquals(form.getFreightAttribute(),productInDB.getFreightAttribute()))) {
             productFreightService.delete(form.getProductId());
+            this.createFreightTable(form.getFreightAttribute(),form.getProductId(),userId);
         }
 
-        if(StringUtils.isNotEmpty(form.getPriceAttribute())
-                &&this.isAttributeEquals(form.getPriceAttribute(),productInDB.getPriceAttribute())) {
+        if(!(StringUtils.isNotEmpty(form.getPriceAttribute())
+                &&this.isAttributeEquals(form.getPriceAttribute(),productInDB.getPriceAttribute()))) {
             productPriceService.delete(form.getProductId());
+
+            this.createPriceTable(form.getPriceAttribute(),form.getProductId(),userId);
         }
     }
 
     private boolean isAttributeEquals(String attribute1,String attribute2) {
-        return JSON.parseObject(attribute1).equals(JSON.parseObject(attribute2));
+        return JSON.parseArray(attribute1).equals(JSON.parseArray(attribute2));
     }
 
     @Override
@@ -159,22 +263,49 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void share(String productId, String userName) {
+    public String share(String productId, String userName) {
         String[] userArr = userName.split(";");
 
+        String result = "";
         for(String singleUserName:userArr) {
             UserInfo user = userService.getUserByName(singleUserName);
-            this.setResource(productId,user.getUserId(), ResourceEnum.PRODUCT_USE.getResourceType());
+            if(user==null) {
+                result += "("+singleUserName+" 不存在);";
+                continue;
+            }
+            boolean flag = this.setResource(productId,user.getUserId(), ResourceEnum.PRODUCT_USE.getResourceType());
+
+            if(!flag) {
+                result += "("+singleUserName+" 已授权);";
+            }
         }
 
+        if(StringUtils.isNotEmpty(result)) {
+            result += "——用户名不存在的授权不会成功，已授权过的授权也不会成功，注意用户名之间用半角分号隔开";
+        }
+
+
+        return result;
     }
 
-    private void setResource(String productId,String userId,String resourceType) {
+    @Override
+    public boolean isCreater(String productId,String userId) {
+        return commonResourceService.hasResource(userId,ResourceEnum.PRODUCT_CREATE.getResourceType(),productId);
+    }
+
+    private boolean setResource(String productId,String userId,String resourceType) {
         CommonResource resource = new CommonResource();
         resource.setUserId(userId);
         resource.setResourceType(resourceType);
         resource.setResourceId(productId);
-        commonResourceService.insert(resource);
+
+        boolean flag = commonResourceService.hasResource(userId,resourceType,productId);
+        if(!flag) {
+            commonResourceService.insert(resource);
+            return true;
+        }
+
+        return false;
     }
 
     private void deleteResource(String productId) {

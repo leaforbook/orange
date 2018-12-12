@@ -8,6 +8,7 @@ import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -86,10 +87,22 @@ public class ProductController {
     @PostMapping("/share")
     @ApiOperation(value = "分享产品信息", notes = "")
     @HasResource(resourceType = "PRC",resourceId = "productId")
+    @HasSession(key="verifyPassword")
     public BasicResponse share(@RequestBody @Valid ProductShareForm form) {
 
-        productService.share(form.getProductId(),form.getUserName());
+        String result = productService.share(form.getProductId(),form.getUserName());
 
-        return new BasicResponse();
+        return new BasicResponse(result);
+    }
+
+
+    @PostMapping("/isCreater")
+    @ApiOperation(value = "是否是产品创建者", notes = "")
+    public BasicResponse isCreater(@RequestBody @Valid ProductIdForm form,
+                                   @Session UserInfo userInfo) {
+
+        boolean result = productService.isCreater(form.getProductId(),userInfo.getUserId());
+
+        return new BasicResponse(result);
     }
 }

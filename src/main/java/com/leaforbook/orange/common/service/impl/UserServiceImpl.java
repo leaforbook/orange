@@ -305,7 +305,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfo getUserByName(String userName) {
         CommonUserExample userExample = new CommonUserExample();
-        userExample.createCriteria().andUserNameEqualTo(userName);
+        userExample.createCriteria().andUserNameEqualTo(userName)
+                .andUserStatusEqualTo(UserStatus.NORMAL.getValue());
         List<CommonUser> userList = userMapper.selectByExample(userExample);
         if(userList!=null&&userList.size()>0) {
             UserInfo user = new UserInfo();

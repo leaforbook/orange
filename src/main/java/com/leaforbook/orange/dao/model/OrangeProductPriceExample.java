@@ -246,6 +246,76 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
+        public Criteria andAttributeJsonIsNull() {
+            addCriterion("attribute_json is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonIsNotNull() {
+            addCriterion("attribute_json is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonEqualTo(String value) {
+            addCriterion("attribute_json =", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonNotEqualTo(String value) {
+            addCriterion("attribute_json <>", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonGreaterThan(String value) {
+            addCriterion("attribute_json >", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonGreaterThanOrEqualTo(String value) {
+            addCriterion("attribute_json >=", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonLessThan(String value) {
+            addCriterion("attribute_json <", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonLessThanOrEqualTo(String value) {
+            addCriterion("attribute_json <=", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonLike(String value) {
+            addCriterion("attribute_json like", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonNotLike(String value) {
+            addCriterion("attribute_json not like", value, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonIn(List<String> values) {
+            addCriterion("attribute_json in", values, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonNotIn(List<String> values) {
+            addCriterion("attribute_json not in", values, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonBetween(String value1, String value2) {
+            addCriterion("attribute_json between", value1, value2, "attributeJson");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeJsonNotBetween(String value1, String value2) {
+            addCriterion("attribute_json not between", value1, value2, "attributeJson");
+            return (Criteria) this;
+        }
+
         public Criteria andInPriceIsNull() {
             addCriterion("in_price is null");
             return (Criteria) this;

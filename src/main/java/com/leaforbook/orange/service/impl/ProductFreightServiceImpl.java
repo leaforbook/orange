@@ -33,7 +33,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
         for(ProductFreightForm singleForm:form.getList()) {
             OrangeProductFreightExample example = new OrangeProductFreightExample();
             example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
-            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExampleWithBLOBs(example);
+            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExample(example);
 
             boolean flag = false;
             if(dataInDB!=null&&dataInDB.size()>0) {
@@ -71,7 +71,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
 
             OrangeProductFreightExample example = new OrangeProductFreightExample();
             example.createCriteria().andProductIdEqualTo(singleForm.getProductId());
-            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExampleWithBLOBs(example);
+            List<OrangeProductFreight>  dataInDB = freightMapper.selectByExample(example);
 
             boolean flag = false;
             String freightId = null;
@@ -109,7 +109,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
         OrangeProductFreightExample example = new OrangeProductFreightExample();
         example.createCriteria().andProductIdEqualTo(form.getProductId())
                 .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
-        List<OrangeProductFreight> list = freightMapper.selectByExampleWithBLOBs(example);
+        List<OrangeProductFreight> list = freightMapper.selectByExample(example);
 
         return list;
     }
