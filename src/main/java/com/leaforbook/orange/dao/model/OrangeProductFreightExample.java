@@ -246,73 +246,73 @@ public class OrangeProductFreightExample {
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdIsNull() {
-            addCriterion("province_id is null");
+        public Criteria andIsFreeIsNull() {
+            addCriterion("is_free is null");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdIsNotNull() {
-            addCriterion("province_id is not null");
+        public Criteria andIsFreeIsNotNull() {
+            addCriterion("is_free is not null");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdEqualTo(String value) {
-            addCriterion("province_id =", value, "provinceId");
+        public Criteria andIsFreeEqualTo(String value) {
+            addCriterion("is_free =", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdNotEqualTo(String value) {
-            addCriterion("province_id <>", value, "provinceId");
+        public Criteria andIsFreeNotEqualTo(String value) {
+            addCriterion("is_free <>", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdGreaterThan(String value) {
-            addCriterion("province_id >", value, "provinceId");
+        public Criteria andIsFreeGreaterThan(String value) {
+            addCriterion("is_free >", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdGreaterThanOrEqualTo(String value) {
-            addCriterion("province_id >=", value, "provinceId");
+        public Criteria andIsFreeGreaterThanOrEqualTo(String value) {
+            addCriterion("is_free >=", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdLessThan(String value) {
-            addCriterion("province_id <", value, "provinceId");
+        public Criteria andIsFreeLessThan(String value) {
+            addCriterion("is_free <", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdLessThanOrEqualTo(String value) {
-            addCriterion("province_id <=", value, "provinceId");
+        public Criteria andIsFreeLessThanOrEqualTo(String value) {
+            addCriterion("is_free <=", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdLike(String value) {
-            addCriterion("province_id like", value, "provinceId");
+        public Criteria andIsFreeLike(String value) {
+            addCriterion("is_free like", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdNotLike(String value) {
-            addCriterion("province_id not like", value, "provinceId");
+        public Criteria andIsFreeNotLike(String value) {
+            addCriterion("is_free not like", value, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdIn(List<String> values) {
-            addCriterion("province_id in", values, "provinceId");
+        public Criteria andIsFreeIn(List<String> values) {
+            addCriterion("is_free in", values, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdNotIn(List<String> values) {
-            addCriterion("province_id not in", values, "provinceId");
+        public Criteria andIsFreeNotIn(List<String> values) {
+            addCriterion("is_free not in", values, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdBetween(String value1, String value2) {
-            addCriterion("province_id between", value1, value2, "provinceId");
+        public Criteria andIsFreeBetween(String value1, String value2) {
+            addCriterion("is_free between", value1, value2, "isFree");
             return (Criteria) this;
         }
 
-        public Criteria andProvinceIdNotBetween(String value1, String value2) {
-            addCriterion("province_id not between", value1, value2, "provinceId");
+        public Criteria andIsFreeNotBetween(String value1, String value2) {
+            addCriterion("is_free not between", value1, value2, "isFree");
             return (Criteria) this;
         }
 

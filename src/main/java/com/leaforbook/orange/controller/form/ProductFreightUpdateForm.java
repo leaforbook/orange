@@ -18,9 +18,10 @@ public class ProductFreightUpdateForm {
 
     private String provinceId;
 
-    @Json
     private String attributeValue;
 
     @DecimalMin("0")
     private BigDecimal freightPrice;
+
+    private boolean setOrNot;
 }

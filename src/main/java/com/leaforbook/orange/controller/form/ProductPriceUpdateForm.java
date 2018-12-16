@@ -24,6 +24,7 @@ public class ProductPriceUpdateForm {
     @DecimalMin("0.00")
     private BigDecimal outMaxPrice;
 
-    @Json
-    private String attributeJson;
+    private String attributeValue;
+
+    private boolean setOrNot;
 }

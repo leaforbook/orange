@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface ProductService {
-    void create(String userId,ProductForm form);
+    String create(String userId,ProductForm form);
 
     void update(String userId,ProductUpadateForm form);
 

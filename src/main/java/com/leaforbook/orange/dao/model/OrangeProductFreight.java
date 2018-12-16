@@ -8,7 +8,7 @@ public class OrangeProductFreight {
 
     private String productId;
 
-    private String provinceId;
+    private String isFree;
 
     private String attributeValue;
 
@@ -40,12 +40,12 @@ public class OrangeProductFreight {
         this.productId = productId;
     }
 
-    public String getProvinceId() {
-        return provinceId;
+    public String getIsFree() {
+        return isFree;
     }
 
-    public void setProvinceId(String provinceId) {
-        this.provinceId = provinceId;
+    public void setIsFree(String isFree) {
+        this.isFree = isFree;
     }
 
     public String getAttributeValue() {

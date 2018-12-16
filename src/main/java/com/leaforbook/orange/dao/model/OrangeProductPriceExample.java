@@ -246,73 +246,143 @@ public class OrangeProductPriceExample {
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonIsNull() {
-            addCriterion("attribute_json is null");
+        public Criteria andIsGroundingIsNull() {
+            addCriterion("is_grounding is null");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonIsNotNull() {
-            addCriterion("attribute_json is not null");
+        public Criteria andIsGroundingIsNotNull() {
+            addCriterion("is_grounding is not null");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonEqualTo(String value) {
-            addCriterion("attribute_json =", value, "attributeJson");
+        public Criteria andIsGroundingEqualTo(String value) {
+            addCriterion("is_grounding =", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonNotEqualTo(String value) {
-            addCriterion("attribute_json <>", value, "attributeJson");
+        public Criteria andIsGroundingNotEqualTo(String value) {
+            addCriterion("is_grounding <>", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonGreaterThan(String value) {
-            addCriterion("attribute_json >", value, "attributeJson");
+        public Criteria andIsGroundingGreaterThan(String value) {
+            addCriterion("is_grounding >", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonGreaterThanOrEqualTo(String value) {
-            addCriterion("attribute_json >=", value, "attributeJson");
+        public Criteria andIsGroundingGreaterThanOrEqualTo(String value) {
+            addCriterion("is_grounding >=", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonLessThan(String value) {
-            addCriterion("attribute_json <", value, "attributeJson");
+        public Criteria andIsGroundingLessThan(String value) {
+            addCriterion("is_grounding <", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonLessThanOrEqualTo(String value) {
-            addCriterion("attribute_json <=", value, "attributeJson");
+        public Criteria andIsGroundingLessThanOrEqualTo(String value) {
+            addCriterion("is_grounding <=", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonLike(String value) {
-            addCriterion("attribute_json like", value, "attributeJson");
+        public Criteria andIsGroundingLike(String value) {
+            addCriterion("is_grounding like", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonNotLike(String value) {
-            addCriterion("attribute_json not like", value, "attributeJson");
+        public Criteria andIsGroundingNotLike(String value) {
+            addCriterion("is_grounding not like", value, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonIn(List<String> values) {
-            addCriterion("attribute_json in", values, "attributeJson");
+        public Criteria andIsGroundingIn(List<String> values) {
+            addCriterion("is_grounding in", values, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonNotIn(List<String> values) {
-            addCriterion("attribute_json not in", values, "attributeJson");
+        public Criteria andIsGroundingNotIn(List<String> values) {
+            addCriterion("is_grounding not in", values, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonBetween(String value1, String value2) {
-            addCriterion("attribute_json between", value1, value2, "attributeJson");
+        public Criteria andIsGroundingBetween(String value1, String value2) {
+            addCriterion("is_grounding between", value1, value2, "isGrounding");
             return (Criteria) this;
         }
 
-        public Criteria andAttributeJsonNotBetween(String value1, String value2) {
-            addCriterion("attribute_json not between", value1, value2, "attributeJson");
+        public Criteria andIsGroundingNotBetween(String value1, String value2) {
+            addCriterion("is_grounding not between", value1, value2, "isGrounding");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueIsNull() {
+            addCriterion("attribute_value is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueIsNotNull() {
+            addCriterion("attribute_value is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueEqualTo(String value) {
+            addCriterion("attribute_value =", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotEqualTo(String value) {
+            addCriterion("attribute_value <>", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueGreaterThan(String value) {
+            addCriterion("attribute_value >", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueGreaterThanOrEqualTo(String value) {
+            addCriterion("attribute_value >=", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLessThan(String value) {
+            addCriterion("attribute_value <", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLessThanOrEqualTo(String value) {
+            addCriterion("attribute_value <=", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueLike(String value) {
+            addCriterion("attribute_value like", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotLike(String value) {
+            addCriterion("attribute_value not like", value, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueIn(List<String> values) {
+            addCriterion("attribute_value in", values, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotIn(List<String> values) {
+            addCriterion("attribute_value not in", values, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueBetween(String value1, String value2) {
+            addCriterion("attribute_value between", value1, value2, "attributeValue");
+            return (Criteria) this;
+        }
+
+        public Criteria andAttributeValueNotBetween(String value1, String value2) {
+            addCriterion("attribute_value not between", value1, value2, "attributeValue");
             return (Criteria) this;
         }
 

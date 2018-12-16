@@ -24,4 +24,6 @@ public class ProductFreightForm {
     @DecimalMin("0")
     @NotNull
     private BigDecimal freightPrice;
+
+    private boolean setOrNot;
 }

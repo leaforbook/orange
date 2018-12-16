@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地MySQL1
-Source Server Version : 80012
+Source Server         : leaforbook
+Source Server Version : 80013
 Source Host           : localhost:3306
 Source Database       : orange
 
 Target Server Type    : MYSQL
-Target Server Version : 80012
+Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2018-11-05 19:11:15
+Date: 2018-12-15 15:13:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,7 @@ DROP TABLE IF EXISTS `orange_product_freight`;
 CREATE TABLE `orange_product_freight` (
   `freight_id` varchar(64) NOT NULL,
   `product_id` varchar(64) NOT NULL,
-  `province_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `is_free` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '1' COMMENT '1不包邮 2包邮',
   `attribute_value` varchar(1024) DEFAULT NULL,
   `freight_price` decimal(10,2) DEFAULT NULL,
   `date_create` datetime NOT NULL COMMENT '创建时间',

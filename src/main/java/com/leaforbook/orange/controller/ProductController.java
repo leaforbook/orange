@@ -26,9 +26,9 @@ public class ProductController {
     @ApiOperation(value = "创建产品信息", notes = "")
     public BasicResponse create(@RequestBody @Valid ProductForm form,
                                 @Session UserInfo userInfo) {
-        productService.create(userInfo.getUserId(),form);
+        String productId = productService.create(userInfo.getUserId(),form);
 
-        return new BasicResponse();
+        return new BasicResponse(productId);
     }
 
     @PostMapping("/update")

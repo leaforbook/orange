@@ -8,10 +8,13 @@ import com.leaforbook.orange.dao.model.OrangeProductFreightExample;
 import com.leaforbook.orange.service.ProductFreightService;
 import com.leaforbook.orange.util.DataStatus;
 import com.leaforbook.orange.util.SnowFlake;
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -38,8 +41,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
             boolean flag = false;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductFreight freight:dataInDB) {
-                    if(this.isAttributeValueEquals(singleForm.getAttributeValue(),freight.getAttributeValue())
-                            &&this.isProvinceEquals(singleForm.getProvinceId(),freight.getProvinceId())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeValue())&& singleForm.getAttributeValue().equals(freight.getAttributeValue())) {
                         flag = true;
                         break;
                     }
@@ -77,8 +79,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
             String freightId = null;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductFreight freight:dataInDB) {
-                    if(this.isAttributeValueEquals(singleForm.getAttributeValue(),freight.getAttributeValue())
-                            &&this.isProvinceEquals(singleForm.getProvinceId(),freight.getProvinceId())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeValue())&& singleForm.getAttributeValue().equals(freight.getAttributeValue())) {
                         flag = true;
                         freightId = freight.getFreightId();
                         break;
@@ -89,13 +90,7 @@ public class ProductFreightServiceImpl implements ProductFreightService {
             if(!flag) {
                 this.insertProductFreight(userId,singleForm);
             } else {
-                OrangeProductFreight freight = new OrangeProductFreight();
-                BeanUtils.copyProperties(singleForm,freight);
-                freight.setByUpdate(userId);
-                freight.setDateUpdate(new Date());
-                freight.setFreightId(freightId);
-
-                freightMapper.updateByPrimaryKeySelective(freight);
+                this.updateProductFreight(userId,freightId,singleForm);
             }
 
         }
@@ -124,28 +119,17 @@ public class ProductFreightServiceImpl implements ProductFreightService {
         freightMapper.updateByExampleSelective(freight,example);
     }
 
-
-    private boolean isAttributeValueEquals(String attribute1,String attribute2) {
-        return JSON.parseObject(attribute1).equals(JSON.parseObject(attribute2));
-    }
-
-    private boolean isProvinceEquals(String province1,String province2) {
-        String[] arr1 = province1.split(",");
-        String[] arr2 = province2.split(",");
-        Set<String> s1 = new HashSet<String>();
-        Set<String> s2 = new HashSet<String>();
-        for(String s:arr1) {
-            s1.add(s);
-        }
-        for(String s:arr2) {
-            s2.add(s);
-        }
-        return s1.equals(s2);
-    }
-
     private void insertProductFreight(String userId,ProductFreightForm form) {
         OrangeProductFreight freight = new OrangeProductFreight();
         BeanUtils.copyProperties(form,freight);
+        String isFree = null;
+        if(form.isSetOrNot()) {
+            isFree = "1";
+        }else {
+            isFree = "2";
+            freight.setFreightPrice(new BigDecimal(0.00));
+        }
+        freight.setIsFree(isFree);
 
         this.insertProductFreight(userId,freight);
     }
@@ -153,8 +137,36 @@ public class ProductFreightServiceImpl implements ProductFreightService {
     private void insertProductFreight(String userId,ProductFreightUpdateForm form) {
         OrangeProductFreight freight = new OrangeProductFreight();
         BeanUtils.copyProperties(form,freight);
+        String isFree = null;
+        if(form.isSetOrNot()) {
+            isFree = "1";
+        }else {
+            isFree = "2";
+            freight.setFreightPrice(new BigDecimal(0.00));
+        }
+        freight.setIsFree(isFree);
 
         this.insertProductFreight(userId,freight);
+    }
+
+    private void updateProductFreight(String userId,String freightId,ProductFreightUpdateForm form) {
+        OrangeProductFreight freight = new OrangeProductFreight();
+        BeanUtils.copyProperties(form,freight);
+        freight.setByUpdate(userId);
+        freight.setDateUpdate(new Date());
+        freight.setFreightId(freightId);
+        freight.setDataStatus(DataStatus.AVAILABLE.getValue());
+
+        String isFree = null;
+        if(form.isSetOrNot()) {
+            isFree = "1";
+        }else {
+            isFree = "2";
+            freight.setFreightPrice(new BigDecimal(0.00));
+        }
+        freight.setIsFree(isFree);
+
+        freightMapper.updateByPrimaryKeySelective(freight);
     }
 
     private void insertProductFreight(String userId,OrangeProductFreight freight) {

@@ -8,7 +8,9 @@ public class OrangeProductPrice {
 
     private String productId;
 
-    private String attributeJson;
+    private String isGrounding;
+
+    private String attributeValue;
 
     private BigDecimal inPrice;
 
@@ -42,12 +44,20 @@ public class OrangeProductPrice {
         this.productId = productId;
     }
 
-    public String getAttributeJson() {
-        return attributeJson;
+    public String getIsGrounding() {
+        return isGrounding;
     }
 
-    public void setAttributeJson(String attributeJson) {
-        this.attributeJson = attributeJson;
+    public void setIsGrounding(String isGrounding) {
+        this.isGrounding = isGrounding;
+    }
+
+    public String getAttributeValue() {
+        return attributeValue;
+    }
+
+    public void setAttributeValue(String attributeValue) {
+        this.attributeValue = attributeValue;
     }
 
     public BigDecimal getInPrice() {

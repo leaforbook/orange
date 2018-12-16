@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地MySQL1
-Source Server Version : 80012
+Source Server         : leaforbook
+Source Server Version : 80013
 Source Host           : localhost:3306
 Source Database       : orange
 
 Target Server Type    : MYSQL
-Target Server Version : 80012
+Target Server Version : 80013
 File Encoding         : 65001
 
-Date: 2018-11-05 19:12:01
+Date: 2018-12-15 15:13:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,7 +22,8 @@ DROP TABLE IF EXISTS `orange_product_price`;
 CREATE TABLE `orange_product_price` (
   `price_id` varchar(64) NOT NULL,
   `product_id` varchar(64) NOT NULL,
-  `attribute_json` varchar(1024) DEFAULT NULL,
+  `is_grounding` varchar(2) DEFAULT '1' COMMENT '1已上架 2未上架',
+  `attribute_value` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `in_price` decimal(10,2) DEFAULT NULL,
   `out_min_price` decimal(10,2) DEFAULT NULL,
   `out_max_price` decimal(10,2) DEFAULT NULL,

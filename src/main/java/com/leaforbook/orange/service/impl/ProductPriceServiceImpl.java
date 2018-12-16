@@ -1,6 +1,5 @@
 package com.leaforbook.orange.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.leaforbook.orange.controller.form.*;
 import com.leaforbook.orange.dao.mapper.OrangeProductPriceMapper;
 import com.leaforbook.orange.dao.model.OrangeProductPrice;
@@ -14,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
             boolean flag = false;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductPrice price:dataInDB) {
-                    if(StringUtils.isNotEmpty(singleForm.getAttributeJson())&&singleForm.getAttributeJson().equals(price.getAttributeJson())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeValue())&&singleForm.getAttributeValue().equals(price.getAttributeValue())) {
                         flag = true;
                         break;
                     }
@@ -72,7 +72,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
             String priceId = null;
             if(dataInDB!=null&&dataInDB.size()>0) {
                 for(OrangeProductPrice price:dataInDB) {
-                    if(StringUtils.isNotEmpty(singleForm.getAttributeJson())&&singleForm.getAttributeJson().equals(price.getAttributeJson())) {
+                    if(StringUtils.isNotEmpty(singleForm.getAttributeValue())&&singleForm.getAttributeValue().equals(price.getAttributeValue())) {
                         flag = true;
                         priceId = price.getPriceId();
                         break;
@@ -83,13 +83,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
             if(!flag) {
                 this.insertProductPrice(userId,singleForm);
             } else {
-                OrangeProductPrice price = new OrangeProductPrice();
-                BeanUtils.copyProperties(singleForm,price);
-                price.setByUpdate(userId);
-                price.setDateUpdate(new Date());
-                price.setPriceId(priceId);
-
-                productPriceMapper.updateByPrimaryKeySelective(price);
+                this.updateProductPrice(userId,priceId,singleForm);
             }
 
         }
@@ -117,6 +111,15 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     private void insertProductPrice(String userId, ProductPriceForm singleForm) {
         OrangeProductPrice price = new OrangeProductPrice();
         BeanUtils.copyProperties(singleForm,price);
+        String isGrounding = null;
+        if(singleForm.isSetOrNot()) {
+            isGrounding = "1";
+        }else {
+            isGrounding = "2";
+            price.setInPrice(new BigDecimal(0.00));
+            price.setOutMinPrice(new BigDecimal(0.00));
+        }
+        price.setIsGrounding(isGrounding);
 
         this.insertProductPrice(userId,price);
     }
@@ -125,8 +128,38 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     private void insertProductPrice(String userId, ProductPriceUpdateForm singleForm) {
         OrangeProductPrice price = new OrangeProductPrice();
         BeanUtils.copyProperties(singleForm,price);
+        String isGrounding = null;
+        if(singleForm.isSetOrNot()) {
+            isGrounding = "1";
+        }else {
+            isGrounding = "2";
+            price.setInPrice(new BigDecimal(0.00));
+            price.setOutMinPrice(new BigDecimal(0.00));
+        }
+        price.setIsGrounding(isGrounding);
 
         this.insertProductPrice(userId,price);
+    }
+
+
+    private void updateProductPrice(String userId, String priceId,ProductPriceUpdateForm singleForm) {
+        OrangeProductPrice price = new OrangeProductPrice();
+        BeanUtils.copyProperties(singleForm,price);
+        price.setByUpdate(userId);
+        price.setDateUpdate(new Date());
+        price.setPriceId(priceId);
+        price.setDataStatus(DataStatus.AVAILABLE.getValue());
+        String isGrounding = null;
+        if(singleForm.isSetOrNot()) {
+            isGrounding = "1";
+        }else {
+            isGrounding = "2";
+            price.setInPrice(new BigDecimal(0.00));
+            price.setOutMinPrice(new BigDecimal(0.00));
+        }
+        price.setIsGrounding(isGrounding);
+
+        productPriceMapper.updateByPrimaryKeySelective(price);
     }
 
     private void insertProductPrice(String userId,OrangeProductPrice price) {
