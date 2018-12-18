@@ -7,10 +7,7 @@ import com.leaforbook.orange.controller.form.CustomAddressQueryForm;
 import com.leaforbook.orange.controller.form.CustomAddressUpdateForm;
 import com.leaforbook.orange.dao.model.OrangeCustomAddress;
 import com.leaforbook.orange.service.CustomAddressService;
-import com.leaforbook.orange.util.BasicResponse;
-import com.leaforbook.orange.util.HasResource;
-import com.leaforbook.orange.util.Session;
-import com.leaforbook.orange.util.UserInfo;
+import com.leaforbook.orange.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,9 +33,9 @@ public class CustomAddressController {
     public BasicResponse create(@RequestBody @Valid CustomAddressForm form,
                                 @Session UserInfo userInfo) {
 
-        customAddressService.create(userInfo.getUserId(),form);
+        String addressId = customAddressService.create(userInfo.getUserId(),form);
 
-        return new BasicResponse();
+        return new BasicResponse(addressId);
     }
 
 
@@ -55,6 +52,7 @@ public class CustomAddressController {
     @PostMapping("/delete")
     @ApiOperation(value = "删除客户的收货地址信息", notes = "")
     @HasResource(resourceType = "CAC",resourceId = "addressId")
+    @HasSession(key = "verifyPassword")
     public BasicResponse delete(@RequestBody @Valid CustomAddressIdForm form) {
 
         customAddressService.delete(form);

@@ -1,15 +1,15 @@
 package com.leaforbook.orange.dao.model;
 
-import com.leaforbook.orange.util.BasicModel;
-
 import java.util.Date;
 
-public class OrangeCustomAddress extends BasicModel {
+public class OrangeCustomAddress {
     private String addressId;
 
     private String userId;
 
     private String name;
+
+    private String sex;
 
     private String provinceId;
 
@@ -22,6 +22,16 @@ public class OrangeCustomAddress extends BasicModel {
     private String mailcode;
 
     private String bak;
+
+    private Date dateCreate;
+
+    private Date dateUpdate;
+
+    private String byCreate;
+
+    private String byUpdate;
+
+    private String dataStatus;
 
     public String getAddressId() {
         return addressId;
@@ -45,6 +55,14 @@ public class OrangeCustomAddress extends BasicModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getProvinceId() {
@@ -95,4 +113,43 @@ public class OrangeCustomAddress extends BasicModel {
         this.bak = bak;
     }
 
+    public Date getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(Date dateCreate) {
+        this.dateCreate = dateCreate;
+    }
+
+    public Date getDateUpdate() {
+        return dateUpdate;
+    }
+
+    public void setDateUpdate(Date dateUpdate) {
+        this.dateUpdate = dateUpdate;
+    }
+
+    public String getByCreate() {
+        return byCreate;
+    }
+
+    public void setByCreate(String byCreate) {
+        this.byCreate = byCreate;
+    }
+
+    public String getByUpdate() {
+        return byUpdate;
+    }
+
+    public void setByUpdate(String byUpdate) {
+        this.byUpdate = byUpdate;
+    }
+
+    public String getDataStatus() {
+        return dataStatus;
+    }
+
+    public void setDataStatus(String dataStatus) {
+        this.dataStatus = dataStatus;
+    }
 }

@@ -55,6 +55,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductPriceService productPriceService;
 
     @Override
+    @Transactional
     public String create(String userId, ProductForm form) {
         OrangeProduct product = new OrangeProduct();
         BeanUtils.copyProperties(form,product);
@@ -81,6 +82,7 @@ public class ProductServiceImpl implements ProductService {
 
         for(String attribute:valueGroup) {
             ProductPriceForm form = new ProductPriceForm();
+            form.setSetOrNot(true);
             form.setAttributeValue(attribute);
             form.setProductId(productId);
             list.add(form);
@@ -96,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
 
         for(String attribute:valueGroup) {
             ProductFreightForm form = new ProductFreightForm();
+            form.setSetOrNot(true);
             form.setAttributeValue(attribute);
             form.setProductId(productId);
             list.add(form);

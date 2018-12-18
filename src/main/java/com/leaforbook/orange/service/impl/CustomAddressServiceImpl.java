@@ -38,7 +38,7 @@ public class CustomAddressServiceImpl implements CustomAddressService {
     private CommonResourceService commonResourceService;
 
     @Override
-    public void create(String userId, CustomAddressForm form) {
+    public String create(String userId, CustomAddressForm form) {
         OrangeCustomAddress address = new OrangeCustomAddress();
         BeanUtils.copyProperties(form,address);
         address.setUserId(userId);
@@ -52,6 +52,7 @@ public class CustomAddressServiceImpl implements CustomAddressService {
 
         this.createResource(userId,addressId);
 
+        return addressId;
     }
 
     private void createResource(String userId,String addressId) {
@@ -97,19 +98,19 @@ public class CustomAddressServiceImpl implements CustomAddressService {
     public Page<OrangeCustomAddress> query(String userId, CustomAddressQueryForm form) {
 
         OrangeCustomAddressExample example = new OrangeCustomAddressExample();
-        example.createCriteria().andUserIdEqualTo(userId);
-        if(StringUtils.isNotEmpty(form.getQueryParam())) {
-            example.or(example.createCriteria().andNameLike("%"+ form.getQueryParam() +"%"));
-            example.or(example.createCriteria().andAddressLike("%"+ form.getQueryParam() +"%"));
-            example.or(example.createCriteria().andTelephoneLike("%"+ form.getQueryParam() +"%"));
-            example.or(example.createCriteria().andProvinceNameLike("%"+ form.getQueryParam() +"%"));
-            //example.or(example.createCriteria().andMailcodeLike("%"+ form.getQueryParam() +"%"));
-            //example.or(example.createCriteria().andBakLike("%"+ form.getQueryParam() +"%"));
+
+        if(StringUtils.isNotEmpty(form.getQueryParams())) {
+            example.or(example.createCriteria().andNameLike("%"+ form.getQueryParams() +"%").andUserIdEqualTo(userId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()));
+            example.or(example.createCriteria().andAddressLike("%"+ form.getQueryParams() +"%").andUserIdEqualTo(userId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()));
+            example.or(example.createCriteria().andTelephoneLike("%"+ form.getQueryParams() +"%").andUserIdEqualTo(userId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()));
+            example.or(example.createCriteria().andProvinceNameLike("%"+ form.getQueryParams() +"%").andUserIdEqualTo(userId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()));
+        } else {
+            example.createCriteria().andUserIdEqualTo(userId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
         }
 
         example.setOrderByClause(" date_update desc ");
 
-        PageHelper.offsetPage(form.getPageNum()-1,form.getPageSize());
+        PageHelper.offsetPage((form.getPageNum()-1)*form.getPageSize(),form.getPageSize());
         Page<OrangeCustomAddress> page = (Page<OrangeCustomAddress>)addressMapper.selectByExample(example);
 
         return page;

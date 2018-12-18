@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 public interface CustomAddressService {
-    void create(String userId, CustomAddressForm form);
+    String create(String userId, CustomAddressForm form);
 
     void update(CustomAddressUpdateForm form);
 

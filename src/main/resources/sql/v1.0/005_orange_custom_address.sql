@@ -23,6 +23,7 @@ CREATE TABLE `orange_custom_address` (
   `address_id` varchar(64) NOT NULL,
   `user_id` varchar(64) NOT NULL,
   `name` varchar(32) NOT NULL,
+  `sex` varchar(10) NOT NULL,
   `province_id` varchar(64) NOT NULL,
   `province_name` varchar(255) NOT NULL,
   `address` varchar(1024) NOT NULL,
