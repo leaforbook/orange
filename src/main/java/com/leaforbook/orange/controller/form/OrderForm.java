@@ -1,6 +1,7 @@
 package com.leaforbook.orange.controller.form;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -39,5 +40,6 @@ public class OrderForm {
     @NotNull
     private BigDecimal totalCost;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date deliveryDate;
 }
