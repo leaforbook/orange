@@ -108,6 +108,11 @@ public class ProductPriceServiceImpl implements ProductPriceService {
         productPriceMapper.updateByExampleSelective(price,example);
     }
 
+    @Override
+    public OrangeProductPrice detail(ProductPriceDetailForm form) {
+        return productPriceMapper.selectByPrimaryKey(form.getPriceId());
+    }
+
     private void insertProductPrice(String userId, ProductPriceForm singleForm) {
         OrangeProductPrice price = new OrangeProductPrice();
         BeanUtils.copyProperties(singleForm,price);

@@ -16,4 +16,6 @@ public interface ProductFreightService {
     List<OrangeProductFreight> get(ProductFreightGetForm form);
 
     void delete(String productId);
+
+    OrangeProductFreight detail(ProductFreightDetailForm form);
 }

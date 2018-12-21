@@ -119,6 +119,11 @@ public class ProductFreightServiceImpl implements ProductFreightService {
         freightMapper.updateByExampleSelective(freight,example);
     }
 
+    @Override
+    public OrangeProductFreight detail(ProductFreightDetailForm form) {
+        return freightMapper.selectByPrimaryKey(form.getFreightId());
+    }
+
     private void insertProductFreight(String userId,ProductFreightForm form) {
         OrangeProductFreight freight = new OrangeProductFreight();
         BeanUtils.copyProperties(form,freight);

@@ -38,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
     private CommonResourceService commonResourceService;
 
     @Override
-    public void create(String userId, OrderForm form) {
+    public String create(String userId, OrderForm form) {
         OrangeOrder order = new OrangeOrder();
         String orderId = snowFlake.getId();
         order.setOrderId(orderId);
@@ -60,6 +60,8 @@ public class OrderServiceImpl implements OrderService {
         orderMapper.insertSelective(order);
 
         this.setResource(orderId,userId);
+
+        return orderId;
     }
 
     private void setResource(String orderId,String userId) {

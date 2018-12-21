@@ -1,5 +1,6 @@
 package com.leaforbook.orange.controller;
 
+import com.leaforbook.orange.controller.form.ProductPriceDetailForm;
 import com.leaforbook.orange.controller.form.ProductPriceGetForm;
 import com.leaforbook.orange.controller.form.ProductPriceListForm;
 import com.leaforbook.orange.controller.form.ProductPriceUpdateListForm;
@@ -61,6 +62,14 @@ public class ProductPriceController {
         List<OrangeProductPrice> freightList = productPriceService.get(form);
 
         return new BasicResponse(freightList);
+    }
+
+
+    @PostMapping("/detail")
+    @ApiOperation(value = "获取产品的单属性运费信息", notes = "")
+    public BasicResponse detail(@RequestBody @Valid ProductPriceDetailForm form) {
+        OrangeProductPrice price = productPriceService.detail(form);
+        return new BasicResponse(price);
     }
 
 }

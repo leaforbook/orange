@@ -37,9 +37,9 @@ public class OrderController {
     public BasicResponse create(@RequestBody @Valid OrderForm form,
                                 @Session UserInfo userInfo) {
 
-        orderService.create(userInfo.getUserId(),form);
+        String orderId = orderService.create(userInfo.getUserId(),form);
 
-        return new BasicResponse();
+        return new BasicResponse(orderId);
     }
 
     @PostMapping("/updateStatus")

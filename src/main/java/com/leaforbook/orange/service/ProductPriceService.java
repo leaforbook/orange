@@ -1,5 +1,6 @@
 package com.leaforbook.orange.service;
 
+import com.leaforbook.orange.controller.form.ProductPriceDetailForm;
 import com.leaforbook.orange.controller.form.ProductPriceGetForm;
 import com.leaforbook.orange.controller.form.ProductPriceListForm;
 import com.leaforbook.orange.controller.form.ProductPriceUpdateListForm;
@@ -17,4 +18,6 @@ public interface ProductPriceService {
     List<OrangeProductPrice> get(ProductPriceGetForm form);
 
     void delete(String productId);
+
+    OrangeProductPrice detail(ProductPriceDetailForm form);
 }

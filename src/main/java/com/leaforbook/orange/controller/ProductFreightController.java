@@ -61,5 +61,11 @@ public class ProductFreightController {
         return new BasicResponse(freightList);
     }
 
+    @PostMapping("/detail")
+    @ApiOperation(value = "获取产品的单属性运费信息", notes = "")
+    public BasicResponse detail(@RequestBody @Valid ProductFreightDetailForm form) {
+        OrangeProductFreight freight = productFreightService.detail(form);
+        return new BasicResponse(freight);
+    }
 
 }

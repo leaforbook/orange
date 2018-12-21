@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface OrderService {
-    void create(String userId, OrderForm form);
+    String create(String userId, OrderForm form);
 
     void updateStatus(OrderStatusForm form);
 

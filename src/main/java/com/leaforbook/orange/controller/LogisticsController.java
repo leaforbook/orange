@@ -53,7 +53,7 @@ public class LogisticsController {
     @PostMapping("/get")
     @ApiOperation(value = "获取订单的物流信息", notes = "")
     @HasResource(resourceType = "ORC",resourceId = "orderId")
-    public BasicResponse get(LogisticsSingleForm form) {
+    public BasicResponse get(@RequestBody @Valid LogisticsSingleForm form) {
         JSONObject obj = logisticsService.get(form);
         return new BasicResponse(obj);
     }
