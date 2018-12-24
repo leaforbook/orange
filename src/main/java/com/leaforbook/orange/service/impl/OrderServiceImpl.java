@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
             criteria.andOrderStatusEqualTo(form.getOrderStatus());
         }
 
-        PageHelper.offsetPage(form.getPageNum()-1,form.getPageSize());
+        PageHelper.offsetPage((form.getPageNum()-1)*form.getPageSize(),form.getPageSize());
         Page<OrangeOrder> data = (Page<OrangeOrder>) orderMapper.selectByExample(example);
 
         return data;
