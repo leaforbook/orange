@@ -93,7 +93,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     public List<OrangeProductPrice> get(ProductPriceGetForm form) {
         OrangeProductPriceExample example = new OrangeProductPriceExample();
         example.createCriteria().andProductIdEqualTo(form.getProductId())
-                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
+                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()).andIsGroundingEqualTo("1");
         List<OrangeProductPrice> list = productPriceMapper.selectByExample(example);
         return list;
     }
