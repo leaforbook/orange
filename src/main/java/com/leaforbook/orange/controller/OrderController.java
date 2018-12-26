@@ -5,6 +5,7 @@ import com.leaforbook.orange.controller.form.OrderIDForm;
 import com.leaforbook.orange.controller.form.OrderForm;
 import com.leaforbook.orange.controller.form.OrderQueryForm;
 import com.leaforbook.orange.controller.form.OrderStatusForm;
+import com.leaforbook.orange.controller.vo.OrangeOrderVO;
 import com.leaforbook.orange.dao.model.OrangeOrder;
 import com.leaforbook.orange.service.OrderService;
 import com.leaforbook.orange.util.BasicResponse;
@@ -77,7 +78,7 @@ public class OrderController {
     public BasicResponse query(@RequestBody @Valid OrderQueryForm form,
                                @Session UserInfo userInfo) {
 
-        Page<OrangeOrder> data = orderService.query(userInfo.getUserId(),form);
+        Page<OrangeOrderVO> data = orderService.queryForAll(userInfo.getUserId(),form);
 
         return new BasicResponse(data);
     }

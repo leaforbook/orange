@@ -8,9 +8,9 @@ import com.leaforbook.orange.controller.form.OrderIDForm;
 import com.leaforbook.orange.controller.form.OrderForm;
 import com.leaforbook.orange.controller.form.OrderQueryForm;
 import com.leaforbook.orange.controller.form.OrderStatusForm;
-import com.leaforbook.orange.dao.mapper.OrangeOrderMapper;
-import com.leaforbook.orange.dao.model.OrangeOrder;
-import com.leaforbook.orange.dao.model.OrangeOrderExample;
+import com.leaforbook.orange.controller.vo.OrangeOrderVO;
+import com.leaforbook.orange.dao.mapper.*;
+import com.leaforbook.orange.dao.model.*;
 import com.leaforbook.orange.dict.OrderStatus;
 import com.leaforbook.orange.service.OrderService;
 import com.leaforbook.orange.util.DataStatus;
@@ -36,6 +36,18 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CommonResourceService commonResourceService;
+
+    @Autowired
+    private OrangeProductMapper productMapper;
+
+    @Autowired
+    private OrangeProductPriceMapper priceMapper;
+
+    @Autowired
+    private OrangeProductFreightMapper freightMapper;
+
+    @Autowired
+    private OrangeCustomAddressMapper addressMapper;
 
     @Override
     public String create(String userId, OrderForm form) {
@@ -105,10 +117,39 @@ public class OrderServiceImpl implements OrderService {
         if(StringUtils.isNotEmpty(form.getOrderStatus())) {
             criteria.andOrderStatusEqualTo(form.getOrderStatus());
         }
+        example.setOrderByClause(" date_update desc ");
 
         PageHelper.offsetPage((form.getPageNum()-1)*form.getPageSize(),form.getPageSize());
         Page<OrangeOrder> data = (Page<OrangeOrder>) orderMapper.selectByExample(example);
 
         return data;
+    }
+
+    @Override
+    public Page<OrangeOrderVO> queryForAll(String userId, OrderQueryForm form) {
+        Page<OrangeOrder> data = this.query(userId,form);
+        Page<OrangeOrderVO> result = new Page<>();
+        for(OrangeOrder order:data) {
+
+            OrangeOrderVO vo = new OrangeOrderVO();
+            BeanUtils.copyProperties(order,vo);
+            String productId = order.getProductId();
+            String priceId = order.getPriceId();
+            String freightId = order.getFreightId();
+            String addressId = order.getAddressId();
+            OrangeProduct product = productMapper.selectByPrimaryKey(productId);
+            vo.setProductName(product.getProductName());
+            OrangeProductPrice price = priceMapper.selectByPrimaryKey(priceId);
+            vo.setPrice(price.getAttributeValue());
+            OrangeProductFreight freight = freightMapper.selectByPrimaryKey(freightId);
+            vo.setFreight(freight.getAttributeValue());
+            if(StringUtils.isNotEmpty(addressId)) {
+                OrangeCustomAddress address = addressMapper.selectByPrimaryKey(addressId);
+                vo.setName(address.getName());
+            }
+
+            result.add(vo);
+        }
+        return result;
     }
 }

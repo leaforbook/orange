@@ -54,7 +54,7 @@ public class LogisticsServiceImpl implements LogisticsService {
             if(order==null||!order.getUserId().equals(userId)) {
                 throw new BasicBusinessException(ExceptionEnum.HAS_NO_ORDER);
             }
-            if(!OrderStatus.UN_SEND.equals(order.getOrderStatus())) {
+            if(!OrderStatus.UN_SEND.getValue().equals(order.getOrderStatus())&&!OrderStatus.SENDING.getValue().equals(order.getOrderStatus())) {
                 throw new BasicBusinessException(ExceptionEnum.ONT_UNSEND_ORDER_LOGISTICS);
             }
             addressIdSet.add(order.getAddressId());
@@ -66,24 +66,35 @@ public class LogisticsServiceImpl implements LogisticsService {
 
         for(String orderId:orderIdList) {
             OrangeLogisticsExample example = new OrangeLogisticsExample();
-            example.createCriteria().andOrderIdEqualTo(orderId).andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
+            example.createCriteria().andOrderIdEqualTo(orderId);
             long count = logisticsMapper.countByExample(example);
             if(count>0l) {
-                throw new BasicBusinessException(ExceptionEnum.ONE_ORDER_ONE_LOGISTICS);
+                OrangeLogistics logistics = new OrangeLogistics();
+                logistics.setType(form.getType());
+                logistics.setPostid(form.getPostid());
+                logistics.setByUpdate(userId);
+                logistics.setDateUpdate(new Date());
+                logistics.setDataStatus(DataStatus.AVAILABLE.getValue());
+
+                OrangeLogisticsExample example1 = new OrangeLogisticsExample();
+                example1.createCriteria().andOrderIdEqualTo(orderId);
+
+                logisticsMapper.updateByExampleSelective(logistics,example1);
+
+            } else {
+                OrangeLogistics logistics = new OrangeLogistics();
+                logistics.setOrderId(orderId);
+                logistics.setType(form.getType());
+                logistics.setPostid(form.getPostid());
+
+                logistics.setByCreate(userId);
+                logistics.setByUpdate(userId);
+                logistics.setDateCreate(new Date());
+                logistics.setDateUpdate(new Date());
+                logistics.setLogisticsId(snowFlake.getId());
+                logistics.setDataStatus(DataStatus.AVAILABLE.getValue());
+                logisticsMapper.insertSelective(logistics);
             }
-
-            OrangeLogistics logistics = new OrangeLogistics();
-            logistics.setOrderId(orderId);
-            logistics.setType(form.getType());
-            logistics.setPostid(form.getPostid());
-
-            logistics.setByCreate(userId);
-            logistics.setByUpdate(userId);
-            logistics.setDateCreate(new Date());
-            logistics.setDateUpdate(new Date());
-            logistics.setLogisticsId(snowFlake.getId());
-            logistics.setDataStatus(DataStatus.AVAILABLE.getValue());
-            logisticsMapper.insertSelective(logistics);
 
             //标记订单为已发货
             OrderStatusForm orderStatusForm = new OrderStatusForm();
