@@ -8,4 +8,6 @@ import javax.validation.constraints.NotBlank;
 public class ProductPriceGetForm {
     @NotBlank(message = "产品ID不能为空")
     private String productId;
+
+    private boolean all;
 }

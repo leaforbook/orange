@@ -288,6 +288,8 @@ public class ProductServiceImpl implements ProductService {
 
         if(StringUtils.isNotEmpty(result)) {
             result += "——用户名不存在的授权不会成功，已授权过的授权也不会成功，注意用户名之间用半角分号隔开";
+        } else {
+            result = "全部授权成功！";
         }
 
 

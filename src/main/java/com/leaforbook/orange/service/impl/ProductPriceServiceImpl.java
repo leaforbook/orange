@@ -92,8 +92,13 @@ public class ProductPriceServiceImpl implements ProductPriceService {
     @Override
     public List<OrangeProductPrice> get(ProductPriceGetForm form) {
         OrangeProductPriceExample example = new OrangeProductPriceExample();
-        example.createCriteria().andProductIdEqualTo(form.getProductId())
-                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue()).andIsGroundingEqualTo("1");
+        OrangeProductPriceExample.Criteria criteria = example.createCriteria();
+        criteria.andProductIdEqualTo(form.getProductId())
+                .andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
+        if(!form.isAll()) {
+            criteria.andIsGroundingEqualTo("1");
+        }
+
         List<OrangeProductPrice> list = productPriceMapper.selectByExample(example);
         return list;
     }
