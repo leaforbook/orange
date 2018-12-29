@@ -12,7 +12,7 @@ public class GlobalExceptionHandler {
     public BasicResponse handlerBindException(MethodArgumentNotValidException exception) {
 
         StringBuffer msg = new StringBuffer();
-        exception.getBindingResult().getAllErrors().forEach(x -> msg.append(x.getDefaultMessage()).append("|"));
+        msg.append(exception.getBindingResult().getAllErrors().get(0).getDefaultMessage());
 
         return new BasicResponse("666",msg.toString());
     }
