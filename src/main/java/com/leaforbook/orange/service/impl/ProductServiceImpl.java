@@ -109,20 +109,24 @@ public class ProductServiceImpl implements ProductService {
         productMapper.insertSelective(newProduct);
 
         for(OrangeProductPrice price:priceList) {
+            String newPriceId = snowFlake.getId();
             price.setProductId(newProductId);
             price.setDateUpdate(new Date());
             price.setDateCreate(new Date());
             price.setByUpdate(userId);
             price.setByCreate(userId);
+            price.setPriceId(newPriceId);
             productPriceMapper.insertSelective(price);
         }
 
         for(OrangeProductFreight freight:freightList) {
+            String newFreightId = snowFlake.getId();
             freight.setProductId(newProductId);
             freight.setDateUpdate(new Date());
             freight.setDateCreate(new Date());
             freight.setByUpdate(userId);
             freight.setByCreate(userId);
+            freight.setFreightId(newFreightId);
             productFreightMapper.insertSelective(freight);
         }
 
