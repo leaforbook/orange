@@ -2,6 +2,9 @@ package com.leaforbook.orange.common.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.leaforbook.orange.common.controller.form.ExpressForm;
 import com.leaforbook.orange.common.dao.mapper.CommonExpressMapper;
 import com.leaforbook.orange.common.dao.model.CommonExpress;
 import com.leaforbook.orange.common.dao.model.CommonExpressExample;
@@ -38,21 +41,22 @@ public class ExpressServiceImpl implements ExpressService {
     }
 
     @Override
-    public List<CommonExpress> getExpressList(String expressId, String name, String inCommonUse) {
+    public Page<CommonExpress> getExpressList(ExpressForm form) {
         CommonExpressExample expressExample = new CommonExpressExample();
         CommonExpressExample.Criteria criteria = expressExample.createCriteria();
         criteria.andDataStatusEqualTo(DataStatus.AVAILABLE.getValue());
-        if(StringUtils.isNotEmpty(expressId)) {
-            criteria.andExpressIdLike("%"+expressId+"%");
+        if(StringUtils.isNotEmpty(form.getQueryParams())) {
+            criteria.andNameLike("%"+form.getQueryParams()+"%");
         }
-        if(StringUtils.isNotEmpty(name)) {
-            criteria.andNameLike("%"+name+"%");
+        if(StringUtils.isNotEmpty(form.getExpressId())) {
+            criteria.andExpressIdEqualTo(form.getExpressId());
         }
-        if(StringUtils.isNotEmpty(inCommonUse)) {
-            criteria.andInCommonUseEqualTo(inCommonUse);
-        }
+        expressExample.setOrderByClause(" in_common_use desc ");
 
-        List<CommonExpress>  list = expressMapper.selectByExample(expressExample);
+        PageHelper.offsetPage((form.getPageNum()-1)*form.getPageSize(),form.getPageSize());
+
+        Page<CommonExpress>  list = (Page<CommonExpress>)expressMapper.selectByExample(expressExample);
+
         return list;
     }
 

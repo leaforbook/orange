@@ -1,23 +1,19 @@
 package com.leaforbook.orange.common.controller;
 
+import com.github.pagehelper.Page;
 import com.leaforbook.orange.common.controller.form.ExpressForm;
-import com.leaforbook.orange.common.controller.vo.ExpressVO;
 import com.leaforbook.orange.common.dao.model.CommonExpress;
 import com.leaforbook.orange.common.service.ExpressService;
 import com.leaforbook.orange.util.BasicResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/common/express")
@@ -31,19 +27,7 @@ public class ExpressController {
     @PostMapping("/get")
     @ApiOperation(value = "获取快递公司信息", notes = "")
     public BasicResponse getExpressList(@RequestBody @Valid ExpressForm form) {
-        List<CommonExpress> list = expressService.getExpressList(form.getExpressId(),form.getName(),form.getInCommonUse());
-
-        List<ExpressVO> result = new ArrayList<>();
-
-        if(list!=null&&list.size()>0) {
-            for(CommonExpress express:list) {
-                ExpressVO vo = new ExpressVO();
-                BeanUtils.copyProperties(express,vo);
-                vo.setLabel(express.getName());
-                result.add(vo);
-            }
-        }
-
-        return new BasicResponse(result);
+        Page<CommonExpress> list = expressService.getExpressList(form);
+        return new BasicResponse(list);
     }
 }
