@@ -1,6 +1,7 @@
 package com.leaforbook.orange.service;
 
 import com.github.pagehelper.Page;
+import com.leaforbook.orange.controller.form.ProductCopyForm;
 import com.leaforbook.orange.controller.form.ProductForm;
 import com.leaforbook.orange.controller.form.ProductQueryForm;
 import com.leaforbook.orange.controller.form.ProductUpadateForm;
@@ -24,4 +25,6 @@ public interface ProductService {
     String share(String productId, String userName);
 
     boolean isCreater(String productId,String userId);
+
+    String copy(String userId, ProductCopyForm form);
 }

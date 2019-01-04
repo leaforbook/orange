@@ -10,10 +10,10 @@ import com.leaforbook.orange.common.service.CommonResourceService;
 import com.leaforbook.orange.common.service.UserService;
 import com.leaforbook.orange.controller.form.*;
 import com.leaforbook.orange.dao.mapper.OrangeProductExtendMapper;
+import com.leaforbook.orange.dao.mapper.OrangeProductFreightMapper;
 import com.leaforbook.orange.dao.mapper.OrangeProductMapper;
-import com.leaforbook.orange.dao.model.OrangeProduct;
-import com.leaforbook.orange.dao.model.OrangeProductExample;
-import com.leaforbook.orange.dao.model.TmpTable;
+import com.leaforbook.orange.dao.mapper.OrangeProductPriceMapper;
+import com.leaforbook.orange.dao.model.*;
 import com.leaforbook.orange.service.ProductFreightService;
 import com.leaforbook.orange.service.ProductPriceService;
 import com.leaforbook.orange.util.ResourceEnum;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -54,6 +55,12 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     private ProductPriceService productPriceService;
 
+    @Autowired
+    private OrangeProductPriceMapper productPriceMapper;
+
+    @Autowired
+    private OrangeProductFreightMapper productFreightMapper;
+
     @Override
     @Transactional
     public String create(String userId, ProductForm form) {
@@ -73,6 +80,57 @@ public class ProductServiceImpl implements ProductService {
 
         return productId;
 
+    }
+
+    @Override
+    @Transactional
+    public String copy(String userId, ProductCopyForm form) {
+
+        String productId = form.getProductId();
+        String newProductId = snowFlake.getId();
+        OrangeProduct product = productMapper.selectByPrimaryKey(productId);
+        ProductPriceGetForm priceGetForm = new ProductPriceGetForm();
+        priceGetForm.setAll(true);
+        priceGetForm.setProductId(productId);
+        List<OrangeProductPrice> priceList = productPriceService.get(priceGetForm);
+        ProductFreightGetForm freightGetForm = new ProductFreightGetForm();
+        freightGetForm.setProductId(productId);
+        List<OrangeProductFreight> freightList = productFreightService.get(freightGetForm);
+
+        OrangeProduct newProduct = new OrangeProduct();
+        BeanUtils.copyProperties(product,newProduct);
+        newProduct.setProductId(newProductId);
+        newProduct.setUserId(userId);
+        newProduct.setByCreate(userId);
+        newProduct.setDateCreate(new Date());
+        newProduct.setByUpdate(userId);
+        newProduct.setDateUpdate(new Date());
+        newProduct.setDataStatus(DataStatus.AVAILABLE.getValue());
+        productMapper.insertSelective(newProduct);
+
+        for(OrangeProductPrice price:priceList) {
+            price.setProductId(newProductId);
+            price.setDateUpdate(new Date());
+            price.setDateCreate(new Date());
+            price.setByUpdate(userId);
+            price.setByCreate(userId);
+            productPriceMapper.insertSelective(price);
+        }
+
+        for(OrangeProductFreight freight:freightList) {
+            freight.setProductId(newProductId);
+            freight.setDateUpdate(new Date());
+            freight.setDateCreate(new Date());
+            freight.setByUpdate(userId);
+            freight.setByCreate(userId);
+            productFreightMapper.insertSelective(freight);
+        }
+
+        this.setResource(newProductId,userId, ResourceEnum.PRODUCT_CREATE.getResourceType());
+        this.setResource(newProductId,userId, ResourceEnum.PRODUCT_USE.getResourceType());
+        this.removeResource(userId,productId);
+
+        return newProductId;
     }
 
     private void createPriceTable(String priceAttribute,String productId,String userId) {

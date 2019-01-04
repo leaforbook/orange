@@ -31,6 +31,17 @@ public class ProductController {
         return new BasicResponse(productId);
     }
 
+    @PostMapping("/copy")
+    @ApiOperation(value = "复制产品信息", notes = "")
+    @HasResource(resourceType = "PRU",resourceId = "productId")
+    @HasSession(key="verifyPassword")
+    public BasicResponse copy(@RequestBody @Valid ProductCopyForm form,
+                                @Session UserInfo userInfo) {
+        String productId = productService.copy(userInfo.getUserId(),form);
+
+        return new BasicResponse(productId);
+    }
+
     @PostMapping("/update")
     @ApiOperation(value = "更新产品信息", notes = "")
     @HasResource(resourceType = "PRC",resourceId = "productId")
